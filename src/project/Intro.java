@@ -99,7 +99,7 @@ public class Intro extends JFrame{
 		join.setLocation(195,340);
 		c.add(join);
 		
-		JLabel joinguide = new JLabel(" <html>회원가입 후 <br>시스템을 이용하세요 </html>");
+		JLabel joinguide = new JLabel("<html> 회원가입 후 <br>시스템을 이용하세요 </html>");
 		joinguide.setFont(new Font("본고딕 KR", Font.BOLD, 11));
 		joinguide.setSize(200,30);
 		joinguide.setLocation(25,335);
