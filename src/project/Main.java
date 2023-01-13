@@ -7,14 +7,14 @@ import java.util.*;
 import javax.swing.*;
 
 public class Main extends JFrame{
-	Main(){
+	public Main(){
 		setSize(600,500);
 		this.setResizable(false);
 		setTitle("(두면 도서관)두면 도서관에 오신 것을 환영합니다.");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
 		c.setLayout(null);
-		c.setBackground(Color.white);
+		c.setBackground(new Color(248,248,255));
 		
 		// 타이틀 만들기
 		ImageIcon logoIcon = new ImageIcon("image/edu.png");
@@ -77,6 +77,14 @@ public class Main extends JFrame{
 		searchBtn.setSize(90,40);
 		searchBtn.setLocation(70,190);
 		c.add(searchBtn);		
+		searchBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+			BookSearch booksearch =	new BookSearch();	
+			setVisible(false);
+			}
+		});
 		
 		// 이달의 추천도서 버튼
 		JButton recoBtn = new JButton("Hot");
@@ -84,11 +92,29 @@ public class Main extends JFrame{
 		recoBtn.setLocation(245,190);
 		c.add(recoBtn);	
 		
+		recoBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+			Recommand Recommand =new Recommand();	
+			setVisible(false);
+			}
+		});
+		
 		// 도서 예약 버튼
 		JButton reserveBtn = new JButton("Lent");
 		reserveBtn.setSize(90,40);
 		reserveBtn.setLocation(405,190);
-		c.add(reserveBtn);	
+		c.add(reserveBtn);
+		
+		reserveBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				BookLent lent = new BookLent();
+				setVisible(false);
+			}
+		});
 		
 		// 메모시스템 버튼
 		JButton MemoBtn = new JButton("Memo");
@@ -96,11 +122,29 @@ public class Main extends JFrame{
 		MemoBtn.setLocation(70,290);
 		c.add(MemoBtn);	
 		
+		MemoBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Memo memo = new Memo();
+				setVisible(false);
+			}
+		});
+		
 		// 회원정보 수정 버튼
 		JButton InfoBtn = new JButton("My Info");
 		InfoBtn.setSize(90,40);
 		InfoBtn.setLocation(245,290);
 		c.add(InfoBtn);	
+		
+		InfoBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				myInfo info = new myInfo();
+				setVisible(false);
+			}
+		});
 		
 		// 독서실 자리예약 버튼
 		JButton SeatBtn = new JButton("Seat");
@@ -108,18 +152,18 @@ public class Main extends JFrame{
 		SeatBtn.setLocation(405,290);
 		c.add(SeatBtn);	
 		
-		
+		SeatBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Seatting seatarea = new Seatting();
+				setVisible(false);
+			}
+		});
 		
 		// 하단 정보 기재란 
-		// 가운데 정렬 하느방법..? (joinguide.setHorizontalAlignment(SwingConstants.CENTER); 아닌가)
-		JLabel outline = new JLabel("<html>인천광역시 계양구 부평구"
-				+ " <br>tel. 82+032-123-4567        fax. 32-123-4568 </html>");
-		outline.setFont(new Font("본고딕 KR", Font.BOLD, 11));
-		outline.setOpaque(true);
-		outline.setForeground(new Color(41,90,221));
-		outline.setBackground(Color.white);
-		outline.setSize(400,30);
-		outline.setLocation(200,405);
+		outtroLabel outline = new outtroLabel(200,405);
+		outline.setBackground(new Color(248,248,255));
 		c.add(outline);
 		
 		setVisible(true);

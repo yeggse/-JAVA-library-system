@@ -1,10 +1,10 @@
-package project;
+package projectDialogs;
 
 import java.awt.*;
 import javax.swing.*;
 
 public class JoinDialog extends JDialog{
-	JoinDialog(){
+	public JoinDialog(){
 		setSize(350,550);
 		this.setResizable(false);
 		setTitle("회원가입");
@@ -12,9 +12,9 @@ public class JoinDialog extends JDialog{
 		c.setLayout(null);
 		c.setBackground(new Color(232,232,232));
 		
-		JLabel title = new JLabel("비밀번호 찾기");
+		JLabel title = new JLabel("회 원 가 입");
 		title.setSize(150,30);
-		title.setLocation(90,20);
+		title.setLocation(110,20);
 		title.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 23));
 		c.add(title);
 		
@@ -135,7 +135,7 @@ public class JoinDialog extends JDialog{
 		c.add(CheckBtn);
 		
 		
-		setVisible(true);
+		setVisible(false);
 	}
 	
 }

@@ -6,6 +6,8 @@ import java.sql.*;
 import java.util.*;
 import javax.swing.*;
 
+import projectDialogs.JoinDialog;
+
 public class Intro extends JFrame{
 	Intro(){
 		setSize(400,500);
@@ -114,7 +116,7 @@ public class Intro extends JFrame{
 		c.add(joinguide);
 		
 		// 회원가입 버튼 시, 다이얼로그 출력 이벤트
-		JoinDialog joindig = new JoinDialog();
+		projectDialogs.JoinDialog joindig = new JoinDialog();
 		joinBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -124,15 +126,8 @@ public class Intro extends JFrame{
 		
 		
 		// 하단 라벨
-			// 가운데 정렬 하느방법..? (joinguide.setHorizontalAlignment(SwingConstants.CENTER); 아닌가)
-		JLabel outline = new JLabel("<html>인천광역시 계양구 부평구"
-				+ " <br>tel. 82+032-123-4567        fax. 32-123-4568 </html>");
-		outline.setFont(new Font("본고딕 KR", Font.BOLD, 11));
-		outline.setOpaque(true);
-		outline.setForeground(new Color(41,90,221));
+		outtroLabel outline = new outtroLabel(80,400);
 		outline.setBackground(Color.white);
-		outline.setSize(200,30);
-		outline.setLocation(80,400);
 		c.add(outline);
 		
 		setVisible(true);
