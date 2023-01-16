@@ -15,7 +15,9 @@ import javax.swing.JTextField;
 import project.Main;
 
 public class SeattingEndDialog extends JDialog {
-	SeattingEndDialog(){
+	static String id;
+	SeattingEndDialog(String id){
+		this.id =id;
 		setSize(350,350);
 		this.setResizable(false);
 		setTitle("좌석 사용 완료하기");
@@ -68,7 +70,7 @@ public class SeattingEndDialog extends JDialog {
 				// TODO Auto-generated method stub
 		// 이름 ID 연결하고, 이벤트로 DB에 좌석이용완료 되었다고 연결하기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				setVisible(false);
-				outroDialog out = new outroDialog();
+				outroDialog out = new outroDialog(id);
 			}
 		});
 		
@@ -76,13 +78,15 @@ public class SeattingEndDialog extends JDialog {
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new SeattingEndDialog();
+		new SeattingEndDialog(id);
 	}
 
 }
 
 class outroDialog extends JDialog{
-	outroDialog(){
+	static String id;
+	outroDialog(String id){
+		this.id = id;
 		setSize(350,350);
 		this.setResizable(false);
 		setTitle("좌석 사용 완료");
@@ -118,7 +122,7 @@ class outroDialog extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				setVisible(false);
-				project.Main main = new Main();
+				project.Main main = new Main(id);
 			}
 		});
 		

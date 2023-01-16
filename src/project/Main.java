@@ -7,7 +7,9 @@ import java.util.*;
 import javax.swing.*;
 
 public class Main extends JFrame{
-	public Main(){
+	static String id;
+	public Main(String id){
+		this.id = id;
 		setSize(600,500);
 		this.setResizable(false);
 		setTitle("(두면 도서관)두면 도서관에 오신 것을 환영합니다.");
@@ -141,7 +143,7 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				myInfo info = new myInfo();
+				myInfo info = new myInfo(id);
 				setVisible(false);
 			}
 		});
@@ -156,7 +158,7 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Seatting seatarea = new Seatting();
+				Seatting seatarea = new Seatting(id);
 				setVisible(false);
 			}
 		});
@@ -170,6 +172,6 @@ public class Main extends JFrame{
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new Main();
+		new Main(id);
 	}
 }

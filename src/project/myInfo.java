@@ -6,8 +6,14 @@ import java.sql.*;
 import java.util.*;
 import javax.swing.*;
 
+import project.Recommand.myPanel;
+
 public class myInfo extends JFrame{
-	myInfo(){
+	static String id;
+	Connection conn;
+	Statement stmt = null;
+	myInfo(String id){
+		this.id = id;
 		setSize(500,600);
 		this.setResizable(false);
 		setTitle("(두면 도서관)나의 회원 정보 보기");
@@ -78,8 +84,6 @@ public class myInfo extends JFrame{
 		c.add(rebookla);
 		
 		//패널
-		// DB의 정보들이 자동 출력되도록!!!!!!!!!!!!!!!!!!!!
-		
 		JPanel idp = new JPanel();
 		JPanel pwp = new JPanel();
 		JPanel namep = new JPanel();
@@ -89,72 +93,193 @@ public class myInfo extends JFrame{
 		JPanel bookp = new JPanel();
 		JPanel rebookp = new JPanel();
 		
+		// SQL 연결
+		try {
+			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
+			conn = DriverManager.getConnection
+					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
+			System.out.println("my info 파트 : DB 연결 완료");
+			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+		} catch (ClassNotFoundException e) {
+			System.out.println("JDBC 드라이버 로드 에러");
+		} catch (SQLException e) {
+			System.out.println("DB 연결 오류");
+		}
+
+		// id 정보 출력
 		idp.setLocation(200,105);
 		idp.setSize(250,30);
+		idp.setLayout(new FlowLayout());
 		idp.setBackground(new Color(245,245,245));
 		c.add(idp);
 		
+		JLabel idget = new JLabel();
+		idget.setSize(200,25);
+		idget.setText(id);
+		idp.add(idget);
+		
+		
+		// pw 정보 출력
 		pwp.setLocation(200,145);
 		pwp.setSize(250,30);
+		pwp.setLayout(new FlowLayout());
 		pwp.setBackground(new Color(245,245,245));
 		c.add(pwp);
 		
+		JLabel pwget = new JLabel();
+		pwget.setSize(200,25);
+		try {
+			ResultSet pwsrs = stmt.executeQuery("select pw from people where id = '"+id+"';");
+			while (pwsrs.next()) {
+				pwget.setText(pwsrs.getString("pw"));
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println("my info : pw 파트 오류");
+		}
+		pwp.add(pwget);
+		
+		
+		// 이름 정보 출력
 		namep.setLocation(200,185);
 		namep.setSize(250,30);
+		namep.setLayout(new FlowLayout());
 		namep.setBackground(new Color(245,245,245));
 		c.add(namep);
 		
+		JLabel nameget = new JLabel();
+		nameget.setSize(200,25);
+		try {
+			ResultSet namesrs = stmt.executeQuery("select name from people where id = '"+id+"';");
+			while (namesrs.next()) {
+				nameget.setText(namesrs.getString("name"));
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println("my info : name 파트 오류");
+		}
+		namep.add(nameget);
+		
+		
+		// 생일 정보 출력
 		birthp.setLocation(200,225);
 		birthp.setSize(250,30);
+		birthp.setLayout(new FlowLayout());
 		birthp.setBackground(new Color(245,245,245));
 		c.add(birthp);
 		
+		JLabel birthget = new JLabel();
+		birthget.setSize(200,25);
+		try {
+			ResultSet birthsrs = stmt.executeQuery("select birth from people where id = '"+id+"';");
+			while (birthsrs.next()) {
+				birthget.setText(birthsrs.getString("birth"));
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println("my info : birth 파트 오류");
+		}
+		birthp.add(birthget);
+		
+		
+		// 주소 정보 출력
 		addressp.setLocation(200,305);
 		addressp.setSize(250,57);
+		addressp.setLayout(new FlowLayout());
 		addressp.setBackground(new Color(245,245,245));
 		c.add(addressp);
 		
+		JLabel addressget = new JLabel();
+		addressget.setSize(200,25);
+		try {
+			ResultSet addresssrs = stmt.executeQuery("select address from people where id = '"+id+"';");
+			while (addresssrs.next()) {
+				addressget.setText(addresssrs.getString("address"));
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println("my info : address 파트 오류");
+		}
+		addressp.add(addressget);
+		
+		
+		// 도서 대여 정보 출력!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		bookp.setLocation(200,370);
 		bookp.setSize(250,30);
+		bookp.setLayout(new FlowLayout());
 		bookp.setBackground(new Color(245,245,245));
 		c.add(bookp);
 		
+		// 도서 반납일 정보 출력!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		rebookp.setLocation(200,410);
 		rebookp.setSize(250,30);
+		rebookp.setLayout(new FlowLayout());
 		rebookp.setBackground(new Color(245,245,245));
 		c.add(rebookp);
 		
-		//성별
-		// DB의 정보들이 자동 출력되도록!!!!!!!!!!!!!!!!!!!!
-		// 이미지 파일로 체크 표시 출력되면 좋을 듯
-
-		ButtonGroup g = new ButtonGroup();
-		JRadioButton girl = new JRadioButton("여자");
-		JRadioButton boy = new JRadioButton("남자", true);
-		girl.setFont(new Font("함초롱돋움",Font.BOLD, 15));
-		boy.setFont(new Font("함초롱돋움",Font.BOLD, 15));
-		girl.setLocation(290,265);
-		boy.setLocation(200,265);
-		girl.setSize(60,30);
-		boy.setSize(60,30);
 		
-		g.add(boy);
-		g.add(girl);
-		c.add(boy);
-		c.add(girl);
+		//성별
+		String gen = "";
 		
 		genderp.setLocation(200,265);
 		genderp.setSize(250,30);
 		genderp.setBackground(new Color(245,245,245));
 		c.add(genderp);
 		
+		try {
+			ResultSet gendersrs = stmt.executeQuery("select gender from people where id = '"+id+"';");
+			while (gendersrs.next()) {
+				if("여".equals(gendersrs.getString("gender"))) {
+					gen ="image/girl.png";
+				} else {
+					gen ="image/man.png";
+				}
+				ImageIcon girlIcon = new ImageIcon(gen);
+				Image girlimg = girlIcon.getImage();	// 아이콘 크기 수정을 위해 필요한 과정
+				Image girlimgfin = girlimg.getScaledInstance(200, 30, java.awt.Image.SCALE_SMOOTH);
+				ImageIcon girlIconfin = new ImageIcon(girlimgfin);
+				
+				JLabel girl = new JLabel(girlIconfin);
+				girl.setSize(200,30);
+				genderp.add(girl);	
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println("my info : gender 파트 오류");
+		}
+		
+		
 		// 유료회원 가입 여부
-		// 이미지 파일로 체크 표시 출력되면 좋을 듯
-		JCheckBox royal = new JCheckBox(" 유료회원 가입 여부");
-		royal.setFont(new Font("함초롱돋움",Font.BOLD, 15));
-		royal.setSize(170,30);
-		royal.setLocation(80,460);
-		c.add(royal);
+		String ro = "";
+		
+		try {
+			ResultSet royalsrs = stmt.executeQuery("select royal from people where id = '"+id+"';");
+			while (royalsrs.next()) {
+				if("O".equals(royalsrs.getString("royal"))) {
+					ro ="image/royalok.PNG";
+				} else {
+					ro ="image/noroyal.PNG";
+				}
+				ImageIcon royalIcon = new ImageIcon(ro);
+				Image royalimg = royalIcon.getImage();	// 아이콘 크기 수정을 위해 필요한 과정
+				Image royalimgfin = royalimg.getScaledInstance(250, 30, java.awt.Image.SCALE_SMOOTH);
+				ImageIcon royalIconfin = new ImageIcon(royalimgfin);
+				
+				JLabel royal = new JLabel(royalIconfin);
+				royal.setSize(300,30);
+				royal.setLocation(80,460);
+				c.add(royal);
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println("my info : royal 파트 오류");
+		}
 				
 		
 		// 수정 버튼
@@ -170,7 +295,7 @@ public class myInfo extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Edit edit = new Edit();
+				Edit edit = new Edit(id);
 				setVisible(false);
 			}
 		});
@@ -183,6 +308,6 @@ public class myInfo extends JFrame{
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new myInfo();
+		new myInfo(id);
 	}
 }

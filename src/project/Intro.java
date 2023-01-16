@@ -9,6 +9,10 @@ import javax.swing.*;
 import projectDialogs.JoinDialog;
 
 public class Intro extends JFrame{
+
+	Connection conn;
+	Statement stmt = null;
+	
 	Intro(){
 		setSize(400,500);
 		this.setResizable(false);
@@ -39,8 +43,6 @@ public class Intro extends JFrame{
 		c.add(explain);
 		
 		// ID PW 입력창 만들기
-		JTextField id = new JTextField(20);
-		JPasswordField pw = new JPasswordField(20);
 		ImageIcon idIcon = new ImageIcon("image/user.png");
 		Image IDimg = idIcon.getImage();	// 아이콘 크기 수정을 위해 필요한 과정
 		Image IDfin = IDimg.getScaledInstance(35, 35, java.awt.Image.SCALE_SMOOTH);
@@ -53,10 +55,14 @@ public class Intro extends JFrame{
 		
 		JLabel idLabel = new JLabel(IDIconfin, SwingConstants.CENTER);
 		JLabel pwLabel = new JLabel(PWIconfin, SwingConstants.CENTER);
+		
+		// ID PW 입력창 디테일
 		idLabel.setSize(40,40);
 		idLabel.setLocation(50,180);
 		pwLabel.setSize(40,40);
 		pwLabel.setLocation(50,230);
+		JTextField id = new JTextField(20);
+		JPasswordField pw = new JPasswordField(20);
 		id.setSize(200,30);
 		pw.setSize(200,30);
 		id.setLocation(100,185);
@@ -67,7 +73,6 @@ public class Intro extends JFrame{
 		c.add(pw);
 		
 		// 로그인, 비밀번호 찾기 버튼 생성
-			// 각 버튼 마다 이벤트 생성해야 함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		JButton loginBtn = new JButton("로그인");
 		JButton pwsearchBtn = new JButton("PW 찾기");
 		loginBtn.setBackground(Color.gray);
@@ -89,7 +94,47 @@ public class Intro extends JFrame{
 		pwguide.setSize(110,30);
 		c.add(pwguide);
 		
-		// pw 찾기 버튼 시 다이얼로그 출력 이벤트
+
+		//SQL 연결
+		try {
+			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
+			conn = DriverManager.getConnection
+					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
+			System.out.println("DB 연결 완료");
+			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+		} catch (ClassNotFoundException e) {
+			System.out.println("JDBC 드라이버 로드 에러");
+		} catch (SQLException e) {
+			System.out.println("DB 연결 오류");
+		}
+
+		// 로그인 버튼 이벤트!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		loginBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					ResultSet srs = stmt.executeQuery("select * from people where id = '"+id.getText()+"' and pw = '"+pw.getText()+"';");
+					System.out.println("ddddd");
+					JOptionPane.showMessageDialog(null, "로그인 실패", "실패", JOptionPane.WARNING_MESSAGE);	// 로그인 실패시 팝업이 예외적으로 나오는 경우를 못찾겠음!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					while(srs.next()){
+						if(srs.getString("id")+"" != null) {
+							Main main = new Main(id.getText());
+							setVisible(false);
+						} 
+					} 
+						
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("login 버튼 에러");
+				}
+			}
+		});
+		
+		
+		// pw 찾기 버튼
 		PwSearchDialog pwdialog = new PwSearchDialog();
 		pwsearchBtn.addActionListener(new ActionListener() {
 			@Override
@@ -100,7 +145,6 @@ public class Intro extends JFrame{
 
 		
 		// 회원가입 버튼 생성
-			// 버튼 이벤트 생성해야 함!!!!!!!!!!!!!!!!!!!!!
 //		가운데 정렬 하느방법..? (joinguide.setHorizontalAlignment(SwingConstants.CENTER); 아닌가)
 		JButton joinBtn = new JButton("회원가입");
 		joinBtn.setBackground(Color.LIGHT_GRAY);

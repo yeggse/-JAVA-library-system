@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,6 +32,7 @@ class outtroLabel extends JLabel{
 
 // 전체에서 사용됨(뒤로가기 버튼)
 class BackBTN extends JButton{
+	String name;
 	BackBTN(JFrame jframe){
 		setText("뒤로가기");
 		setSize(80,25);
@@ -40,9 +45,33 @@ class BackBTN extends JButton{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Main main = new Main();
+				Main main = new Main(name);
 				jframe.setVisible(false);
 			}
 		});
+	}
+}
+
+class SqlConnect {
+	Connection conn;
+	Statement stmt = null;
+	String query=null;
+	SqlConnect(){
+		// SQL 연결
+		try {
+			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
+			conn = DriverManager.getConnection
+					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
+			System.out.println("DB 연결 완료");
+			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+		} catch (ClassNotFoundException e) {
+			System.out.println("JDBC 드라이버 로드 에러");
+		} catch (SQLException e) {
+			System.out.println("DB 연결 오류");
+		}
+	}
+	
+	String add(String part, String idget) {
+		return "select "+part+" from people where id = '"+idget+"');";
 	}
 }

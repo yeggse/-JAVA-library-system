@@ -2,11 +2,20 @@ package project;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.*;
 
 public class Seatting extends JFrame {
-	Seatting(){
+	Connection conn;
+	Statement stmt = null;
+	static String id;
+	Seatting(String id){
+		this.id = id;
 		setSize(600,500);
 		this.setResizable(false);
 		setTitle("(두면 도서관)열람실 좌석 예약하기");
@@ -61,20 +70,57 @@ public class Seatting extends JFrame {
 		subPanel bar2 = new subPanel(420,200,120,60,"책장");
 		panel.add(bar2);
 		
+		// SQL 연결
+		try {
+			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
+			conn = DriverManager.getConnection
+					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
+			System.out.println("좌석 : DB 연결 완료");
+			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+		} catch (ClassNotFoundException e) {
+			System.out.println("JDBC 드라이버 로드 에러");
+		} catch (SQLException e) {
+			System.out.println("DB 연결 오류");
+		}
 		
-		// 좌석 버튼
-		JButton sBtn;
+		// 좌석 버튼!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!이벤트 처리가 완전하지 않은!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		JButton sBtn = null;
 		for (int i=0; i<8;i++) {
-			sBtn = new JButton("좌석"+(i+1));
+			sBtn = new JButton((i+1)+"");
 			sBtn.setSize(90,40);
 			sBtn.setBackground(new Color(147,112,219));
 			sBtn.setForeground(Color.white);
 			sBtn.setFont(new Font("휴먼엑스포", Font.BOLD, 15));
+			String a = sBtn.getText();
+			sBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					try {
+						ResultSet srs = stmt.executeQuery("select * from people p inner join seat s on s.id=p.id where p.id='"+id+"';");
+						System.out.println("select * from people p inner join seat s on s.id=p.id where p.id='"+id+"';");
+						while(srs.next()) {
+							System.out.println("dd");
+							if("O".equals(srs.getString("s.seat_lent"))) {
+								JOptionPane.showMessageDialog(null, "이미 사용중인 좌석입니다. \n 다른 좌석을 선택하세요.", "실패", JOptionPane.WARNING_MESSAGE);
+								System.out.println("aa");
+							} else {
+								stmt.executeUpdate("update seat	set seat_lent = 'O' where seat_no = '"+a+"' and id = '"+id+");");
+								System.out.println("ww");
+							}
+						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+						System.out.println("좌석 이용 버튼 에러");
+					}
+				}
+			});
 			panel2.add(sBtn);
 		}
 		
 		for (int i=9; i<17;i++) {
-			sBtn = new JButton("좌석"+(i+1));
+			sBtn = new JButton((i+1)+"");
 			sBtn.setSize(90,40);
 			sBtn.setBackground(new Color(147,112,219));
 			sBtn.setForeground(Color.white);
@@ -83,7 +129,8 @@ public class Seatting extends JFrame {
 		}
 		
 		for (int i=17; i<24;i++) {
-			sBtn = new JButton("좌석"+(i+1));
+			sBtn = new JButton();
+			sBtn.setText((i+1)+"");
 			sBtn.setSize(90,40);
 			sBtn.setBackground(new Color(147,112,219));
 			sBtn.setForeground(Color.white);
@@ -91,10 +138,32 @@ public class Seatting extends JFrame {
 			panel4.add(sBtn);
 		}
 		
-		// 좌석 버튼 이벤트
-		//for 문으로 이벤트 넣기 + DB에 데이터 저장!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		
 
+				
+//		// 좌석 버튼 이벤트
+//		//for 문으로 이벤트 넣기 + DB에 데이터 저장!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//		sBtn.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// TODO Auto-generated method stub
+//				try {
+//					ResultSet srs = stmt.executeQuery("select seat_lent from people where id = '"+id+"';");
+//					while(srs.next()) {
+//						if("X".equals(srs.getString("seat_lent"))) {
+//							JOptionPane.showMessageDialog(null, "이미 사용중인 좌석입니다. \n 다른 좌석을 선택하세요.", "실패", JOptionPane.WARNING_MESSAGE);
+//						} else {
+//							stmt.executeUpdate("update seat	set seat_lent = 'O' where seat_no = '"+a+"' and id = '"+id+");");
+//						}
+//					}
+//				} catch (SQLException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//					System.out.println("좌석 이용 버튼 에러");
+//				}
+//			}
+//		});
+
+		
 		// 좌석 반환 버튼
 		// 좌석 버튼 이벤트 + DB 저장!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		JButton endBtn = new JButton("이용종료");
@@ -116,7 +185,7 @@ public class Seatting extends JFrame {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new Seatting();
+		new Seatting(id);
 	}
 
 }

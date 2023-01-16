@@ -1,9 +1,21 @@
 package projectDialogs;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.*;
 
 public class JoinDialog extends JDialog{
+	Connection conn;
+	Statement stmt = null;
+	String royalCheck;
+	String genderRe;
 	public JoinDialog(){
 		setSize(350,550);
 		this.setResizable(false);
@@ -125,8 +137,6 @@ public class JoinDialog extends JDialog{
 		c.add(agreeOrNot);
 		
 		// 확인 버튼
-			// DB저장 이벤트 필요함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			// 로그인 메인 화면 출력해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		JButton CheckBtn = new JButton("확인");
 		CheckBtn.setSize(60,30);
 		CheckBtn.setLocation(130,460);
@@ -134,6 +144,57 @@ public class JoinDialog extends JDialog{
 		CheckBtn.setForeground(Color.white);
 		c.add(CheckBtn);
 		
+		// gender 체크 표시
+		if(girl.isSelected()) {
+			genderRe = "여";
+		} else {
+			genderRe = "남";
+		}
+		
+		// royal 체크 여부
+		if(royal.isSelected()) {
+			royalCheck = "O";
+		} else {
+			royalCheck = "X";
+		}
+		
+		//SQL 연결
+		try {
+			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
+			conn = DriverManager.getConnection
+					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
+			System.out.println("DB 연결 완료");
+			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+		} catch (ClassNotFoundException e) {
+			System.out.println("JDBC 드라이버 로드 에러");
+		} catch (SQLException e) {
+			System.out.println("DB 연결 오류");
+		}
+		
+		// DB저장 이벤트 필요함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		CheckBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String query = "insert into people values('"+idfeild.getText()+"', '"+pwfeild.getText()+"', '"+namefeild.getText()+"', '"+genderRe+
+						"', '"+addressfeild.getText()+"', '"+royalCheck+"', '"+birthfeild.getText()+"');";
+				if(idfeild.getText().equals("") || pwfeild.getText().equals("") || namefeild.getText().equals("") 
+						|| (!girl.isSelected() && !boy.isSelected())
+						|| birthfeild.getText().equals("") || !agreeOrNot.isSelected()) {
+					JOptionPane.showMessageDialog(null, "회원가입 실패 \n모든정보 입력하세요.", "실패", JOptionPane.WARNING_MESSAGE);
+				} else {
+					try {
+						stmt.executeUpdate(query);
+						setVisible(false);
+						JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다. \n 로그인 하세요.", "회원가입 완료", JOptionPane.INFORMATION_MESSAGE);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+						System.out.println("DB저장에서 오류남유");
+					}
+				}
+			}
+		});
 		
 		setVisible(false);
 	}
