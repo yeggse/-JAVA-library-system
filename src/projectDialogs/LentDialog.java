@@ -3,6 +3,10 @@ package projectDialogs;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -18,11 +22,20 @@ import java.util.Date;
 
 public class LentDialog extends JDialog {
 	String info=null;
+	static String id;
+	String bookno;
+	Connection conn;
+	Statement stmt = null;
+	Statement stmt1 = null;
+	Statement stmt2 = null;
+	Statement stmt3 = null;
 	
-	 public LentDialog(){
+	 public LentDialog(String id, String bookno){
+		this.id = id;
+		this.bookno = bookno;
 		setSize(350,400);
 		this.setResizable(false);
-		setTitle("회원가입");
+		setTitle("도서 대여하기");
 		Container c = getContentPane();
 		c.setLayout(null);
 		c.setBackground(new Color(224,238,238));
@@ -45,11 +58,8 @@ public class LentDialog extends JDialog {
 		idLabel.setFont(new Font("함초롱돋움", Font.BOLD, 15));
 		c.add(idLabel);
 			
-		
-		
 		DateCal today = new DateCal();
 		String daynow = today.TotoDay(info);
-		
 		
 		JLabel reLabel = new JLabel("오늘 날짜 : "+daynow);
 		reLabel.setLocation(45,230);
@@ -82,8 +92,27 @@ public class LentDialog extends JDialog {
 		idTXT.setSize(200,35);
 		c.add(idTXT);
 			
+		
+		//SQL 연결
+		try {
+			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
+			conn = DriverManager.getConnection
+					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
+			System.out.println("DB 연결 완료");
+			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+			stmt1 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+			stmt2 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+			stmt3 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+		} catch (ClassNotFoundException e) {
+			System.out.println("JDBC 드라이버 로드 에러");
+		} catch (SQLException e) {
+			System.out.println("DB 연결 오류");
+		}
+		
 		// 대여 확정 버튼
 		// 이름 ID 연결하고, 이벤트로 DB에 대여 되었다고 연결하기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// 책이름도 출력해 줄까..?
+		// book_pas 설정 변경 + dayreturn
 		// 반납일자도!!!!!!!!!!!!!!!!!!!!!!
 		JButton okBtn = new JButton("대여");
 		okBtn.setLocation(130,310);

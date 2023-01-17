@@ -15,7 +15,6 @@ public class BookSearch extends JFrame{
 	Statement stmt3 = null;
 	static String id;
 	int count;
-	
 	// JTable
 	Object ob[][] = new Object[0][5]; //데이터 표시에 열만 나오게 설정
 	DefaultTableModel model;  // 데이터 저장 부분
@@ -27,8 +26,6 @@ public class BookSearch extends JFrame{
 	Connection con = null;
 	PreparedStatement pstmt = null;	//sql구문 실행
 	ResultSet rs = null; // select구문 사용시 필수
-	
-//	Object data[] = null;
 	
 	BookSearch(String id){
 		this.id = id;
@@ -93,26 +90,8 @@ public class BookSearch extends JFrame{
 		searching.setSize(300,30);
 		c.add(searching);
 		
-		// 리셋 버튼
-		JButton resetBtn = new JButton("re");
-		resetBtn.setLocation(490,169);
-		resetBtn.setSize(50,30);
-		resetBtn.setBackground(new Color(72,61,139));
-		resetBtn.setFont(new Font("함초롱돋움",Font.BOLD, 15));
-		resetBtn.setForeground(Color.white);
-		c.add(resetBtn);
-		
-		resetBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
 		
 		// 결과 도출 패널
-		//DB에서 도서 갯수 찾은 다음 count 로 도출하기!!!!!!!!!!!!!!!!!
 		JPanel resultPanel = new JPanel();
 		resultPanel.setSize(520,240);
 		resultPanel.setLocation(30,215);
@@ -121,7 +100,6 @@ public class BookSearch extends JFrame{
 		c.add(resultPanel);
 		
 		// 결과 도출 그래프
-		// DB에서 검색되도록!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		model = new DefaultTableModel(ob,str);	// 데이터 저장[][], 컬럼 명
 		table = new JTable(model);
 		js = new JScrollPane(table);
@@ -131,25 +109,42 @@ public class BookSearch extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		
+		JLabel resultintro = new JLabel("찾으시는 도서명을 입력해 주세요.");
+		resultintro.setLocation(150,5);
+		resultintro.setSize(300,30);
+		resultintro.setFont(new Font("함초롱돋움",Font.BOLD, 15));
+		resultPanel.add(resultintro);
 		
 		// 검색 버튼
-		// tf를 읽어서 DB에서 검색되도록 이벤트 설정 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		JButton searchBtn = new JButton("검색");
 		searchBtn.setLocation(410,169);
 		searchBtn.setSize(70,30);
 		searchBtn.setBackground(new Color(72,61,139));
 		searchBtn.setFont(new Font("함초롱돋움",Font.BOLD, 15));
 		searchBtn.setForeground(Color.white);
+
 		
 		searchBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				String cnt = null;
 				try {
+					// 검색할 때마다 출력값 초기화
+					for (int i = 0; i < model.getRowCount();) {
+			            model.removeRow(0);
+			        }
+					
+					// 찾은 책의 갯수
+					ResultSet csrs = stmt.executeQuery("select count(*) from book where book_title like '%"+searching.getText()+"%';");
+					while(csrs.next()) {
+						cnt = csrs.getString(1);
+					}
+					
+					// 찾은 책 출력
 					ResultSet srs = stmt3.executeQuery("select * from book where book_title like '%"+searching.getText()+"%';");
 					System.out.println("select * from book where book_title like '%"+searching.getText()+"%';");
 					if(srs.next()) {
-						//출력하기
 						String tit = srs.getString("book_title");
 						String publ = srs.getString("book_publisher");
 						String auth = srs.getString("book_author");
@@ -157,13 +152,22 @@ public class BookSearch extends JFrame{
 						
 						Object data[] = {tit, publ, auth, loca};
 						model.addRow(data);
-						String sql = "select * from book where book_title = '"+searching.getText()+"';";
 						
-						//count 갯수 설정
-						count = srs.getInt(1);
+						// 나머지 모두 출력
+						while(srs.next()) {
+							String titt = srs.getString("book_title");
+							String publt = srs.getString("book_publisher");
+							String autht = srs.getString("book_author");
+							String locat = srs.getString("book_location");
+							
+							Object datat[] = {titt, publt, autht, locat};
+							model.addRow(datat);
+						}
 					} else {
 						JOptionPane.showMessageDialog(null, "보유 중인 도서가 존재하지 않습니다.", "책 없음", JOptionPane.ERROR_MESSAGE);
 					}
+					System.out.println(cnt);
+					resultintro.setText("찾으시는 도서는 "+cnt+"권 보유 중입니다.");
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -172,13 +176,6 @@ public class BookSearch extends JFrame{
 			}
 		});
 		c.add(searchBtn);
-		
-		//DB에서 도서 갯수 찾은 다음 count 로 도출하기!!!!!!!!!!!!!!!!!
-		JLabel resultintro = new JLabel("찾으시는 도서는 "+count+"권 보유 중입니다.");
-		resultintro.setLocation(150,5);
-		resultintro.setSize(300,30);
-		resultintro.setFont(new Font("함초롱돋움",Font.BOLD, 15));
-		resultPanel.add(resultintro);
 
 		
 		// 뒤로 가기
@@ -186,6 +183,7 @@ public class BookSearch extends JFrame{
 		c.add(back);
 				
 		setVisible(true);
+		
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
