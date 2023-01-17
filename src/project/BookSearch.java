@@ -5,10 +5,30 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class BookSearch extends JFrame{
+	Connection conn;
+	Statement stmt = null;
+	Statement stmt1 = null;
+	Statement stmt2 = null;
+	Statement stmt3 = null;
+	static String id;
 	int count;
-	BookSearch(){
+	// JTable
+	Object ob[][] = new Object[0][5]; //데이터 표시에 열만 나오게 설정
+	DefaultTableModel model;  // 데이터 저장 부분
+	JTable table;
+	JScrollPane js;
+	String str[] = {"도 서 명", "출 판 사", "작 가", "위 치","대여여부"}; // 컬럼 명
+	
+	//DB연동
+	Connection con = null;
+	PreparedStatement pstmt = null;	//sql구문 실행
+	ResultSet rs = null; // select구문 사용시 필수
+	
+	BookSearch(String id){
+		this.id = id;
 		setSize(600,500);
 		this.setResizable(false);
 		setTitle("(두면 도서관)도서 정보 검색");
@@ -46,6 +66,22 @@ public class BookSearch extends JFrame{
 		bookSearchLa.setSize(300,30);
 		c.add(bookSearchLa);
 		
+		// sql 연결
+		try {
+			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
+			conn = DriverManager.getConnection
+					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
+			System.out.println("좌석 : DB 연결 완료");
+			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+			stmt1 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+			stmt2 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+			stmt3 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+		} catch (ClassNotFoundException e) {
+			System.out.println("JDBC 드라이버 로드 에러");
+		} catch (SQLException e) {
+			System.out.println("DB 연결 오류");
+		}
+		
 		// 검색 tF
 		JTextField searching = new JTextField(100);
 		searching.setLocation(100,170);
@@ -79,7 +115,37 @@ public class BookSearch extends JFrame{
 		
 		// 결과 도출 그래프
 		// DB에서 검색되도록!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//Jtable 가운데 배치
+		model = new DefaultTableModel(ob,str);	// 데이터 저장[][], 컬럼 명
+		table = new JTable(model);
+		js = new JScrollPane(table);
+		table.setLocation(20,50);
+		table.setSize(480,180);
+		resultPanel.add("Center",js);
+		resultPanel.add(table);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
 		
+		
+		// DB출력
+		String sql = "select * from book";
+		try {
+			pstmt=con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String tit = rs.getString("book_title");
+				String publ = rs.getString("book_publisher");
+				String auth = rs.getString("book_author");
+				String loca = rs.getString("book_location");
+				
+				Object data[] = {tit, publ, auth, loca};
+				model.addRow(data);
+			}
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		
 		// 뒤로 가기
 		BackBTN back = new BackBTN(this);
@@ -89,7 +155,7 @@ public class BookSearch extends JFrame{
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new BookSearch();
+		new BookSearch(id);
 	}
 
 }

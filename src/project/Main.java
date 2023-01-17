@@ -83,7 +83,7 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-			BookSearch booksearch =	new BookSearch();	
+			BookSearch booksearch =	new BookSearch(id);	
 			setVisible(false);
 			}
 		});
