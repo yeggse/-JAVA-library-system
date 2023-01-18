@@ -8,11 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class BookSearch extends JFrame{
-	Connection conn;
 	Statement stmt = null;
-	Statement stmt1 = null;
-	Statement stmt2 = null;
-	Statement stmt3 = null;
 	static String id;
 	int count;
 	// JTable
@@ -22,12 +18,8 @@ public class BookSearch extends JFrame{
 	JScrollPane js;
 	String str[] = {"도 서 명", "출 판 사", "작 가", "위 치","대여여부"}; // 컬럼 명
 	
-	//DB연동
-	Connection con = null;
-	PreparedStatement pstmt = null;	//sql구문 실행
-	ResultSet rs = null; // select구문 사용시 필수
-	
-	BookSearch(String id){
+	BookSearch(Statement stmt, String id){
+		this.stmt = stmt;
 		this.id = id;
 		setSize(600,500);
 		this.setResizable(false);
@@ -65,24 +57,6 @@ public class BookSearch extends JFrame{
 		bookSearchLa.setLocation(100,140);
 		bookSearchLa.setSize(300,30);
 		c.add(bookSearchLa);
-		
-		// sql 연결
-		try {
-			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
-			con = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			conn = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			System.out.println("도서 검색 : DB 연결 완료");
-			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt1 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt2 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt3 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-		} catch (ClassNotFoundException e) {
-			System.out.println("JDBC 드라이버 로드 에러");
-		} catch (SQLException e) {
-			System.out.println("DB 연결 오류");
-		}
 		
 		// 검색 tF
 		JTextField searching = new JTextField(100);
@@ -142,7 +116,7 @@ public class BookSearch extends JFrame{
 					}
 					
 					// 찾은 책 출력
-					ResultSet srs = stmt3.executeQuery("select * from book where book_title like '%"+searching.getText()+"%';");
+					ResultSet srs = stmt.executeQuery("select * from book where book_title like '%"+searching.getText()+"%';");
 					System.out.println("select * from book where book_title like '%"+searching.getText()+"%';");
 					if(srs.next()) {
 						String tit = srs.getString("book_title");
@@ -179,15 +153,11 @@ public class BookSearch extends JFrame{
 
 		
 		// 뒤로 가기
-		BackBTN back = new BackBTN(this);
+		BackBTN back = new BackBTN(stmt, this);
 		c.add(back);
 				
 		setVisible(true);
 		
-	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new BookSearch(id);
 	}
 
 }

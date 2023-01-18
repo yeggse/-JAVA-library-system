@@ -16,12 +16,7 @@ import projectDialogs.LentDialog;
 import projectDialogs.RetrunDialog;
 
 public class BookLent extends JFrame {
-	Connection conn;
 	Statement stmt = null;
-	Statement stmt1 = null;
-	Statement stmt2 = null;
-	Statement stmt3 = null;
-	Statement stmt4 = null;
 	static String id;
 	int count;
 	// JTable
@@ -31,12 +26,9 @@ public class BookLent extends JFrame {
 	JScrollPane js;
 	String str[] = {"no","도 서 명", "출 판 사", "작 가", "위 치","대여가능여부"}; // 컬럼 명
 	
-	//DB연동
-	Connection con = null;
-	PreparedStatement pstmt = null;	//sql구문 실행
-	ResultSet rs = null; // select구문 사용시 필수
 	
-	BookLent(String id){
+	BookLent(Statement stmt, String id){
+		this.stmt = stmt;
 		this.id = id;
 		setSize(600,500);
 		this.setResizable(false);
@@ -75,25 +67,6 @@ public class BookLent extends JFrame {
 		bookSearchLa.setSize(300,30);
 		c.add(bookSearchLa);
 		
-		
-		// sql 연결
-		try {
-			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
-			con = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			conn = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			System.out.println("도서 검색 : DB 연결 완료");
-			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt1 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt2 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt3 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt4 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-		} catch (ClassNotFoundException e) {
-			System.out.println("JDBC 드라이버 로드 에러");
-		} catch (SQLException e) {
-			System.out.println("DB 연결 오류");
-		}
 		
 		// 검색 tF
 		JTextField searching = new JTextField(100);
@@ -143,13 +116,13 @@ public class BookLent extends JFrame {
 		returnBtn.setForeground(Color.white);
 		c.add(returnBtn);
 		
-		projectDialogs.RetrunDialog redia = new RetrunDialog(id);
+		projectDialogs.RetrunDialog redia = new RetrunDialog(stmt,id);
 		returnBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					ResultSet esrs = stmt4.executeQuery("select * from book where id = '"+id+"';");
+					ResultSet esrs = stmt.executeQuery("select * from book where id = '"+id+"';");
 					System.out.println("select * from book where id = '"+id+"';");
 					if(esrs.next()) {
 						redia.setVisible(true);
@@ -185,7 +158,7 @@ public class BookLent extends JFrame {
 					}
 					
 					// 찾은 책 출력
-					ResultSet srs = stmt3.executeQuery("select * from book where book_title like '%"+searching.getText()+"%';");
+					ResultSet srs = stmt.executeQuery("select * from book where book_title like '%"+searching.getText()+"%';");
 					System.out.println("select * from book where book_title like '%"+searching.getText()+"%';");
 					if(srs.next()) {
 						
@@ -226,7 +199,7 @@ public class BookLent extends JFrame {
 							ResultSet bsrs;
 							ResultSet psrs;
 							try {
-								bsrs = stmt1.executeQuery("select * from book where id = '"+id+"';");
+								bsrs = stmt.executeQuery("select * from book where id = '"+id+"';");
 								System.out.println("select * from book where id = '"+id+"';");
 								if(bsrs.next()) {
 									JOptionPane.showMessageDialog(null, "사용중인 책이 있습니다. \n반납 후 대여해 주세요.", "중복 대여", JOptionPane.WARNING_MESSAGE);
@@ -239,14 +212,14 @@ public class BookLent extends JFrame {
 									  String bookno = (String)data.getValueAt(row,0);
 									  System.out.println(bookno);
 									  
-									  psrs = stmt2.executeQuery("select * from book where book_no = '"+bookno+"';");
+									  psrs = stmt.executeQuery("select * from book where book_no = '"+bookno+"';");
 									  System.out.println("select * from book where book_no = '"+bookno+"';");
 									  
-									  while(psrs.next()) {
+									  if(psrs.next()) {
 										  if("X".equals(psrs.getString("book_pas"))) {
 											  JOptionPane.showMessageDialog(null, "다른 회원님이 대여 중입니다. \n다른 도서를 대여해 주세요.", "중복 대여", JOptionPane.WARNING_MESSAGE);
 										  }else {
-											  LentDialog ldi = new LentDialog(id, bookno);
+											  LentDialog ldi = new LentDialog(stmt, id, bookno);
 											  ldi.setVisible(true);
 										  }
 									  }
@@ -271,15 +244,11 @@ public class BookLent extends JFrame {
 		
 		
 		// 뒤로 가기
-		BackBTN back = new BackBTN(this);
+		BackBTN back = new BackBTN(stmt, this);
 		c.add(back);
 				
 		setVisible(true);
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new BookLent(id);
-	}
 }
 

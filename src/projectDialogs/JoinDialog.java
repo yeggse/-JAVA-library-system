@@ -12,13 +12,12 @@ import java.sql.Statement;
 import javax.swing.*;
 
 public class JoinDialog extends JDialog{
-	Connection conn;
-	Statement stmt = null;
 	String royalCheck;
 	String genderRe;
 	boolean dchec;
 	
-	public JoinDialog(){
+	public JoinDialog(JFrame f){
+		project.Intro s = (project.Intro) f;
 		setSize(350,550);
 		this.setResizable(false);
 		setTitle("회원가입");
@@ -160,18 +159,6 @@ public class JoinDialog extends JDialog{
 			royalCheck = "X";
 		}
 		
-		//SQL 연결
-		try {
-			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
-			conn = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			System.out.println("DB 연결 완료");
-			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-		} catch (ClassNotFoundException e) {
-			System.out.println("JDBC 드라이버 로드 에러");
-		} catch (SQLException e) {
-			System.out.println("DB 연결 오류");
-		}
 		
 		// 중복 확인 버튼
 		JButton doub = new JButton("중복");
@@ -186,7 +173,7 @@ public class JoinDialog extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					ResultSet srs = stmt.executeQuery("select * from people where id = '"+idfeild.getText()+"';");
+					ResultSet srs = s.stmt.executeQuery("select * from people where id = '"+idfeild.getText()+"';");
 					if(srs.next()) {
 						JOptionPane.showMessageDialog(null, "이미 사용중인 ID입니다. \n다른 ID를 사용하세요.", "중복 사용", JOptionPane.ERROR_MESSAGE);
 						idfeild.setText(null);
@@ -227,7 +214,7 @@ public class JoinDialog extends JDialog{
 					JOptionPane.showMessageDialog(null, "ID 중복 확인을 실시해 주세요.", "중복확인", JOptionPane.WARNING_MESSAGE);
 				}else {
 					try {
-						stmt.executeUpdate(query);
+						s.stmt.executeUpdate(query);
 						setVisible(false);
 						JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다. \n 로그인 하세요.", "회원가입 완료", JOptionPane.INFORMATION_MESSAGE);
 					} catch (SQLException e1) {

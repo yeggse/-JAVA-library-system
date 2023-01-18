@@ -7,17 +7,17 @@ import java.util.*;
 import javax.swing.*;
 
 import projectDialogs.JoinDialog;
+import projectDialogs.PwSearchDialog;
 
 public class Intro extends JFrame{
 
 	Connection conn;
-	Statement stmt = null;
+	public Statement stmt = null;
 	
-	Intro(){
+	public Intro(){
 		setSize(400,500);
 		this.setResizable(false);
 		setTitle("(로그인)두면 도서관 관리 시스템 실행하기");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
 		c.setLayout(null);
 		c.setBackground(Color.white);
@@ -118,7 +118,7 @@ public class Intro extends JFrame{
 					ResultSet srs = stmt.executeQuery("select * from people where id = '"+id.getText()+"' and pw = '"+pw.getText()+"';");
 					System.out.println("ddddd");
 						if(srs.next()) {
-							Main main = new Main(id.getText());
+							Main main = new Main(stmt, id.getText());
 							setVisible(false);
 						} else {
 							JOptionPane.showMessageDialog(null, "로그인 실패", "실패", JOptionPane.WARNING_MESSAGE);
@@ -133,7 +133,7 @@ public class Intro extends JFrame{
 		
 		
 		// pw 찾기 버튼
-		PwSearchDialog pwdialog = new PwSearchDialog();
+		projectDialogs.PwSearchDialog pwdialog = new PwSearchDialog(this);
 		pwsearchBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -158,7 +158,7 @@ public class Intro extends JFrame{
 		c.add(joinguide);
 		
 		// 회원가입 버튼 시, 다이얼로그 출력 이벤트
-		projectDialogs.JoinDialog joindig = new JoinDialog();
+		projectDialogs.JoinDialog joindig = new JoinDialog(this);
 		joinBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -172,6 +172,7 @@ public class Intro extends JFrame{
 		outline.setBackground(Color.white);
 		c.add(outline);
 		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 	
@@ -181,3 +182,6 @@ public class Intro extends JFrame{
 	}
 
 }
+
+//new dialog(this)
+

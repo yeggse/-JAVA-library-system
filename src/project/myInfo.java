@@ -7,15 +7,13 @@ import java.util.*;
 import javax.swing.*;
 
 import project.Recommand.myPanel;
+import projectDialogs.OutDia;
 
 public class myInfo extends JFrame{
 	static String id;
-	Connection conn;
 	Statement stmt = null;
-	Statement stmt1 = null;
-	Statement stmt2 = null;
-	Statement stmt3 = null;
-	myInfo(String id){
+	myInfo(Statement stmt, String id){
+		this.stmt = stmt;
 		this.id = id;
 		setSize(500,600);
 		this.setResizable(false);
@@ -96,22 +94,6 @@ public class myInfo extends JFrame{
 		JPanel bookp = new JPanel();
 		JPanel rebookp = new JPanel();
 		
-		// SQL 연결
-		try {
-			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
-			conn = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			System.out.println("my info 파트 : DB 연결 완료");
-			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt1 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt2 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt3 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-		} catch (ClassNotFoundException e) {
-			System.out.println("JDBC 드라이버 로드 에러");
-		} catch (SQLException e) {
-			System.out.println("DB 연결 오류");
-		}
-
 		// id 정보 출력
 		idp.setLocation(200,105);
 		idp.setSize(250,30);
@@ -238,7 +220,7 @@ public class myInfo extends JFrame{
 		String bookdate = null;
 		
 		try {
-			ResultSet srs = stmt1.executeQuery("select * from book where id = '"+id+"';");
+			ResultSet srs = stmt.executeQuery("select * from book where id = '"+id+"';");
 			System.out.println("select * from book where id = '"+id+"';");
 			if(!srs.next()) {
 				bookinfo = "대여 중인 도서 없음";
@@ -316,10 +298,10 @@ public class myInfo extends JFrame{
 				
 		
 		// 수정 버튼
-		JButton edit = new JButton("수정");
-		edit.setSize(80,30);
-		edit.setLocation(220,510);
-		edit.setFont(new Font("휴먼엑스포",Font.PLAIN, 18));
+		JButton edit = new JButton("정보수정");
+		edit.setSize(110,30);
+		edit.setLocation(140,510);
+		edit.setFont(new Font("휴먼둥근헤드라인",Font.PLAIN, 15));
 		edit.setBackground(new Color(255,218,185));
 		edit.setForeground(new Color(105,105,105));
 		c.add(edit);
@@ -328,19 +310,33 @@ public class myInfo extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Edit edit = new Edit(id);
+				Edit edit = new Edit(stmt, id);
 				setVisible(false);
 			}
 		});
 		
+		// 회원탈퇴 버튼
+		JButton out = new JButton("회원탈퇴");
+		out.setSize(110,30);
+		out.setLocation(260,510);
+		out.setFont(new Font("휴먼둥근헤드라인",Font.PLAIN, 15));
+		out.setBackground(new Color(255,218,185));
+		out.setForeground(new Color(105,105,105));
+		c.add(out);
+		
+		out.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				projectDialogs.OutDia out = new OutDia(stmt, id);
+			}
+		});
+		
+		
 		// 뒤로 가기
-		BackBTN back = new BackBTN(this);
+		BackBTN back = new BackBTN(stmt, this);
 		c.add(back);
 				
 		setVisible(true);
-	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new myInfo(id);
 	}
 }

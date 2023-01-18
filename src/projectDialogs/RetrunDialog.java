@@ -19,15 +19,12 @@ import javax.swing.JPanel;
 
 public class RetrunDialog extends JFrame{
 	String id;
-	Connection conn;
 	Statement stmt = null;
-	Statement stmt1 = null;
-	Statement stmt2 = null;
-	Statement stmt3 = null;
 	//36,55,101 : 남
 	//255,235,183  :노
-	public RetrunDialog(String id) {
+	public RetrunDialog(Statement stmt, String id) {
 		this.id = id;
+		this.stmt = stmt;
 		setSize(350,400);
 		this.setResizable(false);
 		setTitle("도서 반납");
@@ -35,21 +32,6 @@ public class RetrunDialog extends JFrame{
 		c.setLayout(null);
 		c.setBackground(new Color(245,239,230));
 		
-		//SQL 연결
-		try {
-			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
-			conn = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			System.out.println("반납 다이얼로그 : DB 연결 완료");
-			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt1 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt2 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt3 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-		} catch (ClassNotFoundException e) {
-			System.out.println("JDBC 드라이버 로드 에러");
-		} catch (SQLException e) {
-			System.out.println("DB 연결 오류");
-		}
 			
 		//타이틀 
 		JLabel title = new JLabel("대여 도서 반납");
@@ -149,7 +131,7 @@ public class RetrunDialog extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					stmt1.executeUpdate("update book set id = null, backdate = null, lentdate = null, book_pas = 'O' where id = '"+id+"';");
+					stmt.executeUpdate("update book set id = null, backdate = null, lentdate = null, book_pas = 'O' where id = '"+id+"';");
 					System.out.println("update book set id = null, backdate = null, lentdate = null, book_pas = 'O' where id = '"+id+"';");
 					JOptionPane.showMessageDialog(null, "반납이 완료되었습니다. \n이용해 주셔서 감사합니다.", "반납 완료", JOptionPane.INFORMATION_MESSAGE);
 					setVisible(false);

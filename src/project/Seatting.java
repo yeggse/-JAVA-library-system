@@ -12,13 +12,10 @@ import projectDialogs.SeattingEndDialog;
 
 
 public class Seatting extends JFrame {
-	Connection conn;
 	Statement stmt = null;
-	Statement stmt1 = null;
-	Statement stmt2 = null;
-	Statement stmt3 = null;
 	static String id;
-	Seatting(String id){
+	Seatting(Statement stmt, String id){
+		this.stmt = stmt;
 		this.id = id;
 		setSize(600,500);
 		this.setResizable(false);
@@ -74,22 +71,6 @@ public class Seatting extends JFrame {
 		subPanel bar2 = new subPanel(420,200,120,60,"책장");
 		panel.add(bar2);
 		
-		// SQL 연결
-		try {
-			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
-			conn = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			System.out.println("좌석 : DB 연결 완료");
-			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt1 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt2 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt3 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-		} catch (ClassNotFoundException e) {
-			System.out.println("JDBC 드라이버 로드 에러");
-		} catch (SQLException e) {
-			System.out.println("DB 연결 오류");
-		}
-		
 		// 좌석 버튼
 		JButton sBtn = null;
 		for (int i=0; i<8;i++) {
@@ -100,35 +81,7 @@ public class Seatting extends JFrame {
 			sBtn.setFont(new Font("휴먼엑스포", Font.BOLD, 15));
 			String a = sBtn.getText();
 			
-			sBtn.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					try {
-						ResultSet csrs = stmt3.executeQuery("select * from seat where id = '"+id+"';");
-						System.out.println("select * from seat where id = '"+id+"';");
-						if(csrs.next()) {
-							JOptionPane.showMessageDialog(null, "사용중인 좌석이 있습니다. \n이용 완료 후 좌석을 예약해 주세요.", "중복 예약", JOptionPane.WARNING_MESSAGE);
-						} else {
-							ResultSet srs = stmt.executeQuery("select * from seat where seat_no = '"+a+"';");
-							System.out.println("select * from seat where seat_no = '"+a+"';");
-							while(srs.next()) {
-								if("O".equals(srs.getString("seat_lent"))) {
-									JOptionPane.showMessageDialog(null, "이미 사용중인 좌석입니다. \n 다른 좌석을 선택하세요.", "실패", JOptionPane.WARNING_MESSAGE);
-								} else {
-									stmt1.executeUpdate("update seat set seat_lent = 'O' where seat_no = '"+a+"';");
-									stmt2.executeUpdate("update seat set id = '"+id+"' where seat_no = '"+a+"';");
-									JOptionPane.showMessageDialog(null, "좌석 예약을 완료했습니다.", "예약 완료", JOptionPane.PLAIN_MESSAGE);
-								}
-							}	
-						}
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-						System.out.println("좌석 이용 버튼 에러");
-					}
-				}
-			});
+			sBtn.addActionListener(new addEvent(stmt, id, a, sBtn));
 			panel2.add(sBtn);
 		}
 		
@@ -141,35 +94,7 @@ public class Seatting extends JFrame {
 			
 			String a = sBtn.getText();
 			
-			sBtn.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					try {
-						ResultSet csrs = stmt3.executeQuery("select * from seat where id = '"+id+"';");
-						System.out.println("select * from seat where id = '"+id+"';");
-						if(csrs.next()) {
-							JOptionPane.showMessageDialog(null, "사용중인 좌석이 있습니다. \n이용 완료 후 좌석을 예약해 주세요.", "중복 예약", JOptionPane.WARNING_MESSAGE);
-						} else {
-							ResultSet srs = stmt.executeQuery("select * from seat where seat_no = '"+a+"';");
-							System.out.println("select * from seat where seat_no = '"+a+"';");
-							while(srs.next()) {
-								if("O".equals(srs.getString("seat_lent"))) {
-									JOptionPane.showMessageDialog(null, "이미 사용중인 좌석입니다. \n 다른 좌석을 선택하세요.", "실패", JOptionPane.WARNING_MESSAGE);
-								} else {
-									stmt1.executeUpdate("update seat set seat_lent = 'O' where seat_no = '"+a+"';");
-									stmt2.executeUpdate("update seat set id = '"+id+"' where seat_no = '"+a+"';");
-									JOptionPane.showMessageDialog(null, "좌석 예약을 완료했습니다.", "예약 완료", JOptionPane.PLAIN_MESSAGE);
-								}
-							}	
-						}
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-						System.out.println("좌석 이용 버튼 에러");
-					}
-				}
-			});
+			sBtn.addActionListener(new addEvent(stmt, id, a, sBtn));
 			panel3.add(sBtn);
 		}
 		
@@ -183,41 +108,11 @@ public class Seatting extends JFrame {
 			
 			String a = sBtn.getText();
 			
-			sBtn.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					try {
-						ResultSet csrs = stmt3.executeQuery("select * from seat where id = '"+id+"';");
-						System.out.println("select * from seat where id = '"+id+"';");
-						if(csrs.next()) {
-							JOptionPane.showMessageDialog(null, "사용중인 좌석이 있습니다. \n이용 완료 후 좌석을 예약해 주세요.", "중복 예약", JOptionPane.WARNING_MESSAGE);
-						} else {
-							ResultSet srs = stmt.executeQuery("select * from seat where seat_no = '"+a+"';");
-							System.out.println("select * from seat where seat_no = '"+a+"';");
-							while(srs.next()) {
-								if("O".equals(srs.getString("seat_lent"))) {
-									JOptionPane.showMessageDialog(null, "이미 사용중인 좌석입니다. \n 다른 좌석을 선택하세요.", "실패", JOptionPane.WARNING_MESSAGE);
-								} else {
-									stmt1.executeUpdate("update seat set seat_lent = 'O' where seat_no = '"+a+"';");
-									stmt2.executeUpdate("update seat set id = '"+id+"' where seat_no = '"+a+"';");
-									JOptionPane.showMessageDialog(null, "좌석 예약을 완료했습니다.", "예약 완료", JOptionPane.PLAIN_MESSAGE);
-								}
-							}	
-						}
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-						System.out.println("좌석 이용 버튼 에러");
-					}
-				}
-			});
+			sBtn.addActionListener(new addEvent(stmt, id, a, sBtn));
 			panel4.add(sBtn);
 		}
 		
-		
 		// 좌석 반환 버튼
-		// 좌석 버튼 이벤트 + DB 저장!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		JButton endBtn = new JButton("이용종료");
 		endBtn.setSize(85,25);
 		endBtn.setLocation(490,425);
@@ -230,21 +125,15 @@ public class Seatting extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				projectDialogs.SeattingEndDialog end = new SeattingEndDialog(id);
+				projectDialogs.SeattingEndDialog end = new SeattingEndDialog(stmt, id);
 			}
 		});
 		
 		// 뒤로 가기
-		BackBTN back = new BackBTN(this);
+		BackBTN back = new BackBTN(stmt, this);
 		c.add(back);
-				
-		setVisible(true);
 		
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new Seatting(id);
+		setVisible(true);
 	}
 
 }

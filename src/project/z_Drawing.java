@@ -4,14 +4,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class z_Drawing {}
 
@@ -33,7 +33,8 @@ class outtroLabel extends JLabel{
 // 전체에서 사용됨(뒤로가기 버튼)
 class BackBTN extends JButton{
 	String name;
-	BackBTN(JFrame jframe){
+//	Statemet stmt;
+	BackBTN(Statement stmt,JFrame jframe){
 		setText("뒤로가기");
 		setSize(80,25);
 		setLocation(15,10);
@@ -45,7 +46,7 @@ class BackBTN extends JButton{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Main main = new Main(name);
+				Main main = new Main(stmt, name);
 				jframe.setVisible(false);
 			}
 		});
@@ -74,26 +75,44 @@ class logout extends JButton{
 	}
 }
 
-class SqlConnect {
-	Connection conn;
-	Statement stmt = null;
-	String query=null;
-	SqlConnect(){
-		// SQL 연결
+//좌석 이벤트
+class addEvent implements ActionListener{
+	String id;
+	String a;
+	Statement stmt;
+	JButton sBtn;
+	addEvent(Statement stmt, String id, String a, JButton sBtn){
+		this.id = id;
+		this.stmt = stmt;
+		this.a = a;
+		this.sBtn = sBtn;
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 		try {
-			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
-			conn = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			System.out.println("DB 연결 완료");
-			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-		} catch (ClassNotFoundException e) {
-			System.out.println("JDBC 드라이버 로드 에러");
-		} catch (SQLException e) {
-			System.out.println("DB 연결 오류");
+			ResultSet csrs = stmt.executeQuery("select * from seat where id = '"+id+"';");
+			System.out.println("select * from seat where id = '"+id+"';");
+			if(csrs.next()) {
+				JOptionPane.showMessageDialog(null, "사용중인 좌석이 있습니다. \n이용 완료 후 좌석을 예약해 주세요.", "중복 예약", JOptionPane.WARNING_MESSAGE);
+			} else {
+				ResultSet srs = stmt.executeQuery("select * from seat where seat_no = '"+a+"';");
+				System.out.println("select * from seat where seat_no = '"+a+"';");
+				if(srs.next()) {
+					if("O".equals(srs.getString("seat_lent"))) {
+						JOptionPane.showMessageDialog(null, "이미 사용중인 좌석입니다. \n 다른 좌석을 선택하세요.", "실패", JOptionPane.WARNING_MESSAGE);
+					} else {
+						stmt.executeUpdate("update seat set seat_lent = 'O', id ='"+id+"' where seat_no = '"+a+"';");
+						JOptionPane.showMessageDialog(null, "좌석 예약을 완료했습니다.", "예약 완료", JOptionPane.PLAIN_MESSAGE);
+					}
+				}	
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println("좌석 이용 버튼 에러");
 		}
+		
 	}
 	
-	String add(String part, String idget) {
-		return "select "+part+" from people where id = '"+idget+"');";
-	}
 }

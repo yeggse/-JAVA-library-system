@@ -1,4 +1,4 @@
-package project;
+package projectDialogs;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,10 +8,9 @@ import javax.swing.*;
 
 public class PwSearchDialog extends JDialog {
 	String searchRes = "검색결과가 출력됩니다.";
-	Connection conn;
-	Statement stmt = null;
 	
-	PwSearchDialog(){
+	public PwSearchDialog(JFrame f){
+		project.Intro s = (project.Intro)f; 
 		setSize(300,400);
 		this.setResizable(false);
 		setTitle("비밀번호 찾기 시스템");
@@ -75,19 +74,6 @@ public class PwSearchDialog extends JDialog {
 		result.setText(searchRes);
 		resultPan.add(result);
 		
-		//SqlConnect
-		try {
-			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
-			conn = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			System.out.println("DB 연결 완료");
-			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-		} catch (ClassNotFoundException e) {
-			System.out.println("JDBC 드라이버 로드 에러");
-		} catch (SQLException e) {
-			System.out.println("DB 연결 오류");
-		}
-		
 		// 찾기 버튼 생성
 		JButton searchBtn = new JButton("Search");
 		searchBtn.setSize(80,25);
@@ -101,7 +87,7 @@ public class PwSearchDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					ResultSet pwsrs = stmt.executeQuery("select * from people where id = '"+id.getText()+"' and name = '"+name.getText()+"';");
+					ResultSet pwsrs = s.stmt.executeQuery("select * from people where id = '"+id.getText()+"' and name = '"+name.getText()+"';");
 					if(!pwsrs.next()) {
 						result.setText("정보가 존재하지 않습니다.");
 					} else {
@@ -117,9 +103,5 @@ public class PwSearchDialog extends JDialog {
 		setVisible(false);
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new PwSearchDialog();
-	}
 }
 

@@ -8,7 +8,10 @@ import javax.swing.*;
 
 public class Main extends JFrame{
 	static String id;
-	public Main(String id){
+	Statement stmt = null;
+	
+	public Main(Statement stmt, String id){
+		this.stmt = stmt;
 		this.id = id;
 		setSize(600,500);
 		this.setResizable(false);
@@ -83,7 +86,7 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-			BookSearch booksearch =	new BookSearch(id);	
+			BookSearch booksearch =	new BookSearch(stmt, id);	
 			setVisible(false);
 			}
 		});
@@ -98,7 +101,7 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-			Recommand Recommand =new Recommand();	
+			Recommand Recommand =new Recommand(stmt);	
 			setVisible(false);
 			}
 		});
@@ -113,7 +116,7 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				BookLent lent = new BookLent(id);
+				BookLent lent = new BookLent(stmt, id);
 				setVisible(false);
 			}
 		});
@@ -128,7 +131,7 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Memo memo = new Memo();
+				Memo memo = new Memo(stmt);
 				setVisible(false);
 			}
 		});
@@ -143,7 +146,7 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				myInfo info = new myInfo(id);
+				myInfo info = new myInfo(stmt, id);
 				setVisible(false);
 			}
 		});
@@ -158,7 +161,7 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Seatting seatarea = new Seatting(id);
+				Seatting seatarea = new Seatting(stmt, id);
 				setVisible(false);
 			}
 		});
@@ -177,6 +180,6 @@ public class Main extends JFrame{
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new Main(id);
+//		new Main(null, id);
 	}
 }

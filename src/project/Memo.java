@@ -7,7 +7,9 @@ import java.util.*;
 import javax.swing.*;
 
 public class Memo extends JFrame{
-	Memo(){
+	Statement stmt = null;
+	Memo(Statement stmt){
+		this.stmt = stmt;
 		setSize(600,500);
 		this.setResizable(false);
 		setTitle("(두면 도서관)메모장");
@@ -51,13 +53,9 @@ public class Memo extends JFrame{
 		
 		
 		// 뒤로 가기
-		BackBTN back = new BackBTN(this);
+		BackBTN back = new BackBTN(stmt, this);
 		c.add(back);
 		
 		setVisible(true);
-	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new Memo();
 	}
 }

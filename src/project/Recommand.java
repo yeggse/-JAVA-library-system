@@ -8,8 +8,9 @@ import javax.swing.*;
 
 // 가운데 정렬
 public class Recommand extends JFrame{
-	
-	Recommand(){
+	Statement stmt = null;
+	Recommand(Statement stmt){
+		this.stmt = stmt;
 		setSize(600,500);
 		this.setResizable(false);
 		setTitle("(두면 도서관)이달의 도서 추천");
@@ -89,16 +90,12 @@ public class Recommand extends JFrame{
 		
 		
 		// 뒤로 가기
-		BackBTN back = new BackBTN(this);
+		BackBTN back = new BackBTN(stmt, this);
 		c.add(back);
 		
 		setVisible(true);
 	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new Recommand();
-	}
 	
 	class myPanel extends JPanel{
 		ImageIcon recoIMGIcon = new ImageIcon("image/book.jpg");

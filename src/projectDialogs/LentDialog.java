@@ -28,14 +28,15 @@ public class LentDialog extends JDialog {
 	String info=null;
 	static String id;
 	String bookno;
-	Connection conn;
+//	Connection conn;
 	Statement stmt = null;
-	Statement stmt1 = null;
-	Statement stmt2 = null;
-	Statement stmt3 = null;
+//	Statement stmt1 = null;
+//	Statement stmt2 = null;
+//	Statement stmt3 = null;
 	
-	 public LentDialog(String id, String bookno){
+	 public LentDialog(Statement stmt, String id, String bookno){
 		this.id = id;
+		this.stmt = stmt;
 		this.bookno = bookno;
 		setSize(350,400);
 		this.setResizable(false);
@@ -44,22 +45,6 @@ public class LentDialog extends JDialog {
 		c.setLayout(null);
 		c.setBackground(new Color(224,238,238));
 		
-		//SQL 연결
-		try {
-			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
-			conn = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			System.out.println("대여 다이얼로그 : DB 연결 완료");
-			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt1 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt2 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt3 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-		} catch (ClassNotFoundException e) {
-			System.out.println("JDBC 드라이버 로드 에러");
-		} catch (SQLException e) {
-			System.out.println("DB 연결 오류");
-		}
-			
 		//타이틀 
 		JLabel title = new JLabel("도서 대여 정보 입력");
 		title.setSize(350,30);
@@ -150,14 +135,14 @@ public class LentDialog extends JDialog {
 				ResultSet srs;
 				ResultSet lsrs;
 				try {
-					srs = stmt1.executeQuery("select * from people where id = '"+id+"';");
-					while(srs.next()) {
+					srs = stmt.executeQuery("select * from people where id = '"+id+"';");
+					if(srs.next()) {
 						if(idTXT.getText().equals("")||nameTXT.getText().equals("")) {
 							JOptionPane.showMessageDialog(null, "모든 정보를 입력해 주세요.", "정보 기재 누락", JOptionPane.WARNING_MESSAGE);
 						} else if(!id.equals(idTXT.getText())||!nameTXT.getText().equals(srs.getString("name"))) {
 							JOptionPane.showMessageDialog(null, "올바른 정보를 입력해 주세요. \n입력한 값을 확인하시기 바랍니다.", "기재 오류", JOptionPane.WARNING_MESSAGE);
 						} else {
-							stmt2.executeUpdate("update book set id = '"+id+"', backdate = '"+dayreturn+"', lentdate = '"+daynow+"', book_pas = 'X' where book_no = '"+bookno+"';");
+							stmt.executeUpdate("update book set id = '"+id+"', backdate = '"+dayreturn+"', lentdate = '"+daynow+"', book_pas = 'X' where book_no = '"+bookno+"';");
 							System.out.println("update book set id = '"+id+"', backdate = '"+dayreturn+"', lentdate = '"+daynow+"', book_pas = 'X' where book_no = '"+bookno+"';");
 							JOptionPane.showMessageDialog(null, "대여가 완료되었습니다. \n반납일 내 도서 반납을 완료해 주세요.", "대여 완료", JOptionPane.INFORMATION_MESSAGE);
 							setVisible(false);

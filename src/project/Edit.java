@@ -28,11 +28,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class Edit extends JFrame {
-	Connection conn;
+//	Connection conn;
 	Statement stmt = null;
 	static String id;
 	String royalCheck;
-	Edit(String id){
+	Edit(Statement stmt, String id){
+		this.stmt = stmt;
 		this.id = id;
 		setSize(500,600);
 		this.setResizable(false);
@@ -99,19 +100,6 @@ public class Edit extends JFrame {
 		JPanel genderp = new JPanel();
 		JPanel addressp = new JPanel();
 		
-		//SQL 연결
-		try {
-			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
-			conn = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			System.out.println("eidt : DB 연결 완료");
-			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-		} catch (ClassNotFoundException e) {
-			System.out.println("JDBC 드라이버 로드 에러");
-		} catch (SQLException e) {
-			System.out.println("DB 연결 오류");
-		}
-
 		// id 정보 
 		idp.setLocation(200,115);
 		idp.setSize(250,30);
@@ -255,7 +243,7 @@ public class Edit extends JFrame {
 						stmt.executeUpdate(query);
 						setVisible(false);
 						JOptionPane.showMessageDialog(null, "내 정보 수정이 완료되었습니다.", "정보수정 완료", JOptionPane.INFORMATION_MESSAGE);
-						Main main = new Main(id);
+						Main main = new Main(stmt, id);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -266,14 +254,9 @@ public class Edit extends JFrame {
 		});
 		
 		// 뒤로 가기
-		BackBTN back = new BackBTN(this);
+		BackBTN back = new BackBTN(stmt, this);
 		c.add(back);
 				
 		setVisible(true);
 	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new Edit(id);
-	}
-
 }

@@ -22,12 +22,9 @@ import project.Main;
 
 public class SeattingEndDialog extends JDialog {
 	static String id;
-	Connection conn;
 	Statement stmt = null;
-	Statement stmt1 = null;
-	Statement stmt2 = null;
-	Statement stmt3 = null;
-	public SeattingEndDialog(String id){
+	public SeattingEndDialog(Statement stmt, String id){
+		this.stmt = stmt;
 		this.id =id;
 		setSize(350,350);
 		this.setResizable(false);
@@ -66,22 +63,6 @@ public class SeattingEndDialog extends JDialog {
 		idTXT.setSize(200,35);
 		c.add(idTXT);
 		
-		// SQL 연결
-		try {
-			Class.forName("com.mysql.jdbc.Driver"); // MySQL 드라이버 로드
-			conn = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
-			System.out.println("좌석반환 : DB 연결 완료");
-			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt1 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt2 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-			stmt3 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
-		} catch (ClassNotFoundException e) {
-			System.out.println("JDBC 드라이버 로드 에러");
-		} catch (SQLException e) {
-			System.out.println("DB 연결 오류");
-		}
-		
 		// 완료 확정 버튼
 		JButton okBtn = new JButton("이용 완료");
 		okBtn.setLocation(110,250);
@@ -97,20 +78,19 @@ public class SeattingEndDialog extends JDialog {
 				// TODO Auto-generated method stub
 				try {
 					ResultSet namecheck = stmt.executeQuery("select * from people where id = '"+id+"';");
-					while(namecheck.next()) {
+					if(namecheck.next()) {
 						if(nameTXT.getText().equals("") || idTXT.getText().equals("") ) {
 							JOptionPane.showMessageDialog(null, "이용 완료 실패 \n모든 정보를 입력하세요.", "실패", JOptionPane.WARNING_MESSAGE);
 						} else if(!nameTXT.getText().equals(namecheck.getString("name")) || !idTXT.getText().equals(id)) {
 							JOptionPane.showMessageDialog(null, "이용 완료 실패 \n올바른 정보를 입력하세요.", "실패", JOptionPane.WARNING_MESSAGE);
 						} else {
-							ResultSet usecheck = stmt3.executeQuery("select * from seat where id = '"+id+"';");
+							ResultSet usecheck = stmt.executeQuery("select * from seat where id = '"+id+"';");
 							System.out.println("select * from seat where id = '"+id+"';");
 							if(!usecheck.next()) {
 								JOptionPane.showMessageDialog(null, "사용 중인 좌석이 없습니다.", "오류", JOptionPane.WARNING_MESSAGE);
 								System.out.println("aa");
 							} else {
-								stmt1.executeUpdate("update seat set seat_lent = 'X' where id = '"+id+"';");
-								stmt2.executeUpdate("update seat set id = null where id = '"+id+"';");
+								stmt.executeUpdate("update seat set seat_lent = 'X', id = null where id = '"+id+"';");
 								JOptionPane.showMessageDialog(null, "좌석을 종료합니다.", "좌석 이용 완료", JOptionPane.PLAIN_MESSAGE);
 								setVisible(false);
 								outroDialog out = new outroDialog(id);
@@ -129,10 +109,6 @@ public class SeattingEndDialog extends JDialog {
 		});
 		
 		setVisible(true);
-	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new SeattingEndDialog(id);
 	}
 
 }
