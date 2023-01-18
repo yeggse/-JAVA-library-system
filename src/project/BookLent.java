@@ -131,6 +131,14 @@ public class BookLent extends JFrame {
 		searchBtn.setFont(new Font("함초롱돋움",Font.BOLD, 15));
 		searchBtn.setForeground(Color.white);
 
+		// 반납 버튼
+		JButton returnBtn = new JButton("반납");
+		returnBtn.setLocation(485,169);
+		returnBtn.setSize(70,30);
+		returnBtn.setBackground(new Color(72,61,139));
+		returnBtn.setFont(new Font("함초롱돋움",Font.BOLD, 15));
+		returnBtn.setForeground(Color.white);
+		c.add(returnBtn);
 		
 		// 검색버튼 이벤트
 		searchBtn.addActionListener(new ActionListener() {
