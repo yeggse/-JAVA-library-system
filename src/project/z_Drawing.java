@@ -52,6 +52,26 @@ class BackBTN extends JButton{
 	}
 }
 
+class logout extends JButton{
+	logout(JFrame jframe){
+		setText("로그아웃");
+		setSize(80,25);
+		setLocation(480,10);
+		setBackground(new Color(210,218,255));
+		setForeground(new Color(135,88,255));
+		setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 11));
+				
+		addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Intro intro = new Intro();
+				jframe.setVisible(false);
+			}
+		});
+	}
+}
+
 class SqlConnect {
 	Connection conn;
 	Statement stmt = null;

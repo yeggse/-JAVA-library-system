@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import projectDialogs.LentDialog;
+import projectDialogs.RetrunDialog;
 
 public class BookLent extends JFrame {
 	Connection conn;
@@ -20,6 +21,7 @@ public class BookLent extends JFrame {
 	Statement stmt1 = null;
 	Statement stmt2 = null;
 	Statement stmt3 = null;
+	Statement stmt4 = null;
 	static String id;
 	int count;
 	// JTable
@@ -86,6 +88,7 @@ public class BookLent extends JFrame {
 			stmt1 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
 			stmt2 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
 			stmt3 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+			stmt4 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
 		} catch (ClassNotFoundException e) {
 			System.out.println("JDBC 드라이버 로드 에러");
 		} catch (SQLException e) {
@@ -139,6 +142,28 @@ public class BookLent extends JFrame {
 		returnBtn.setFont(new Font("함초롱돋움",Font.BOLD, 15));
 		returnBtn.setForeground(Color.white);
 		c.add(returnBtn);
+		
+		projectDialogs.RetrunDialog redia = new RetrunDialog(id);
+		returnBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					ResultSet esrs = stmt4.executeQuery("select * from book where id = '"+id+"';");
+					System.out.println("select * from book where id = '"+id+"';");
+					if(esrs.next()) {
+						redia.setVisible(true);
+					} else {
+						JOptionPane.showMessageDialog(null, "대여 중인 도서가 없습니다.", "미대여", JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("반납 버튼 오류");
+				}
+				redia.setVisible(true);
+			}
+		});
 		
 		// 검색버튼 이벤트
 		searchBtn.addActionListener(new ActionListener() {

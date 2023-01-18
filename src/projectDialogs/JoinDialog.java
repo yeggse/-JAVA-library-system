@@ -16,6 +16,8 @@ public class JoinDialog extends JDialog{
 	Statement stmt = null;
 	String royalCheck;
 	String genderRe;
+	boolean dchec;
+	
 	public JoinDialog(){
 		setSize(350,550);
 		this.setResizable(false);
@@ -84,7 +86,7 @@ public class JoinDialog extends JDialog{
 		JTextArea addressfeild = new JTextArea();
 		
 		idfeild.setLocation(145,65);
-		idfeild.setSize(140,28);
+		idfeild.setSize(115,28);
 		pwfeild.setLocation(145,98);
 		pwfeild.setSize(140,28);
 		namefeild.setLocation(145,130);
@@ -171,18 +173,59 @@ public class JoinDialog extends JDialog{
 			System.out.println("DB 연결 오류");
 		}
 		
-		// DB저장 이벤트 필요함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// 중복 확인 버튼
+		JButton doub = new JButton("중복");
+		doub.setSize(60,28);
+		doub.setLocation(263,65);
+		c.add(doub);
+
+		JLabel dd = new JLabel("A");
+
+		doub.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					ResultSet srs = stmt.executeQuery("select * from people where id = '"+idfeild.getText()+"';");
+					if(srs.next()) {
+						JOptionPane.showMessageDialog(null, "이미 사용중인 ID입니다. \n다른 ID를 사용하세요.", "중복 사용", JOptionPane.ERROR_MESSAGE);
+						idfeild.setText(null);
+					}else {
+						JOptionPane.showMessageDialog(null, "사용 가능한 ID입니다.", "사용 가능", JOptionPane.INFORMATION_MESSAGE);
+						dd.setText("B");
+					}
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("중복확인 이벤트 오류");
+				}
+			}
+		});
+		
+		
+		// DB저장 이벤트 
 		CheckBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				String query = "insert into people values('"+idfeild.getText()+"', '"+pwfeild.getText()+"', '"+namefeild.getText()+"', '"+genderRe+
 						"', '"+addressfeild.getText()+"', '"+royalCheck+"', '"+birthfeild.getText()+"');";
+				
+				//중복 확인
+				if(dd.getText().equals("A")) {
+					dchec = false;
+				} else {
+					dchec = true;
+				}
+				// 실제 이벤트	
 				if(idfeild.getText().equals("") || pwfeild.getText().equals("") || namefeild.getText().equals("") 
 						|| (!girl.isSelected() && !boy.isSelected())
 						|| birthfeild.getText().equals("") || !agreeOrNot.isSelected()) {
 					JOptionPane.showMessageDialog(null, "회원가입 실패 \n모든정보 입력하세요.", "실패", JOptionPane.WARNING_MESSAGE);
-				} else {
+				} else if(dchec == false){
+					JOptionPane.showMessageDialog(null, "ID 중복 확인을 실시해 주세요.", "중복확인", JOptionPane.WARNING_MESSAGE);
+				}else {
 					try {
 						stmt.executeUpdate(query);
 						setVisible(false);

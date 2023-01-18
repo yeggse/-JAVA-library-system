@@ -12,6 +12,9 @@ public class myInfo extends JFrame{
 	static String id;
 	Connection conn;
 	Statement stmt = null;
+	Statement stmt1 = null;
+	Statement stmt2 = null;
+	Statement stmt3 = null;
 	myInfo(String id){
 		this.id = id;
 		setSize(500,600);
@@ -100,6 +103,9 @@ public class myInfo extends JFrame{
 					("jdbc:mysql://localhost:3306/psersonalprojet", "root","test123"); // JDBC 연결
 			System.out.println("my info 파트 : DB 연결 완료");
 			stmt = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+			stmt1 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+			stmt2 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
+			stmt3 = conn.createStatement();	// SQL문 처리용 Statement 객체 생성
 		} catch (ClassNotFoundException e) {
 			System.out.println("JDBC 드라이버 로드 에러");
 		} catch (SQLException e) {
@@ -207,20 +213,47 @@ public class myInfo extends JFrame{
 		addressp.add(addressget);
 		
 		
-		// 도서 대여 정보 출력!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// 도서 대여 정보 
 		bookp.setLocation(200,370);
 		bookp.setSize(250,30);
 		bookp.setLayout(new FlowLayout());
 		bookp.setBackground(new Color(245,245,245));
 		c.add(bookp);
 		
-		// 도서 반납일 정보 출력!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		JLabel bookin = new JLabel();
+		bookin.setSize(200,25);
+		bookp.add(bookin);
+		String bookinfo = null;
+		
+		// 도서 반납일 정보 
 		rebookp.setLocation(200,410);
 		rebookp.setSize(250,30);
 		rebookp.setLayout(new FlowLayout());
 		rebookp.setBackground(new Color(245,245,245));
 		c.add(rebookp);
 		
+		JLabel rein = new JLabel();
+		rein.setSize(200,25);
+		bookp.add(rein);
+		String bookdate = null;
+		
+		try {
+			ResultSet srs = stmt1.executeQuery("select * from book where id = '"+id+"';");
+			System.out.println("select * from book where id = '"+id+"';");
+			if(!srs.next()) {
+				bookinfo = "대여 중인 도서 없음";
+				bookdate = "-";
+			} else {
+				bookinfo = srs.getString("book_title");
+				bookdate = srs.getString("backdate");
+			}
+			rein.setText(bookdate);
+			bookin.setText(bookinfo);
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			System.out.println("도서 정보 출력 오류");
+		}
 		
 		//성별
 		String gen = "";

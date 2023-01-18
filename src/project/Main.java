@@ -163,6 +163,11 @@ public class Main extends JFrame{
 			}
 		});
 		
+		
+		//로그아웃
+		logout lg = new logout(this);
+		c.add(lg);
+		
 		// 하단 정보 기재란 
 		outtroLabel outline = new outtroLabel(200,405);
 		outline.setBackground(new Color(248,248,255));

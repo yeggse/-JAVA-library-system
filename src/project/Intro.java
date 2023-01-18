@@ -108,7 +108,8 @@ public class Intro extends JFrame{
 			System.out.println("DB 연결 오류");
 		}
 
-		// 로그인 버튼 이벤트!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// 로그인 버튼 이벤트
+		// cf. srs.getString("id")+"" != null 공식 가능
 		loginBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -116,13 +117,12 @@ public class Intro extends JFrame{
 				try {
 					ResultSet srs = stmt.executeQuery("select * from people where id = '"+id.getText()+"' and pw = '"+pw.getText()+"';");
 					System.out.println("ddddd");
-					JOptionPane.showMessageDialog(null, "로그인 실패", "실패", JOptionPane.WARNING_MESSAGE);	// 로그인 실패시 팝업이 예외적으로 나오는 경우를 못찾겠음!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-					while(srs.next()){
-						if(srs.getString("id")+"" != null) {
+						if(srs.next()) {
 							Main main = new Main(id.getText());
 							setVisible(false);
-						} 
-					} 
+						} else {
+							JOptionPane.showMessageDialog(null, "로그인 실패", "실패", JOptionPane.WARNING_MESSAGE);
+						}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
