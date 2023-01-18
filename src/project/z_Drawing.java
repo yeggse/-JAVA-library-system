@@ -52,6 +52,8 @@ class BackBTN extends JButton{
 	}
 }
 
+//Main에서 사용
+//로그아웃
 class logout extends JButton{
 	logout(JFrame jframe){
 		setText("로그아웃");
