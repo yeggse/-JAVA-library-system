@@ -125,12 +125,11 @@ public class JoinDialog extends JDialog{
 		Agreement ag = new Agreement();
 		
 		JTextArea agree = new JTextArea();
-		JScrollPane scroll = new JScrollPane(agree);
 		agree.setText(ag.text);
-		agree.setLocation(40,355);
-		agree.setSize(240,60);
+		JScrollPane scroll = new JScrollPane(agree);
+		scroll.setLocation(40,355);
+		scroll.setSize(240,60);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-//		this.getContentPane().add(scroll);
 		c.add(scroll);
 		
 		JCheckBox agreeOrNot = new JCheckBox("약관 동의");
