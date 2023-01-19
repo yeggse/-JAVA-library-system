@@ -3,6 +3,9 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -114,6 +117,24 @@ public class JoinDialog extends JDialog{
 		c.add(girl);
 		c.add(addressfeild);
 		
+		//생일 필드 이벤트
+		birthfeild.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				JTextField bth = (JTextField)e.getSource();
+				if(bth.getText().length()>5) {
+					e.consume();
+				}
+				
+				char c = e.getKeyChar();
+				if (!Character.isDigit(c)) {
+					e.consume();
+					JOptionPane.showMessageDialog(null, "숫자만 입력하세요", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		
 		// 유료회원 가입 여부
 		JCheckBox royal = new JCheckBox(" 유료회원에 가입하시겠습니까?");
 		royal.setSize(200,30);
@@ -204,6 +225,7 @@ public class JoinDialog extends JDialog{
 				} else {
 					dchec = true;
 				}
+				
 				// 실제 이벤트	
 				if(idfeild.getText().equals("") || pwfeild.getText().equals("") || namefeild.getText().equals("") 
 						|| (!girl.isSelected() && !boy.isSelected())

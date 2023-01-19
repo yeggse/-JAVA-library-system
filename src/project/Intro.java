@@ -201,8 +201,7 @@ public class Intro extends JFrame{
 				// TODO Auto-generated method stub
 				joindig.setVisible(true);
 			}});
-		
-		
+
 		// 하단 라벨
 		outtroLabel outline = new outtroLabel(80,400);
 		outline.setBackground(Color.white);
