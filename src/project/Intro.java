@@ -34,9 +34,11 @@ public class Intro extends JFrame{
 		c.add(title);
 		
 		// 중간 설명 작성하기
-		JLabel explain = new JLabel("<html>두면 도서관에 방문해 주셔서 감사합니다.<br>"
+		// text-align : center; -> 센터 정렬
+		// color : red; -> 색
+		JLabel explain = new JLabel("<html><h4 style='text-align : center; color : red;'>두면 도서관에 방문해 주셔서 감사합니다.<br>"
 				+ "도서 예약 등과 같은 다양한 도서관 시스템을 이용하기 위해서는 "
-				+ "로그인이 필요합니다.</html>");
+				+ "로그인이 필요합니다.<h4></html>");
 		explain.setFont(new Font("본고딕 KR", Font.PLAIN, 12));
 		explain.setLocation(40,70);
 		explain.setSize(300,120);

@@ -37,7 +37,7 @@ public class Seatting extends JFrame {
 		c.add(title);
 				
 		// 중간 설명 작성하기
-		JLabel explain = new JLabel("<html>원하시는 좌석을 예약하실 수 있습니다.<br>"
+		JLabel explain = new JLabel("<html> 원하시는 좌석을 예약하실 수 있습니다.<br>"
 				+ "현재 다른 회원이 이용중인 좌석은 예약이 불가능합니다. </html>");
 		explain.setFont(new Font("본고딕 KR", Font.BOLD, 13));
 		explain.setLocation(140,50);
