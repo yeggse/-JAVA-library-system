@@ -101,7 +101,7 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-			Recommand Recommand =new Recommand(stmt);	
+			Recommand Recommand =new Recommand(stmt, id);	
 			setVisible(false);
 			}
 		});
@@ -131,7 +131,7 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Memo memo = new Memo(stmt);
+				Memo memo = new Memo(stmt, id);
 				setVisible(false);
 			}
 		});
@@ -177,9 +177,5 @@ public class Main extends JFrame{
 		c.add(outline);
 		
 		setVisible(true);
-	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-//		new Main(null, id);
 	}
 }

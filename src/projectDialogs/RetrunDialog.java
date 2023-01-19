@@ -32,7 +32,6 @@ public class RetrunDialog extends JFrame{
 		c.setLayout(null);
 		c.setBackground(new Color(245,239,230));
 		
-			
 		//타이틀 
 		JLabel title = new JLabel("대여 도서 반납");
 		title.setSize(350,30);
@@ -78,7 +77,7 @@ public class RetrunDialog extends JFrame{
 		try {
 			ResultSet titlesrs = stmt.executeQuery("select * from book where id = '"+id+"';");
 			System.out.println("select * from book where id = '"+id+"';");
-				while(titlesrs.next()) {
+				if(titlesrs.next()) {
 					bolabel = titlesrs.getString("book_title");
 					relabel = titlesrs.getString("backdate");
 				}

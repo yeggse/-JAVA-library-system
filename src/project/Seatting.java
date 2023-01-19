@@ -130,7 +130,7 @@ public class Seatting extends JFrame {
 		});
 		
 		// 뒤로 가기
-		BackBTN back = new BackBTN(stmt, this);
+		BackBTN back = new BackBTN(id, stmt, this);
 		c.add(back);
 		
 		setVisible(true);

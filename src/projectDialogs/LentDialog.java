@@ -28,17 +28,13 @@ public class LentDialog extends JDialog {
 	String info=null;
 	static String id;
 	String bookno;
-//	Connection conn;
 	Statement stmt = null;
-//	Statement stmt1 = null;
-//	Statement stmt2 = null;
-//	Statement stmt3 = null;
 	
 	 public LentDialog(Statement stmt, String id, String bookno){
 		this.id = id;
 		this.stmt = stmt;
 		this.bookno = bookno;
-		setSize(350,400);
+		setSize(400,250);
 		this.setResizable(false);
 		setTitle("도서 대여하기");
 		Container c = getContentPane();
@@ -46,15 +42,15 @@ public class LentDialog extends JDialog {
 		c.setBackground(new Color(224,238,238));
 		
 		//타이틀 
-		JLabel title = new JLabel("도서 대여 정보 입력");
-		title.setSize(350,30);
-		title.setLocation(50,30);
+		JLabel title = new JLabel("도서 대여");
+		title.setSize(390,40);
+		title.setLocation(140,20);
 		title.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 23));
 		c.add(title);
 		
-		//대여 도서 안내 라벨
+		//대여 도서 정보 라벨
 		JLabel bookLabel = new JLabel("선택 도서 : ");
-		bookLabel.setLocation(25,60);
+		bookLabel.setLocation(35,55);
 		bookLabel.setSize(300,40);
 		bookLabel.setFont(new Font("함초롱돋움", Font.BOLD, 15));
 		c.add(bookLabel);
@@ -73,24 +69,13 @@ public class LentDialog extends JDialog {
 			System.out.println("대여도서 안내라벨 오류");
 		}
 		
-		//이름 라벨
-		JLabel nameLabel = new JLabel("이름");
-		nameLabel.setLocation(45,100);
-		nameLabel.setSize(80,40);
-		nameLabel.setFont(new Font("함초롱돋움", Font.BOLD, 15));
-		c.add(nameLabel);
-			
-		JLabel idLabel = new JLabel("ID");
-		idLabel.setLocation(45,178);
-		idLabel.setSize(80,35);
-		idLabel.setFont(new Font("함초롱돋움", Font.BOLD, 15));
-		c.add(idLabel);
-			
+		
+		//일자 라벨
 		DateCal today = new DateCal();
 		String daynow = today.TotoDay(info);
 		
 		JLabel reLabel = new JLabel("오늘 날짜 : "+daynow);
-		reLabel.setLocation(45,240);
+		reLabel.setLocation(35,85);
 		reLabel.setSize(200,40);
 		reLabel.setFont(new Font("함초롱돋움", Font.BOLD, 15));
 		c.add(reLabel);
@@ -99,29 +84,41 @@ public class LentDialog extends JDialog {
 		String dayreturn = reday.ReturnDay(info);
 		
 		JLabel reinfoLabel = new JLabel("도서 반납일은 "+dayreturn+" 입니다.");
-		reinfoLabel.setLocation(55,270);
+		reinfoLabel.setLocation(85,110);
 		reinfoLabel.setSize(300,40);
 		reinfoLabel.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 13));
 		reinfoLabel.setOpaque(true);
 		reinfoLabel.setForeground(new Color(255,127,80));
 		reinfoLabel.setBackground(new Color(224,238,238));
 		c.add(reinfoLabel);
-			
-		// 이름 입력란
-		JTextField nameTXT = new JTextField(10);
-		nameTXT.setLocation(70,130);
-		nameTXT.setSize(200,35);
-		c.add(nameTXT);
-			
-		// ID 입력란
-		JTextField idTXT = new JTextField(10);
-		idTXT.setLocation(70,203);
-		idTXT.setSize(200,35);
-		c.add(idTXT);
-			
+		
+		//확인 라벨
+		JLabel ask = new JLabel();
+		ask.setText("선택하신 도서를 대여하시겠습니까?");
+		ask.setSize(200,40);
+		ask.setLocation(70,135);
+		c.add(ask);
+		
+		//취소 버튼
+		JButton no = new JButton("대여 취소");
+		no.setLocation(80,168);
+		no.setSize(100,30);
+		no.setFont(new Font("함초롱돋움", Font.BOLD, 15));
+		no.setForeground(Color.white);
+		no.setBackground(new Color(131,139,139));
+		c.add(no);
+		
+		no.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				setVisible(false);
+			}
+		});
+		
 		// 대여 확정 버튼
 		JButton okBtn = new JButton("대여 확정");
-		okBtn.setLocation(110,310);
+		okBtn.setLocation(200,168);
 		okBtn.setSize(100,30);
 		okBtn.setFont(new Font("함초롱돋움", Font.BOLD, 15));
 		okBtn.setForeground(Color.white);
@@ -132,23 +129,11 @@ public class LentDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ResultSet srs;
-				ResultSet lsrs;
 				try {
-					srs = stmt.executeQuery("select * from people where id = '"+id+"';");
-					if(srs.next()) {
-						if(idTXT.getText().equals("")||nameTXT.getText().equals("")) {
-							JOptionPane.showMessageDialog(null, "모든 정보를 입력해 주세요.", "정보 기재 누락", JOptionPane.WARNING_MESSAGE);
-						} else if(!id.equals(idTXT.getText())||!nameTXT.getText().equals(srs.getString("name"))) {
-							JOptionPane.showMessageDialog(null, "올바른 정보를 입력해 주세요. \n입력한 값을 확인하시기 바랍니다.", "기재 오류", JOptionPane.WARNING_MESSAGE);
-						} else {
-							stmt.executeUpdate("update book set id = '"+id+"', backdate = '"+dayreturn+"', lentdate = '"+daynow+"', book_pas = 'X' where book_no = '"+bookno+"';");
-							System.out.println("update book set id = '"+id+"', backdate = '"+dayreturn+"', lentdate = '"+daynow+"', book_pas = 'X' where book_no = '"+bookno+"';");
-							JOptionPane.showMessageDialog(null, "대여가 완료되었습니다. \n반납일 내 도서 반납을 완료해 주세요.", "대여 완료", JOptionPane.INFORMATION_MESSAGE);
-							setVisible(false);
-						}
-					}
-
+					stmt.executeUpdate("update book set id = '"+id+"', backdate = '"+dayreturn+"', lentdate = '"+daynow+"', book_pas = 'X' where book_no = '"+bookno+"';");
+					System.out.println("update book set id = '"+id+"', backdate = '"+dayreturn+"', lentdate = '"+daynow+"', book_pas = 'X' where book_no = '"+bookno+"';");
+					JOptionPane.showMessageDialog(null, "대여가 완료되었습니다. \n반납일 내 도서 반납을 완료해 주세요.", "대여 완료", JOptionPane.INFORMATION_MESSAGE);
+					setVisible(false);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -156,7 +141,6 @@ public class LentDialog extends JDialog {
 				}
 			}
 		});
-		
 		setVisible(false);
 	 }
 }

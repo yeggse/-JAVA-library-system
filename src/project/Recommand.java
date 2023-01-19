@@ -9,8 +9,10 @@ import javax.swing.*;
 // 가운데 정렬
 public class Recommand extends JFrame{
 	Statement stmt = null;
-	Recommand(Statement stmt){
+	String id;
+	Recommand(Statement stmt, String id){
 		this.stmt = stmt;
+		this.id = id;
 		setSize(600,500);
 		this.setResizable(false);
 		setTitle("(두면 도서관)이달의 도서 추천");
@@ -90,7 +92,7 @@ public class Recommand extends JFrame{
 		
 		
 		// 뒤로 가기
-		BackBTN back = new BackBTN(stmt, this);
+		BackBTN back = new BackBTN(id, stmt, this);
 		c.add(back);
 		
 		setVisible(true);

@@ -19,12 +19,12 @@ public class z_Drawing {}
 // 가운데 정렬 하느방법..? (joinguide.setHorizontalAlignment(SwingConstants.CENTER); 아닌가)
 class outtroLabel extends JLabel{
 	outtroLabel(int x, int y){
-		setText("<html>인천광역시 계양구 부평구"
-				+ " <br>tel. 82+032-123-4567        fax. 32-123-4568 </html>");
+		setText("<html><h4 style='text-align : center;'>인천광역시 계양구 부평구"
+				+ " <br>tel. 82+032-123-4567        fax. 32-123-4568 <h4></html>");
 		setFont(new Font("본고딕 KR", Font.BOLD, 11));
 		setOpaque(true);
 		setForeground(new Color(41,90,221));
-		setSize(200,30);
+		setSize(400,45);
 		setLocation(x, y);
 	}
 }
@@ -32,9 +32,11 @@ class outtroLabel extends JLabel{
 
 // 전체에서 사용됨(뒤로가기 버튼)
 class BackBTN extends JButton{
-	String name;
-//	Statemet stmt;
-	BackBTN(Statement stmt,JFrame jframe){
+	static String id;
+	Statement stmt=null;
+	BackBTN(String id, Statement stmt, JFrame jframe){
+		this.stmt = stmt;
+		this.id = id;
 		setText("뒤로가기");
 		setSize(80,25);
 		setLocation(15,10);
@@ -46,7 +48,7 @@ class BackBTN extends JButton{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Main main = new Main(stmt, name);
+				Main main = new Main(stmt, id);
 				jframe.setVisible(false);
 			}
 		});

@@ -30,6 +30,7 @@ public class BookLent extends JFrame {
 	BookLent(Statement stmt, String id){
 		this.stmt = stmt;
 		this.id = id;
+		
 		setSize(600,500);
 		this.setResizable(false);
 		setTitle("(두면 도서관)도서 정보 검색");
@@ -134,7 +135,6 @@ public class BookLent extends JFrame {
 					e1.printStackTrace();
 					System.out.println("반납 버튼 오류");
 				}
-				redia.setVisible(true);
 			}
 		});
 		
@@ -160,7 +160,11 @@ public class BookLent extends JFrame {
 					// 찾은 책 출력
 					ResultSet srs = stmt.executeQuery("select * from book where book_title like '%"+searching.getText()+"%';");
 					System.out.println("select * from book where book_title like '%"+searching.getText()+"%';");
-					// # 수정
+
+					if(!srs.next()) {
+						JOptionPane.showMessageDialog(null, "보유 중인 도서가 존재하지 않습니다.", "책 없음", JOptionPane.ERROR_MESSAGE);
+					}
+					
 					while(srs.next()) {
 						String not = srs.getString("book_no");
 						String titt = srs.getString("book_title");
@@ -173,34 +177,6 @@ public class BookLent extends JFrame {
 						model.addRow(datat);
 					}
 					
-					/*	if(srs.next()) {
-						
-						// 책 데이터 출력하기
-						String no = srs.getString("book_no");
-						String tit = srs.getString("book_title");
-						String publ = srs.getString("book_publisher");
-						String auth = srs.getString("book_author");
-						String loca = srs.getString("book_location");
-						String ava = srs.getString("book_pas");
-						
-						Object data[] = {no, tit, publ, auth, loca, ava};
-						model.addRow(data);
-						
-						// 나머지 모두 출력
-						while(srs.next()) {
-							String not = srs.getString("book_no");
-							String titt = srs.getString("book_title");
-							String publt = srs.getString("book_publisher");
-							String autht = srs.getString("book_author");
-							String locat = srs.getString("book_location");
-							String avat = srs.getString("book_pas");
-							
-							Object datat[] = {not, titt, publt, autht, locat, avat};
-							model.addRow(datat);
-						}
-					} else {
-						JOptionPane.showMessageDialog(null, "보유 중인 도서가 존재하지 않습니다.", "책 없음", JOptionPane.ERROR_MESSAGE);
-					} */
 					System.out.println(cnt);
 					resultintro.setText("찾으시는 도서는 "+cnt+"권 보유 중입니다.");
 					
@@ -211,38 +187,37 @@ public class BookLent extends JFrame {
 							// TODO Auto-generated method stub
 							ResultSet bsrs;
 							ResultSet psrs;
-							try {
-								bsrs = stmt.executeQuery("select * from book where id = '"+id+"';");
-								System.out.println("select * from book where id = '"+id+"';");
-								if(bsrs.next()) {
-									JOptionPane.showMessageDialog(null, "사용중인 책이 있습니다. \n반납 후 대여해 주세요.", "중복 대여", JOptionPane.WARNING_MESSAGE);
-								} else {
-									  //선택한 셀의 행 번호계산 
-									  int row = table.getSelectedRow();
-									  //테이블의 모델객체 얻어오기
-									  TableModel data = table.getModel();
-									  //선택한 테이블의 row의 모든 값을 이용하여 MemberDTO객체 생성하기
-									  String bookno = (String)data.getValueAt(row,0);
-									  System.out.println(bookno);
-									  
-									  psrs = stmt.executeQuery("select * from book where book_no = '"+bookno+"';");
-									  System.out.println("select * from book where book_no = '"+bookno+"';");
-									  
-									  if(psrs.next()) {
-										  if("X".equals(psrs.getString("book_pas"))) {
-											  JOptionPane.showMessageDialog(null, "다른 회원님이 대여 중입니다. \n다른 도서를 대여해 주세요.", "중복 대여", JOptionPane.WARNING_MESSAGE);
-										  }else {
-											  LentDialog ldi = new LentDialog(stmt, id, bookno);
-											  ldi.setVisible(true);
+								try {
+									bsrs = stmt.executeQuery("select * from book where id = '"+id+"';");
+									System.out.println("select * from book where id = '"+id+"';");
+									if(bsrs.next()) {
+										JOptionPane.showMessageDialog(null, "사용중인 책이 있습니다. \n반납 후 대여해 주세요.", "중복 대여", JOptionPane.WARNING_MESSAGE);
+									} else {
+										  //선택한 셀의 행 번호계산 
+										  int row = table.getSelectedRow();
+										  //테이블의 모델객체 얻어오기
+										  TableModel data = table.getModel();
+										  //선택한 테이블의 row의 모든 값을 이용하여 MemberDTO객체 생성하기
+										  String bookno = (String)data.getValueAt(row,0);
+										  System.out.println(bookno);
+										  
+										  psrs = stmt.executeQuery("select * from book where book_no = '"+bookno+"';");
+										  System.out.println("select * from book where book_no = '"+bookno+"';");
+										  
+										  if(psrs.next()) {
+											  if("X".equals(psrs.getString("book_pas"))) {
+												  JOptionPane.showMessageDialog(null, "다른 회원님이 대여 중입니다. \n다른 도서를 대여해 주세요.", "중복 대여", JOptionPane.WARNING_MESSAGE);
+											  }else {
+												  LentDialog ldi = new LentDialog(stmt, id, bookno);
+												  ldi.setVisible(true);
+											  }
 										  }
-									  }
-
+									}
+								} catch (SQLException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+									System.out.println("도서 검색 버튼 내 마우스 이벤트 에러");
 								}
-							} catch (SQLException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-								System.out.println("도서 검색 버튼 내 마우스 이벤트 에러");
-							}
 						}
 					});
 					
@@ -255,11 +230,55 @@ public class BookLent extends JFrame {
 		});
 		c.add(searchBtn);
 		
+		//엔터로 검색
+		searching.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String cnt = null;
+				try {
+					// 검색할 때마다 출력값 초기화
+					for (int i = 0; i < model.getRowCount();) {
+			            model.removeRow(0);
+			        }
+					
+					// 찾은 책의 갯수
+					ResultSet csrs = stmt.executeQuery("select count(*) from book where book_title like '%"+searching.getText()+"%';");
+					while(csrs.next()) {
+						cnt = csrs.getString(1);
+					}
+					
+					// 찾은 책 출력
+					ResultSet srs = stmt.executeQuery("select * from book where book_title like '%"+searching.getText()+"%';");
+					System.out.println("select * from book where book_title like '%"+searching.getText()+"%';");
+					
+					while(srs.next()) {
+						String not = srs.getString("book_no");
+						String titt = srs.getString("book_title");
+						String publt = srs.getString("book_publisher");
+						String autht = srs.getString("book_author");
+						String locat = srs.getString("book_location");
+						String avat = srs.getString("book_pas");
+						
+						Object datat[] = {not, titt, publt, autht, locat, avat};
+						model.addRow(datat);
+					}
+					if(cnt=="0") {
+						JOptionPane.showMessageDialog(null, "보유 중인 도서가 존재하지 않습니다.", "책 없음", JOptionPane.ERROR_MESSAGE);
+					}
+					System.out.println(cnt);
+					resultintro.setText("찾으시는 도서는 "+cnt+"권 보유 중입니다.");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("도서 검색 엔터 버튼 에러");
+				}
+			}
+		});
 		
 		// 뒤로 가기
-		BackBTN back = new BackBTN(stmt, this);
-		c.add(back);
-				
+		c.add(new BackBTN(id, stmt, this));
+		
 		setVisible(true);
 	}
 

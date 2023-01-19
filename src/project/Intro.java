@@ -2,6 +2,9 @@ package project;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
@@ -34,11 +37,12 @@ public class Intro extends JFrame{
 		c.add(title);
 		
 		// 중간 설명 작성하기
+		//<h4 style='text-align : center;'> 이용해서 설명 수정
 		// text-align : center; -> 센터 정렬
 		// color : red; -> 색
-		JLabel explain = new JLabel("<html><h4 style='text-align : center; color : red;'>두면 도서관에 방문해 주셔서 감사합니다.<br>"
+		JLabel explain = new JLabel("<html>두면 도서관에 방문해 주셔서 감사합니다.<br>"
 				+ "도서 예약 등과 같은 다양한 도서관 시스템을 이용하기 위해서는 "
-				+ "로그인이 필요합니다.<h4></html>");
+				+ "로그인이 필요합니다.</html>");
 		explain.setFont(new Font("본고딕 KR", Font.PLAIN, 12));
 		explain.setLocation(40,70);
 		explain.setSize(300,120);
@@ -63,6 +67,7 @@ public class Intro extends JFrame{
 		idLabel.setLocation(50,180);
 		pwLabel.setSize(40,40);
 		pwLabel.setLocation(50,230);
+		
 		JTextField id = new JTextField(20);
 		JPasswordField pw = new JPasswordField(20);
 		id.setSize(200,30);
@@ -73,6 +78,35 @@ public class Intro extends JFrame{
 		c.add(pwLabel);
 		c.add(id);
 		c.add(pw);
+		
+		//PW창 이벤트
+		pw.setFocusable(true);
+		pw.requestFocus();
+		
+		pw.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+				if (KeyEvent.VK_ENTER == e.getKeyCode()) {
+			    	 System.out.println("엔터로 로그인~~");
+			    	 try {
+							ResultSet srs = stmt.executeQuery("select * from people where id = '"+id.getText()+"' and pw = '"+pw.getText()+"';");
+							System.out.println("ddddd");
+								if(srs.next()) {
+									Main main = new Main(stmt, id.getText());
+									setVisible(false);
+								} else {
+									JOptionPane.showMessageDialog(null, "로그인 실패", "실패", JOptionPane.WARNING_MESSAGE);
+								}
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+							System.out.println("login 버튼 에러");
+						}
+			        }
+			}
+		});
 		
 		// 로그인, 비밀번호 찾기 버튼 생성
 		JButton loginBtn = new JButton("로그인");
@@ -116,6 +150,7 @@ public class Intro extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				
 				try {
 					ResultSet srs = stmt.executeQuery("select * from people where id = '"+id.getText()+"' and pw = '"+pw.getText()+"';");
 					System.out.println("ddddd");
@@ -145,18 +180,17 @@ public class Intro extends JFrame{
 
 		
 		// 회원가입 버튼 생성
-//		가운데 정렬 하느방법..? (joinguide.setHorizontalAlignment(SwingConstants.CENTER); 아닌가)
 		JButton joinBtn = new JButton("회원가입");
 		joinBtn.setBackground(Color.LIGHT_GRAY);
 		joinBtn.setSize(90,25);
 		joinBtn.setLocation(195,340);
 		c.add(joinBtn);
 		
-		JLabel joinguide = new JLabel("<html>회원가입 후 <br>시스템을 이용하세요 </html>");
+		JLabel joinguide = new JLabel("<html><h4 style='text-align : right; color : gray;'>회원가입 후 <br>시스템을 이용하세요 <h4></html>");
 		joinguide.setHorizontalAlignment(SwingConstants.CENTER); 
 		joinguide.setFont(new Font("본고딕 KR", Font.BOLD, 11));
-		joinguide.setSize(110,42);
-		joinguide.setLocation(80,331);
+		joinguide.setSize(130,42);
+		joinguide.setLocation(60,331);
 		c.add(joinguide);
 		
 		// 회원가입 버튼 시, 다이얼로그 출력 이벤트
@@ -185,5 +219,4 @@ public class Intro extends JFrame{
 
 }
 
-//new dialog(this)
 

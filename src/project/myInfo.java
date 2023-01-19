@@ -216,7 +216,7 @@ public class myInfo extends JFrame{
 		
 		JLabel rein = new JLabel();
 		rein.setSize(200,25);
-		bookp.add(rein);
+		rebookp.add(rein);
 		String bookdate = null;
 		
 		try {
@@ -238,29 +238,25 @@ public class myInfo extends JFrame{
 		}
 		
 		//성별
-		String gen = "";
+		JLabel gen = new JLabel();
+		String gender = null;
 		
 		genderp.setLocation(200,265);
 		genderp.setSize(250,30);
 		genderp.setBackground(new Color(245,245,245));
 		c.add(genderp);
+		genderp.add(gen);
 		
 		try {
 			ResultSet gendersrs = stmt.executeQuery("select gender from people where id = '"+id+"';");
 			while (gendersrs.next()) {
 				if("여".equals(gendersrs.getString("gender"))) {
-					gen ="image/girl.png";
+					gender ="여성";
 				} else {
-					gen ="image/man.png";
+					gender ="남성";
 				}
-				ImageIcon girlIcon = new ImageIcon(gen);
-				Image girlimg = girlIcon.getImage();	// 아이콘 크기 수정을 위해 필요한 과정
-				Image girlimgfin = girlimg.getScaledInstance(200, 30, java.awt.Image.SCALE_SMOOTH);
-				ImageIcon girlIconfin = new ImageIcon(girlimgfin);
 				
-				JLabel girl = new JLabel(girlIconfin);
-				girl.setSize(200,30);
-				genderp.add(girl);	
+				gen.setText(gender);
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -334,7 +330,7 @@ public class myInfo extends JFrame{
 		
 		
 		// 뒤로 가기
-		BackBTN back = new BackBTN(stmt, this);
+		BackBTN back = new BackBTN(id, stmt, this);
 		c.add(back);
 				
 		setVisible(true);

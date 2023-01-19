@@ -64,7 +64,6 @@ public class BookSearch extends JFrame{
 		searching.setSize(300,30);
 		c.add(searching);
 		
-		
 		// 결과 도출 패널
 		JPanel resultPanel = new JPanel();
 		resultPanel.setSize(520,240);
@@ -97,8 +96,54 @@ public class BookSearch extends JFrame{
 		searchBtn.setFont(new Font("함초롱돋움",Font.BOLD, 15));
 		searchBtn.setForeground(Color.white);
 
-		
 		searchBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String cnt = null;
+				try {
+					// 검색할 때마다 출력값 초기화
+					for (int i = 0; i < model.getRowCount();) {
+			            model.removeRow(0);
+			        }
+					
+					// 찾은 책의 갯수
+					ResultSet csrs = stmt.executeQuery("select count(*) from book where book_title like '%"+searching.getText()+"%';");
+					while(csrs.next()) {
+						cnt = csrs.getString(1);
+					}
+					
+					// 찾은 책 출력
+					ResultSet srs = stmt.executeQuery("select * from book where book_title like '%"+searching.getText()+"%';");
+					System.out.println("select * from book where book_title like '%"+searching.getText()+"%';");
+					
+					while(srs.next()) {
+						String not = srs.getString("book_no");
+						String titt = srs.getString("book_title");
+						String publt = srs.getString("book_publisher");
+						String autht = srs.getString("book_author");
+						String locat = srs.getString("book_location");
+						String avat = srs.getString("book_pas");
+						
+						Object datat[] = {not, titt, publt, autht, locat, avat};
+						model.addRow(datat);
+					}
+					if(cnt=="0") {
+						JOptionPane.showMessageDialog(null, "보유 중인 도서가 존재하지 않습니다.", "책 없음", JOptionPane.ERROR_MESSAGE);
+					}
+					
+					System.out.println(cnt);
+					resultintro.setText("찾으시는 도서는 "+cnt+"권 보유 중입니다.");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("도서 검색 버튼 에러");
+				}
+			}
+		});
+		c.add(searchBtn);
+		
+		//엔터로 검색
+		searching.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -118,42 +163,36 @@ public class BookSearch extends JFrame{
 					// 찾은 책 출력
 					ResultSet srs = stmt.executeQuery("select * from book where book_title like '%"+searching.getText()+"%';");
 					System.out.println("select * from book where book_title like '%"+searching.getText()+"%';");
-					if(srs.next()) {
-						String tit = srs.getString("book_title");
-						String publ = srs.getString("book_publisher");
-						String auth = srs.getString("book_author");
-						String loca = srs.getString("book_location");
-						
-						Object data[] = {tit, publ, auth, loca};
-						model.addRow(data);
-						
-						// 나머지 모두 출력
-						while(srs.next()) {
-							String titt = srs.getString("book_title");
-							String publt = srs.getString("book_publisher");
-							String autht = srs.getString("book_author");
-							String locat = srs.getString("book_location");
-							
-							Object datat[] = {titt, publt, autht, locat};
-							model.addRow(datat);
-						}
-					} else {
+					
+					if(!srs.next()) {
 						JOptionPane.showMessageDialog(null, "보유 중인 도서가 존재하지 않습니다.", "책 없음", JOptionPane.ERROR_MESSAGE);
 					}
+					
+					while(srs.next()) {
+						String not = srs.getString("book_no");
+						String titt = srs.getString("book_title");
+						String publt = srs.getString("book_publisher");
+						String autht = srs.getString("book_author");
+						String locat = srs.getString("book_location");
+						String avat = srs.getString("book_pas");
+						
+						Object datat[] = {not, titt, publt, autht, locat, avat};
+						model.addRow(datat);
+					}
+					
 					System.out.println(cnt);
 					resultintro.setText("찾으시는 도서는 "+cnt+"권 보유 중입니다.");
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-					System.out.println("도서 검색 버튼 에러");
+					System.out.println("도서 검색 엔터 버튼 에러");
 				}
 			}
 		});
-		c.add(searchBtn);
-
 		
+
 		// 뒤로 가기
-		BackBTN back = new BackBTN(stmt, this);
+		BackBTN back = new BackBTN(id, stmt, this);
 		c.add(back);
 				
 		setVisible(true);
