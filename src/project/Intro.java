@@ -9,6 +9,7 @@ import java.sql.*;
 import java.util.*;
 import javax.swing.*;
 
+import administrator.Admin_Main;
 import projectDialogs.JoinDialog;
 import projectDialogs.PwSearchDialog;
 
@@ -90,7 +91,11 @@ public class Intro extends JFrame{
 
 				if (KeyEvent.VK_ENTER == e.getKeyCode()) {
 			    	 System.out.println("엔터로 로그인~~");
-			    	 try {
+			    	 if(id.getText().equals("admin") && pw.getText().equals("admin")) {
+							Admin_Main admain = new Admin_Main(stmt, id.getText());
+							setVisible(false);
+					} else {
+						try {
 							ResultSet srs = stmt.executeQuery("select * from people where id = '"+id.getText()+"' and pw = '"+pw.getText()+"';");
 							System.out.println("ddddd");
 								if(srs.next()) {
@@ -104,7 +109,9 @@ public class Intro extends JFrame{
 							e1.printStackTrace();
 							System.out.println("login 버튼 에러");
 						}
-			        }
+					}
+				}
+			    	 
 			}
 		});
 		
@@ -150,20 +157,24 @@ public class Intro extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-				try {
-					ResultSet srs = stmt.executeQuery("select * from people where id = '"+id.getText()+"' and pw = '"+pw.getText()+"';");
-					System.out.println("ddddd");
-						if(srs.next()) {
-							Main main = new Main(stmt, id.getText());
-							setVisible(false);
-						} else {
-							JOptionPane.showMessageDialog(null, "로그인 실패", "실패", JOptionPane.WARNING_MESSAGE);
-						}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					System.out.println("login 버튼 에러");
+				if(id.getText().equals("admin") && pw.getText().equals("admin")) {
+					Admin_Main admain = new Admin_Main(stmt, id.getText());
+					setVisible(false);
+				} else {
+					try {
+						ResultSet srs = stmt.executeQuery("select * from people where id = '"+id.getText()+"' and pw = '"+pw.getText()+"';");
+						System.out.println("ddddd");
+							if(srs.next()) {
+								Main main = new Main(stmt, id.getText());
+								setVisible(false);
+							} else {
+								JOptionPane.showMessageDialog(null, "로그인 실패", "실패", JOptionPane.WARNING_MESSAGE);
+							}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+						System.out.println("login 버튼 에러");
+					}
 				}
 			}
 		});
@@ -209,6 +220,7 @@ public class Intro extends JFrame{
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		
 	}
 	
 	public static void main(String[] args) {

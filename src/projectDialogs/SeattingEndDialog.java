@@ -93,68 +93,18 @@ public class SeattingEndDialog extends JDialog {
 								stmt.executeUpdate("update seat set seat_lent = 'X', id = null where id = '"+id+"';");
 								JOptionPane.showMessageDialog(null, "좌석을 종료합니다.", "좌석 이용 완료", JOptionPane.PLAIN_MESSAGE);
 								setVisible(false);
-								outroDialog out = new outroDialog(id);
 							}
 						}
 					}
-
-
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 					System.out.println("좌석 이용 완료 버튼 에러");
 				}
-				
 			}
 		});
 		
 		setVisible(true);
 	}
 
-}
-
-class outroDialog extends JDialog{
-	static String id;
-	outroDialog(String id){
-		this.id = id;
-		setSize(350,350);
-		this.setResizable(false);
-		setTitle("좌석 사용 완료");
-		Container c = getContentPane();
-		c.setLayout(null);
-		c.setBackground(new Color(224,238,238));
-			
-		JLabel title = new JLabel("좌석 이용 완료 확인");
-		title.setSize(400,30);
-		title.setLocation(50,60);
-		title.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 23));
-		c.add(title);
-		
-		// 중간 설명 작성하기
-		JLabel explain = new JLabel("<html>좌석 사용을 완료합니다. <br>"
-				+ "이용해 주셔서 감사합니다. </html>");
-		explain.setFont(new Font("본고딕 KR", Font.BOLD, 20));
-		explain.setLocation(40,100);
-		explain.setSize(400,120);
-		c.add(explain);	
-		
-		// 확인 확정 버튼
-		JButton okBtn = new JButton("이용 완료");
-		okBtn.setLocation(90,220);
-		okBtn.setSize(150,30);
-		okBtn.setFont(new Font("함초롱돋움", Font.BOLD, 18));
-		okBtn.setForeground(Color.white);
-		okBtn.setBackground(new Color(131,139,139));
-		c.add(okBtn);
-		
-		okBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				setVisible(false);
-			}
-		});
-		
-		setVisible(true);
-	}
 }

@@ -21,7 +21,7 @@ public class Admin_Main extends JFrame {
 	static String id;
 	static Statement stmt = null;
 	
-	Admin_Main(Statement stmt, String id){
+	public Admin_Main(Statement stmt, String id){
 		this.stmt = stmt;
 		this.id = id;
 		setSize(600,500);

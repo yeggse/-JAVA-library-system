@@ -11,6 +11,7 @@ public class BookSearch extends JFrame{
 	Statement stmt = null;
 	static String id;
 	int count;
+	
 	// JTable
 	Object ob[][] = new Object[0][5]; //데이터 표시에 열만 나오게 설정
 	DefaultTableModel model;  // 데이터 저장 부분

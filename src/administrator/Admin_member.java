@@ -36,6 +36,10 @@ public class Admin_member extends JFrame {
 		c.add(title);
 		
 		
+		// 뒤로가기
+		BackBTN back = new BackBTN(id, stmt, this);
+		c.add(back);
+		
 		setVisible(true);
 	}
 

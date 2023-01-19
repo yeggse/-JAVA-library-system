@@ -52,7 +52,9 @@ public class Memo extends JFrame{
 		area.setLocation(3,3);
 		area.setSize(514,282);
 		panel.add(area);
+		
 		String get = "";
+		
 		try {
 			ResultSet srs = stmt.executeQuery("select * from people where id = '"+id+"';");
 			if(srs.next()) {
