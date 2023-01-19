@@ -7,8 +7,10 @@ import java.awt.Image;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class Admin_Book extends JFrame{
@@ -35,6 +37,32 @@ public class Admin_Book extends JFrame{
 		title.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 30));
 //		title.setForeground(new Color(255,255,240));
 		c.add(title);
+		
+		
+		// 표 출력하는 공간 확보
+		JPanel area = new JPanel();
+		area.setOpaque(true);
+		area.setSize(488,250);
+		area.setLocation(45,113);
+		area.setBackground(new Color(37,49,109));
+		c.add(area);
+		
+		// 버튼
+		JButton add = new JButton("추가");
+		add.setSize(100,35);
+		add.setLocation(95,380);
+		c.add(add);
+		
+		JButton edi = new JButton("수정");
+		edi.setSize(100,35);
+		edi.setLocation(250,380);
+		c.add(edi);
+		
+		JButton del = new JButton("삭제");
+		del.setSize(100,35);
+		del.setLocation(400,380);
+		c.add(del);
+		
 		
 		setVisible(true);	
 	}
