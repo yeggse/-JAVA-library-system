@@ -107,17 +107,13 @@ public class Admin_Main extends JFrame {
 		c.add(lg);
 		
 		// 하단 정보 기재란 
-		outtroLabel outline = new outtroLabel(200,405);
+		outtroLabel outline = new outtroLabel(180,405);
 		outline.setBackground(Color.darkGray);
 		c.add(outline);
 		
 		setVisible(true);
 	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new Admin_Main(stmt, id);
-	}
 }
 
 class logout extends JButton{
@@ -141,12 +137,12 @@ class logout extends JButton{
 }
 class outtroLabel extends JLabel{
 	outtroLabel(int x, int y){
-		setText("<html>인천광역시 계양구 부평구"
-				+ " <br>tel. 82+032-123-4567        fax. 32-123-4568 </html>");
+		setText("<html><html><h4 style='text-align : center;'>인천광역시 계양구 부평구"
+				+ " <br>tel. 82+032-123-4567        fax. 32-123-4568 </h4></html>");
 		setFont(new Font("본고딕 KR", Font.BOLD, 11));
 		setOpaque(true);
 		setForeground(new Color(220,220,238));
-		setSize(200,30);
+		setSize(400,50);
 		setLocation(x, y);
 	}
 }

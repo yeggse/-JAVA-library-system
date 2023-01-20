@@ -172,7 +172,7 @@ public class Main extends JFrame{
 		c.add(lg);
 		
 		// 하단 정보 기재란 
-		outtroLabel outline = new outtroLabel(200,405);
+		outtroLabel outline = new outtroLabel(180,405);
 		outline.setBackground(new Color(248,248,255));
 		c.add(outline);
 		

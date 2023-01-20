@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.*;
+
+import com.mysql.cj.protocol.Resultset;
+
 import projectDialogs.SeattingEndDialog;
 
 
@@ -55,12 +58,6 @@ public class Seatting extends JFrame {
 		myPanel panel2 = new myPanel(10,10);
 		panel.add(panel2);
 		
-		myPanel panel3 = new myPanel(10,100);
-		panel.add(panel3);
-		
-		myPanel panel4 = new myPanel(10,190);
-		panel.add(panel4);
-		
 		// 부속물 패널
 		subPanel ent = new subPanel(450,5,90,30,"출입구");
 		panel.add(ent);
@@ -72,46 +69,34 @@ public class Seatting extends JFrame {
 		panel.add(bar2);
 		
 		// 좌석 버튼
-		JButton sBtn = null;
-		
-		
-		for (int i=0; i<8;i++) {
-			sBtn = new JButton((i+1)+"");
-			sBtn.setSize(90,40);
-			sBtn.setBackground(new Color(147,112,219));
-			sBtn.setForeground(Color.white);
-			sBtn.setFont(new Font("휴먼엑스포", Font.BOLD, 15));
-			String a = sBtn.getText();
+		myButton sBtn = null;
+		try {
+			ResultSet srs = stmt.executeQuery("select count(*) from seat;");
+			String cnt = null;
 			
-			sBtn.addActionListener(new addEvent(stmt, id, a, sBtn));
-			panel2.add(sBtn);
-		}
-		
-		for (int i=9; i<17;i++) {
-			sBtn = new JButton((i+1)+"");
-			sBtn.setSize(90,40);
-			sBtn.setBackground(new Color(147,112,219));
-			sBtn.setForeground(Color.white);
-			sBtn.setFont(new Font("휴먼엑스포", Font.BOLD, 15));
+			while(srs.next()) {
+				cnt = srs.getString(1);
+			}
 			
-			String a = sBtn.getText();
+			int trun = Integer.parseInt(cnt);
 			
-			sBtn.addActionListener(new addEvent(stmt, id, a, sBtn));
-			panel3.add(sBtn);
-		}
-		
-		for (int i=17; i<24;i++) {
-			sBtn = new JButton();
-			sBtn.setText((i+1)+"");
-			sBtn.setSize(90,40);
-			sBtn.setBackground(new Color(147,112,219));
-			sBtn.setForeground(Color.white);
-			sBtn.setFont(new Font("휴먼엑스포", Font.BOLD, 15));
+			for(int i=1; i<trun+1; i++) {
+				System.out.println(i);
+				sBtn = new myButton(stmt, id);
+				
+				sBtn.setText(i+"");
+				sBtn.setSize(100,60);
+				String a = sBtn.getText();
+
+				sBtn.addActionListener(new addEvent(stmt, id, a, sBtn));
+				panel2.add(sBtn);
+			}
 			
-			String a = sBtn.getText();
 			
-			sBtn.addActionListener(new addEvent(stmt, id, a, sBtn));
-			panel4.add(sBtn);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println("버튼 생성 오류");
 		}
 		
 		// 좌석 반환 버튼
@@ -143,23 +128,36 @@ public class Seatting extends JFrame {
 class myPanel extends JPanel{
 	myPanel(int x, int y){
 		setBackground(new Color(245,245,220));
-		setSize(390,80);
+		setSize(390,250); //390,80
 		setLocation(x,y);
-		setLayout(new FlowLayout(FlowLayout.LEFT));
+		setLayout(new GridLayout(8,3,10,10));
 	}
 }
 
 class subPanel extends JPanel{
 	subPanel(int x, int y, int w, int h, String s){
-		setBackground(new Color(139,137,112));
+		setBackground(Color.DARK_GRAY);
 		setSize(w,h);
 		setLocation(x,y);
 		setLayout(new FlowLayout());
+		
 		
 		JLabel label = new JLabel(s);
 		label.setForeground(Color.white);
 		label.setFont(new Font("함초롱돋움", Font.BOLD, 18));
 		this.add(label);
+	}
+}
+
+class myButton extends JButton{
+	Statement stmt;
+	String id;
+	myButton(Statement stmt, String id){
+		this.id = id;
+		this.stmt = stmt;
+		setBackground(new Color(147,112,219));
+		setForeground(Color.white);
+		setFont(new Font("휴먼엑스포", Font.BOLD, 15));
 	}
 }
 

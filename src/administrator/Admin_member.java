@@ -6,6 +6,9 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -120,11 +123,18 @@ public class Admin_member extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				String cnt = null;
 				try {
 					// 검색할 때마다 출력값 초기화
 					for (int i = 0; i < model.getRowCount();) {
 			            model.removeRow(0);
 			        }
+					
+					// 출력 회원 수 도출
+					ResultSet csrs = stmt.executeQuery("select count(*) from people where name  like '%"+txt.getText()+"%';");
+					while(csrs.next()) {
+						cnt = csrs.getString(1);
+					}
 					
 					// 기능 시작
 					ResultSet srsr = stmt.executeQuery("select * from people where name  like '%"+txt.getText()+"%';");
@@ -133,30 +143,85 @@ public class Admin_member extends JFrame {
 					if(txt.getText().equals("")) {
 						JOptionPane.showMessageDialog(null, "찾고자 하는 회원 이름을 입력해 주세요.", "미입력 오류", JOptionPane.WARNING_MESSAGE);
 					} else {
-						if(!srsr.next()) {
+						if(cnt.equals("0")) {
 							JOptionPane.showMessageDialog(null, "존재하지 않는 이름입니다.", "미존재 회원", JOptionPane.INFORMATION_MESSAGE);
-						}
-						while(srsr.next()) {	// 1번째가 찍히지 않음!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!작동 안됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-							System.out.println("dd");
-							String idd = srsr.getString("id");
-							String named = srsr.getString("name");
-							String gend = srsr.getString("gender");
-							String royald = srsr.getString("royal");
-							String birthd = srsr.getString("birth");
-							String addd = srsr.getString("address");
-							
-							Object datad[] = {idd, named, gend, royald, birthd, addd};
-							model.addRow(datad);
+						} else {
+							while(srsr.next()) {	
+								System.out.println("dd");
+								String idd = srsr.getString("id");
+								String named = srsr.getString("name");
+								String gend = srsr.getString("gender");
+								String royald = srsr.getString("royal");
+								String birthd = srsr.getString("birth");
+								String addd = srsr.getString("address");
+								
+								Object datad[] = {idd, named, gend, royald, birthd, addd};
+								model.addRow(datad);
+							}
 						}
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-					System.out.println("회원 검색 오류");
+					System.out.println("회원 검색 버튼 오류");
 				}
 				
 			}
 		});
+		
+		
+		// 엔터로 검색했을 때!
+		txt.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					String cnt = null;
+					try {
+						// 검색할 때마다 출력값 초기화
+						for (int i = 0; i < model.getRowCount();) {
+				            model.removeRow(0);
+				        }
+						
+						// 출력 회원 수 도출
+						ResultSet csrs = stmt.executeQuery("select count(*) from people where name  like '%"+txt.getText()+"%';");
+						while(csrs.next()) {
+							cnt = csrs.getString(1);
+						}
+						
+						// 기능 시작
+						ResultSet srsr = stmt.executeQuery("select * from people where name  like '%"+txt.getText()+"%';");
+						System.out.println("select * from people where name = '%"+txt.getText()+"%';");
+						
+						if(txt.getText().equals("")) {
+							JOptionPane.showMessageDialog(null, "찾고자 하는 회원 이름을 입력해 주세요.", "미입력 오류", JOptionPane.WARNING_MESSAGE);
+						} else {
+							if(cnt.equals("0")) {
+								JOptionPane.showMessageDialog(null, "존재하지 않는 이름입니다.", "미존재 회원", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								while(srsr.next()) {	
+									System.out.println("dd");
+									String idd = srsr.getString("id");
+									String named = srsr.getString("name");
+									String gend = srsr.getString("gender");
+									String royald = srsr.getString("royal");
+									String birthd = srsr.getString("birth");
+									String addd = srsr.getString("address");
+									
+									Object datad[] = {idd, named, gend, royald, birthd, addd};
+									model.addRow(datad);
+								}
+							}
+						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+						System.out.println("회원 검색 엔터 오류");
+					}
+				}
+			}
+		});
+			
 		
 		
 		// 회원 클릭시, 회원 탈퇴 다이알로그 출력

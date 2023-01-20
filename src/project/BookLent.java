@@ -145,7 +145,6 @@ public class BookLent extends JFrame {
 				// TODO Auto-generated method stub
 				String cnt = null;
 				try {
-					
 					// 검색할 때마다 출력값 초기화
 					for (int i = 0; i < model.getRowCount();) {
 			            model.removeRow(0);
@@ -160,10 +159,6 @@ public class BookLent extends JFrame {
 					// 찾은 책 출력
 					ResultSet srs = stmt.executeQuery("select * from book where book_title like '%"+searching.getText()+"%';");
 					System.out.println("select * from book where book_title like '%"+searching.getText()+"%';");
-
-					if(!srs.next()) {
-						JOptionPane.showMessageDialog(null, "보유 중인 도서가 존재하지 않습니다.", "책 없음", JOptionPane.ERROR_MESSAGE);
-					}
 					
 					while(srs.next()) {
 						String not = srs.getString("book_no");
@@ -176,7 +171,9 @@ public class BookLent extends JFrame {
 						Object datat[] = {not, titt, publt, autht, locat, avat};
 						model.addRow(datat);
 					}
-					
+					if(cnt=="0") {
+						JOptionPane.showMessageDialog(null, "보유 중인 도서가 존재하지 않습니다.", "책 없음", JOptionPane.ERROR_MESSAGE);
+					}
 					System.out.println(cnt);
 					resultintro.setText("찾으시는 도서는 "+cnt+"권 보유 중입니다.");
 					
