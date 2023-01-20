@@ -17,7 +17,7 @@ import projectDialogs.SeattingEndDialog;
 public class Seatting extends JFrame {
 	Statement stmt = null;
 	static String id;
-	Seatting(Statement stmt, String id){
+	public Seatting(Statement stmt, String id){
 		this.stmt = stmt;
 		this.id = id;
 		setSize(600,500);
@@ -49,7 +49,7 @@ public class Seatting extends JFrame {
 		
 		// 좌석 안내 패널
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(245,245,220));
+		panel.setBackground(new Color(243,239,227));
 		panel.setLocation(15,145);
 		panel.setSize(555,270);
 		panel.setLayout(null);
@@ -81,8 +81,7 @@ public class Seatting extends JFrame {
 			int trun = Integer.parseInt(cnt);
 			
 			for(int i=1; i<trun+1; i++) {
-				System.out.println(i);
-				sBtn = new myButton(stmt, id);
+				sBtn = new myButton(stmt, id, i);
 				
 				sBtn.setText(i+"");
 				sBtn.setSize(100,60);
@@ -91,8 +90,6 @@ public class Seatting extends JFrame {
 				sBtn.addActionListener(new addEvent(stmt, id, a, sBtn));
 				panel2.add(sBtn);
 			}
-			
-			
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -108,11 +105,25 @@ public class Seatting extends JFrame {
 		endBtn.setFont(new Font("휴먼모음T", Font.BOLD, 15));
 		c.add(endBtn);
 		
+		projectDialogs.SeattingEndDialog end = new SeattingEndDialog(this, stmt, id);
 		endBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				projectDialogs.SeattingEndDialog end = new SeattingEndDialog(stmt, id);
+				ResultSet srs;
+				try {
+					srs = stmt.executeQuery("select * from seat where id = '"+id+"';");
+					if(srs.next()) {
+						setVisible(false);
+						end.setVisible(true);
+					} else {
+						JOptionPane.showMessageDialog(null, "이용 중인 좌석이 없습니다.", "좌석 미예약",JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("이용완료 버튼 이벤트 오류");
+				}		
 			}
 		});
 		
@@ -136,15 +147,15 @@ class myPanel extends JPanel{
 
 class subPanel extends JPanel{
 	subPanel(int x, int y, int w, int h, String s){
-		setBackground(Color.DARK_GRAY);
+		setBackground(new Color(229,208,178));
 		setSize(w,h);
 		setLocation(x,y);
 		setLayout(new FlowLayout());
 		
 		
 		JLabel label = new JLabel(s);
-		label.setForeground(Color.white);
-		label.setFont(new Font("함초롱돋움", Font.BOLD, 18));
+		label.setForeground(new Color(106,87,80));
+		label.setFont(new Font("굴림", Font.BOLD, 18));
 		this.add(label);
 	}
 }
@@ -152,12 +163,32 @@ class subPanel extends JPanel{
 class myButton extends JButton{
 	Statement stmt;
 	String id;
-	myButton(Statement stmt, String id){
+	int i;
+	myButton(Statement stmt, String id, int i){
 		this.id = id;
 		this.stmt = stmt;
-		setBackground(new Color(147,112,219));
+		this.i = i;
+		
 		setForeground(Color.white);
 		setFont(new Font("휴먼엑스포", Font.BOLD, 15));
+		
+		ResultSet bu;
+		try {
+			bu = stmt.executeQuery("select * from seat where seat_no = '"+i+"';");
+			while(bu.next()) {
+				if("O".equals(bu.getString("seat_lent"))) {
+					setBackground(Color.GRAY);
+				} else {
+					setBackground(new Color(147,112,219));
+				}	
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("좌석 mybutton 오류");
+		}
+		
 	}
 }
 

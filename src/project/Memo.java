@@ -72,6 +72,7 @@ public class Memo extends JFrame{
 		JButton save = new JButton("저장");
 		save.setSize(90,35);
 		save.setLocation(490,5);
+		save.setBackground(new Color(165,137,193));
 		c.add(save);
 		
 		save.addActionListener(new ActionListener() {
@@ -92,6 +93,7 @@ public class Memo extends JFrame{
 		JButton dle = new JButton("전체 삭제");
 		dle.setSize(90,35);
 		dle.setLocation(490,55);
+		dle.setBackground(new Color(253,222,238));
 		c.add(dle);
 		
 		dle.addActionListener(new ActionListener() {

@@ -31,6 +31,7 @@ public class LentDialog extends JDialog {
 	Statement stmt = null;
 	
 	 public LentDialog(Statement stmt, String id, String bookno){
+//		super(jframe, true);	// 모달다이얼로그
 		this.id = id;
 		this.stmt = stmt;
 		this.bookno = bookno;

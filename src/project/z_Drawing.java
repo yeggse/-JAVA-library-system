@@ -40,7 +40,7 @@ class BackBTN extends JButton{
 		setText("뒤로가기");
 		setSize(80,25);
 		setLocation(15,10);
-		setBackground(new Color(28,188,156));
+		setBackground(new Color(181,225,174));
 		setForeground(Color.white);
 		setFont(new Font("휴먼모음T", Font.BOLD, 13));
 				
@@ -105,6 +105,7 @@ class addEvent implements ActionListener{
 						JOptionPane.showMessageDialog(null, "이미 사용중인 좌석입니다. \n 다른 좌석을 선택하세요.", "실패", JOptionPane.WARNING_MESSAGE);
 					} else {
 						stmt.executeUpdate("update seat set seat_lent = 'O', id ='"+id+"' where seat_no = '"+a+"';");
+						sBtn.setBackground(Color.red);
 						JOptionPane.showMessageDialog(null, "좌석 예약을 완료했습니다.", "예약 완료", JOptionPane.PLAIN_MESSAGE);
 					}
 				}	

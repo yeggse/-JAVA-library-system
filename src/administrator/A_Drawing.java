@@ -24,7 +24,7 @@ class BackBTN extends JButton{
 		setText("뒤로가기");
 		setSize(80,25);
 		setLocation(15,10);
-		setBackground(new Color(28,188,156));
+		setBackground(new Color(181,225,174));
 		setForeground(Color.white);
 		setFont(new Font("휴먼모음T", Font.BOLD, 13));
 				

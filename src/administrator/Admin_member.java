@@ -47,6 +47,7 @@ public class Admin_member extends JFrame {
 		setTitle("(두면 도서관)관리자 페이지 : 회원");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
+		c.setBackground(new Color(255,255,176));
 		c.setLayout(null);
 		
 		// 타이틀 만들기
@@ -65,7 +66,7 @@ public class Admin_member extends JFrame {
 		JPanel resultPanel = new JPanel();
 		resultPanel.setSize(488,250);
 		resultPanel.setLocation(45,113);
-		resultPanel.setBackground(new Color(37,49,109));
+		resultPanel.setBackground(new Color(193,179,215));
 		resultPanel.setLayout(null);
 		c.add(resultPanel);
 				
@@ -106,11 +107,14 @@ public class Admin_member extends JFrame {
 		JLabel sname =new JLabel("검색하고자 하는 회원의 이름을 기입하세요");
 		sname.setSize(300,40);
 		sname.setLocation(105,375);
+		sname.setForeground(Color.gray);
+		sname.setBackground(new Color(255,255,176));
 		c.add(sname);
 		
 		JButton search =new JButton("찾기");
 		search.setSize(100,38);
 		search.setLocation(420,408);
+		search.setBackground(new Color(255,237,81));
 		c.add(search);
 		
 		JTextField txt = new JTextField(15);
