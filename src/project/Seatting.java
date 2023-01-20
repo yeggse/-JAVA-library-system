@@ -73,6 +73,8 @@ public class Seatting extends JFrame {
 		
 		// 좌석 버튼
 		JButton sBtn = null;
+		
+		
 		for (int i=0; i<8;i++) {
 			sBtn = new JButton((i+1)+"");
 			sBtn.setSize(90,40);

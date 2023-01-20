@@ -20,7 +20,7 @@ public class BookLent extends JFrame {
 	static String id;
 	int count;
 	// JTable
-	Object ob[][] = new Object[0][5]; //데이터 표시에 열만 나오게 설정
+	Object ob[][] = new Object[0][6]; //데이터 표시에 열만 나오게 설정
 	DefaultTableModel model;  // 데이터 저장 부분
 	JTable table;
 	JScrollPane js;
@@ -195,8 +195,10 @@ public class BookLent extends JFrame {
 									} else {
 										  //선택한 셀의 행 번호계산 
 										  int row = table.getSelectedRow();
+										  
 										  //테이블의 모델객체 얻어오기
 										  TableModel data = table.getModel();
+										  
 										  //선택한 테이블의 row의 모든 값을 이용하여 MemberDTO객체 생성하기
 										  String bookno = (String)data.getValueAt(row,0);
 										  System.out.println(bookno);

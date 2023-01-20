@@ -28,7 +28,7 @@ public class Admin_Book extends JFrame{
 	DefaultTableModel model;  // 데이터 저장 부분
 	JTable table;
 	JScrollPane js;
-	String str[] = {"도 서 명", "출 판 사", "작 가", "위 치"}; // 컬럼 명
+	String str[] = {"번호", "도 서 명", "출 판 사", "작 가", "위 치"}; // 컬럼 명
 	
 	Admin_Book(Statement stmt, String id){
 		this.stmt = stmt;
@@ -82,13 +82,13 @@ public class Admin_Book extends JFrame{
 			System.out.println("select * from book ;");
 			
 			while(srs.next()) {
+				String not = srs.getString("book_no");
 				String titt = srs.getString("book_title");
 				String publt = srs.getString("book_publisher");
 				String autht = srs.getString("book_author");
 				String locat = srs.getString("book_location");
-				String avat = srs.getString("book_pas");
 				
-				Object datat[] = {titt, publt, autht, locat, avat};
+				Object datat[] = {not, titt, publt, autht, locat};
 				model.addRow(datat);
 			}
 		} catch (SQLException e1) {
@@ -132,7 +132,7 @@ public class Admin_Book extends JFrame{
 		del.setLocation(400,380);
 		c.add(del);
 		b_del dd = new b_del(stmt, id);
-		edi.addActionListener(new ActionListener() {
+		del.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
