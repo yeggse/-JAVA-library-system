@@ -112,14 +112,30 @@ public class Main extends JFrame{
 		reserveBtn.setLocation(405,190);
 		c.add(reserveBtn);
 		
-		reserveBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				BookLent lent = new BookLent(stmt, id);
-				setVisible(false);
-			}
-		});
+//		reserveBtn.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
+//		
+//		try {
+//			ResultSet srs = stmt.executeQuery("select * people where id = '"+id+"';");
+//			while() {
+//				if(srs.next()) {
+//					BookLent lent = new BookLent(stmt, id);
+//					setVisible(false);
+//				}else {
+//					JOptionPane.showMessageDialog(null, "유료회원만 이용 가능합니다.","유료회원 가능 코너", JOptionPane.ERROR_MESSAGE);
+//				}
+//			}
+//			
+//		} catch (SQLException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//			System.out.println("도서예약 버튼 활성화 오류");
+//		}
 		
 		// 메모시스템 버튼
 		JButton MemoBtn = new JButton("Memo");

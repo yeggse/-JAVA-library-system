@@ -6,8 +6,9 @@ import java.sql.*;
 import java.util.*;
 import javax.swing.*;
 
+import project.Intro;
+
 public class PwSearchDialog extends JDialog {
-	String searchRes = "검색결과가 출력됩니다.";
 	
 	public PwSearchDialog(JFrame f){
 		project.Intro s = (project.Intro)f; 
@@ -60,42 +61,76 @@ public class PwSearchDialog extends JDialog {
 		c.add(id);
 		c.add(name);
 		
+		// 비밀번호 수정 버튼 생성
+		JButton setBtn = new JButton("new PW Set");
+		setBtn.setSize(110,25);
+		setBtn.setLocation(130,220);
+		setBtn.setBackground(new Color(94,94,94));
+		setBtn.setForeground(Color.white);
+		c.add(setBtn);
+	
 		// 검색 결과 도출하는 칸
-		// 검색결과가 출력되어야 함.(버튼과 연결되어서)
 		JPanel resultPan = new JPanel();
 		resultPan.setBackground(new Color(232,232,232));
 		resultPan.setLocation(18,260);
 		resultPan.setSize(250,80);
+		resultPan.setLayout(null);
 		c.add(resultPan);
-	
-		JLabel result = new JLabel();
-		result.setLocation(40,40);
-		result.setSize(250,80);
-		result.setText(searchRes);
-		resultPan.add(result);
+				
+		JLabel newpw = new JLabel();
+		newpw.setLocation(5,5);
+		newpw.setSize(250,35);
+		newpw.setText("새로운 비밀번호");
+		resultPan.add(newpw);
 		
-		// 찾기 버튼 생성
-		JButton searchBtn = new JButton("Search");
-		searchBtn.setSize(80,25);
-		searchBtn.setLocation(180,220);
-		searchBtn.setBackground(new Color(94,94,94));
-		searchBtn.setForeground(Color.white);
-		c.add(searchBtn);
+		JLabel repw = new JLabel();
+		repw.setLocation(5,40);
+		repw.setSize(250,35);
+		repw.setText("비밀번호 재입력");
+		resultPan.add(repw);
 		
-		searchBtn.addActionListener(new ActionListener() {
+		JPasswordField np = new JPasswordField(10);
+		np.setSize(135,30);
+		np.setLocation(110,8);
+		resultPan.add(np);
+		
+		JPasswordField ap = new JPasswordField(10);
+		ap.setSize(135,30);
+		ap.setLocation(110,48);
+		resultPan.add(ap);
+		
+		setBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				ResultSet pwsrs;
 				try {
-					ResultSet pwsrs = s.stmt.executeQuery("select * from people where id = '"+id.getText()+"' and name = '"+name.getText()+"';");
-					if(!pwsrs.next()) {
-						result.setText("정보가 존재하지 않습니다.");
+					pwsrs = s.stmt.executeQuery("select * from people where id = '"+id.getText()+"' and name = '"+name.getText()+"';");
+					if(id.getText().equals("")||name.getText().equals("")||np.getText().equals("")||ap.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "모든 정보를 입력해 주세요.", "오류", JOptionPane.WARNING_MESSAGE);
 					} else {
-						result.setText("비밀번호는 "+pwsrs.getString("pw")+"입니다.");
+						if(!pwsrs.next()) {
+							JOptionPane.showMessageDialog(null, "정보가 존재하지 않습니다. \n 입력한 값을 확인하세요.", "오류", JOptionPane.WARNING_MESSAGE);
+						} else {
+							if(!np.getText().equals(ap.getText())) {
+								JOptionPane.showMessageDialog(null, "입력한 비밀번호 값이 다릅니다.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+							}else {
+								try {
+									s.stmt.executeUpdate("update people set pw = '"+np.getText()+"' where id = '"+id.getText()+"' and name ='"+name.getText()+"';");
+									JOptionPane.showMessageDialog(null, "비밀번호 재설정이 완료되었습니다. \n다시 로그인 해 주세요.", "비밀번호 재설정 완료", JOptionPane.INFORMATION_MESSAGE);
+									setVisible(false);
+								} catch (SQLException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+									System.out.println("재설정 버튼 오류");
+								}
+							}
+						}
 					}
-				} catch (SQLException e1) {
+				} catch (SQLException e2) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					e2.printStackTrace();
+					System.out.println("버튼 전체 오류");
 				}
 			}
 		});
