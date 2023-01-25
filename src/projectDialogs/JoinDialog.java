@@ -18,7 +18,14 @@ public class JoinDialog extends JDialog{
 	String royalCheck;
 	String genderRe;
 	boolean dchec;
-	
+	JTextField idfeild;
+	JPasswordField pwfeild;
+	JTextField namefeild;
+	JTextField birthfeild;
+	JTextArea addressfeild;
+	JCheckBox agreeOrNot;
+	JLabel dd;
+	JCheckBox royal;
 	public JoinDialog(JFrame f){
 		project.Intro s = (project.Intro) f;
 		setSize(350,550);
@@ -79,25 +86,94 @@ public class JoinDialog extends JDialog{
 		c.add(genderLabel);
 		c.add(addressLabel);
 		
-		
-		//기본정보 입력
-		JTextField idfeild = new JTextField(8);
-		JPasswordField pwfeild = new JPasswordField(8);
-		JTextField namefeild = new JTextField(8);
-		JTextField birthfeild = new JTextField(8);
-		JTextArea addressfeild = new JTextArea();
-		
+		//id 필드
+		idfeild = new JTextField(8);
 		idfeild.setLocation(145,65);
 		idfeild.setSize(115,28);
+		c.add(idfeild);
+		idfeild.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				JTextField nf = (JTextField)e.getSource();
+				if(nf.getText().length()>7) {
+					e.consume();
+				}
+				
+				// e.getKeyChar() >= 0x61 && e.getKeyChar() <= 0x7A : 영문(소문자) 
+				// e.getKeyChar() >=0x41 && e.getKeyChar() <= 0x5A : 영문(대문자)
+				// e.getKeyChar() >= 0x30 && e.getKeyChar() <= 0x39 : 숫자
+				if (!((e.getKeyChar() >= 0x61 && e.getKeyChar() <= 0x7A) || (e.getKeyChar() >=0x41 && e.getKeyChar() <= 0x5A)
+						|| (e.getKeyChar() >= 0x30 && e.getKeyChar() <= 0x39) || e.getKeyChar() == 8)) {
+					JOptionPane.showMessageDialog(null, "영문 혹은 숫자만 입력하세요", "입력 오류", JOptionPane.WARNING_MESSAGE);
+					e.consume();
+				}
+			}
+		});
+		
+		//pw 필드
+		pwfeild = new JPasswordField(8);
 		pwfeild.setLocation(145,98);
 		pwfeild.setSize(140,28);
+		c.add(pwfeild);
+		pwfeild.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				JTextField nf = (JTextField)e.getSource();
+				if(nf.getText().length()>12) {
+					e.consume();
+				}
+			}
+		});
+		
+		//이름 필드
+		namefeild = new JTextField(8);
 		namefeild.setLocation(145,130);
 		namefeild.setSize(140,28);
+		c.add(namefeild);
+		
+		namefeild.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				JTextField nf = (JTextField)e.getSource();
+				if(nf.getText().length()>7) {
+					e.consume();
+				}
+			}
+		});
+		
+		//생일 필드
+		birthfeild = new JTextField(8);
 		birthfeild.setLocation(145,163);
 		birthfeild.setSize(140,28);
+		c.add(birthfeild);
+		
+		birthfeild.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				JTextField bth = (JTextField)e.getSource();
+				if(bth.getText().length()>5) {
+					e.consume();
+				}
+				
+				char c = e.getKeyChar();
+				if (!Character.isDigit(c) && e.getKeyChar()!=8) {	// 백스페이스, 숫자만 입력가능하도록 
+					e.consume();
+					JOptionPane.showMessageDialog(null, "숫자만 입력하세요", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		
+		//주소 필드
+		addressfeild = new JTextArea();
 		addressfeild.setLocation(145,235);
 		addressfeild.setSize(140,70);
+		c.add(addressfeild);
 		
+		// 성별 선택버튼
 		ButtonGroup g = new ButtonGroup();
 		JRadioButton girl = new JRadioButton("여자");
 		JRadioButton boy = new JRadioButton("남자", true);
@@ -109,34 +185,12 @@ public class JoinDialog extends JDialog{
 		g.add(boy);
 		g.add(girl);
 		
-		c.add(idfeild);
-		c.add(pwfeild);
-		c.add(namefeild);
-		c.add(birthfeild);
 		c.add(boy);
 		c.add(girl);
-		c.add(addressfeild);
 		
-		//생일 필드 이벤트
-		birthfeild.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				JTextField bth = (JTextField)e.getSource();
-				if(bth.getText().length()>5) {
-					e.consume();
-				}
-				
-				char c = e.getKeyChar();
-				if (!Character.isDigit(c)) {
-					e.consume();
-					JOptionPane.showMessageDialog(null, "숫자만 입력하세요", "입력 오류", JOptionPane.WARNING_MESSAGE);
-				}
-			}
-		});
 		
 		// 유료회원 가입 여부
-		JCheckBox royal = new JCheckBox(" 유료회원에 가입하시겠습니까?");
+		royal = new JCheckBox("유료회원에 가입하시겠습니까?");
 		royal.setSize(200,30);
 		royal.setLocation(45,315);
 		c.add(royal);
@@ -152,7 +206,7 @@ public class JoinDialog extends JDialog{
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		c.add(scroll);
 		
-		JCheckBox agreeOrNot = new JCheckBox("약관 동의");
+		agreeOrNot = new JCheckBox("약관 동의");
 		agreeOrNot.setSize(95,30);
 		agreeOrNot.setLocation(200,420);
 		c.add(agreeOrNot);
@@ -165,28 +219,13 @@ public class JoinDialog extends JDialog{
 		CheckBtn.setForeground(Color.white);
 		c.add(CheckBtn);
 		
-		// gender 체크 표시
-		if(girl.isSelected()) {
-			genderRe = "여";
-		} else {
-			genderRe = "남";
-		}
-		
-		// royal 체크 여부
-		if(royal.isSelected()) {
-			royalCheck = "O";
-		} else {
-			royalCheck = "X";
-		}
-		
-		
 		// 중복 확인 버튼
 		JButton doub = new JButton("중복");
 		doub.setSize(60,28);
 		doub.setLocation(263,65);
 		c.add(doub);
 
-		JLabel dd = new JLabel("A");
+		dd = new JLabel("A");
 
 		doub.addActionListener(new ActionListener() {
 			@Override
@@ -197,8 +236,11 @@ public class JoinDialog extends JDialog{
 					if(srs.next()) {
 						JOptionPane.showMessageDialog(null, "이미 사용중인 ID입니다. \n다른 ID를 사용하세요.", "중복 사용", JOptionPane.ERROR_MESSAGE);
 						idfeild.setText(null);
-					}else {
+					} else if(idfeild.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "ID를 입력하세요.", "빈 값 입력", JOptionPane.ERROR_MESSAGE);
+					} else {
 						JOptionPane.showMessageDialog(null, "사용 가능한 ID입니다.", "사용 가능", JOptionPane.INFORMATION_MESSAGE);
+						idfeild.setEnabled(false);
 						dd.setText("B");
 					}
 					
@@ -216,15 +258,13 @@ public class JoinDialog extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				String query = "insert into people values('"+idfeild.getText()+"', '"+pwfeild.getText()+"', '"+namefeild.getText()+"', '"+genderRe+
-						"', '"+addressfeild.getText()+"', '"+royalCheck+"', '"+birthfeild.getText()+"');";
-				
 				//중복 확인
 				if(dd.getText().equals("A")) {
 					dchec = false;
 				} else {
 					dchec = true;
 				}
+				
 				
 				// 실제 이벤트	
 				if(idfeild.getText().equals("") || pwfeild.getText().equals("") || namefeild.getText().equals("") 
@@ -233,8 +273,35 @@ public class JoinDialog extends JDialog{
 					JOptionPane.showMessageDialog(null, "회원가입 실패 \n모든정보 입력하세요.", "실패", JOptionPane.WARNING_MESSAGE);
 				} else if(dchec == false){
 					JOptionPane.showMessageDialog(null, "ID 중복 확인을 실시해 주세요.", "중복확인", JOptionPane.WARNING_MESSAGE);
-				}else {
+				} else {
+					if(!royal.isSelected()) {
+						int answer = JOptionPane.showConfirmDialog(null, "유료 회원만 도서 대여가 가능합니다. \n 정말 유료 회원 등록을 하지 않겠습니까?", "유료 회원 안내", JOptionPane.YES_NO_OPTION);
+						if(answer==JOptionPane.YES_OPTION){  //사용자가 yes를 눌렀을 경우
+							royalCheck = "X";
+						} else{  //사용자가 Yes 이외의 값을 눌렀을 경우
+							royal.isSelected();
+							royalCheck = "O";
+						}
+					}
+					
+					// gender 체크 표시
+					if(girl.isSelected()) {
+						genderRe = "여";
+					} else {
+						genderRe = "남";
+					}
+					
+					// royal 체크 여부
+					if(royal.isSelected()) {
+						royalCheck = "O";
+					} else {
+						royalCheck = "X";
+					}
+					
 					try {
+						String query = "insert into people values('"+idfeild.getText()+"', '"+pwfeild.getText()+"', '"+namefeild.getText()+"', '"+genderRe+
+								"', '"+addressfeild.getText()+"', '"+royalCheck+"', '"+birthfeild.getText()+"', null);";
+						
 						s.stmt.executeUpdate(query);
 						setVisible(false);
 						JOptionPane.showMessageDialog(null, "회원가입이 완료되었습니다. \n 로그인 하세요.", "회원가입 완료", JOptionPane.INFORMATION_MESSAGE);
@@ -250,5 +317,18 @@ public class JoinDialog extends JDialog{
 		setVisible(false);
 	}
 	
+	public void thenew() {	// intro에서 새로 연결할 때, id 필드 입력받을 수 있도록 설정 + 초기화
+		idfeild.setEnabled(true);
+		idfeild.setText(null);
+		pwfeild.setText(null);
+		namefeild.setText(null);
+		birthfeild.setText(null);
+		addressfeild.setText(null);
+		royal.setSelected(false);
+		agreeOrNot.setSelected(false);
+		dd.setText("A");
+	}
+	
 }
+
 

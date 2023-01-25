@@ -137,6 +137,4 @@ public class PwSearchDialog extends JDialog {
 		
 		setVisible(false);
 	}
-
 }
-

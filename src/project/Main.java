@@ -1,14 +1,30 @@
 package project;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 public class Main extends JFrame{
 	static String id;
 	Statement stmt = null;
+	boolean lent=true;
 	
 	public Main(Statement stmt, String id){
 		this.stmt = stmt;
@@ -39,9 +55,60 @@ public class Main extends JFrame{
 		explain.setFont(new Font("본고딕 KR", Font.BOLD, 12));
 		explain.setLocation(100,75);
 		explain.setSize(400,120);
-		c.add(explain);	
+		c.add(explain);
 		
-		// 버튼 설명
+		// 도서 반납 안내 다이얼로그 출력 -> 반납 안하면 대여버튼 외 도서관 시스템 이용 불가.
+		// 오늘 날짜
+		Date now = new Date();
+		
+    	Calendar cal = Calendar.getInstance(); 
+    	cal.setTime(now);
+    	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    	String today = df.format(cal.getTime());
+		System.out.println(today);
+		
+		// 반납 일자(출력하기)
+		try {
+			ResultSet srs = stmt.executeQuery("select * from book where id = '"+id+"';");
+			System.out.println("select * from book where id = '"+id+"';");
+			
+			if(srs.next()) {	//반납도서 존재할 경우
+				String getday = srs.getString("backdate");
+				String fin = getday.substring(0,4)+"-"+getday.substring(6,8)+"-"+getday.substring(10,12);
+				try {
+					Date toDate = df.parse(today);	//String 타입을 Date 타입으로 변환
+					Date endDate = df.parse(fin);
+					
+					// 시간 차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
+					long gap = endDate.getTime() - toDate.getTime();
+					long gapDays = gap / (24 * 60 * 60 * 1000);
+
+					System.out.println("날짜차이=" + gapDays);
+					
+					if(0 <= gapDays && gapDays <= 3) {
+						System.out.println("3일 미만");
+						JOptionPane.showMessageDialog(null, "현재 대여 중인 도서의 반납 일자가 3일 미만 남았습니다.\n 기간 내 반납이 필요합니다.", "반납하세요!", JOptionPane.PLAIN_MESSAGE);
+					} else if(gapDays < 0){
+						JOptionPane.showMessageDialog(null, "현재 대여 중인 도서의 반납 일자가 초과되었습니다.\n 반납이 필요합니다.", "도서 기간 초과", JOptionPane.ERROR_MESSAGE);
+						lent = false;
+					} else {
+						System.out.println("도서 반납 기간 여유");
+					}
+					System.out.println(lent);
+				} catch (ParseException e) {
+					e.printStackTrace();
+					System.out.println("날짜 계산 오류");
+				}
+			} else {System.out.println("도서 미대여 중");}
+			
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			System.out.println("도서 반납 일자 출력 오류");
+		}
+		
+		
+		// 버튼 라벨 설명
 		JLabel searchEx = new JLabel("도서 정보 검색");
 		JLabel recomEx = new JLabel("이 달의 도서 추천");
 		JLabel lentEx = new JLabel("도서 예약 하기");
@@ -56,11 +123,11 @@ public class Main extends JFrame{
 		myinfoEx.setFont(new Font("본고딕", Font.BOLD, 13));
 		seatEx.setFont(new Font("본고딕", Font.BOLD, 13));
 		
-		searchEx.setLocation(69,230);
+		searchEx.setLocation(40,230);
 		searchEx.setSize(100,40);
-		recomEx.setLocation(235,230);
+		recomEx.setLocation(172,230);
 		recomEx.setSize(140,40);
-		lentEx.setLocation(405,230);
+		lentEx.setLocation(317,230);
 		lentEx.setSize(101,40);
 		memoEx.setLocation(80,325);
 		memoEx.setSize(100,40);
@@ -76,11 +143,10 @@ public class Main extends JFrame{
 		c.add(myinfoEx);
 		c.add(seatEx);
 		
-		// 버튼 별 이벤트 활용 필요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// 도서 정보 검색 버튼
 		JButton searchBtn = new JButton("Search");
 		searchBtn.setSize(90,40);
-		searchBtn.setLocation(70,190);
+		searchBtn.setLocation(40,190);
 		c.add(searchBtn);		
 		searchBtn.addActionListener(new ActionListener() {
 			@Override
@@ -94,48 +160,50 @@ public class Main extends JFrame{
 		// 이달의 추천도서 버튼
 		JButton recoBtn = new JButton("Hot");
 		recoBtn.setSize(90,40);
-		recoBtn.setLocation(245,190);
+		recoBtn.setLocation(180,190);
 		c.add(recoBtn);	
 		
 		recoBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-			Recommand Recommand =new Recommand(stmt, id);	
-			setVisible(false);
+				System.out.println(lent);
+				if(lent == false) {
+					JOptionPane.showMessageDialog(null, "도서 반납 후 이용 가능합니다.","도서 미반납 연체", JOptionPane.ERROR_MESSAGE);
+				} else {
+					Recommand Recommand =new Recommand(stmt, id);	
+					setVisible(false);
+				}
 			}
 		});
 		
-		// 도서 예약 버튼
+		// 도서 대여 버튼
 		JButton reserveBtn = new JButton("Lent");
 		reserveBtn.setSize(90,40);
-		reserveBtn.setLocation(405,190);
+		reserveBtn.setLocation(315,190);
 		c.add(reserveBtn);
 		
-//		reserveBtn.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
-//		
-//		try {
-//			ResultSet srs = stmt.executeQuery("select * people where id = '"+id+"';");
-//			while() {
-//				if(srs.next()) {
-//					BookLent lent = new BookLent(stmt, id);
-//					setVisible(false);
-//				}else {
-//					JOptionPane.showMessageDialog(null, "유료회원만 이용 가능합니다.","유료회원 가능 코너", JOptionPane.ERROR_MESSAGE);
-//				}
-//			}
-//			
-//		} catch (SQLException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//			System.out.println("도서예약 버튼 활성화 오류");
-//		}
+		reserveBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					ResultSet srs = stmt.executeQuery("select * from people where id = '"+id+"';");
+					if(srs.next()) {
+						if("O".equals(srs.getString("royal"))) {
+							BookLent lent = new BookLent(stmt, id);
+							setVisible(false);
+						}else {
+							JOptionPane.showMessageDialog(null, "유료회원만 이용 가능합니다.","유료회원 가능 코너", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("도서예약 버튼: 유료회원 확인 오류");
+				}
+			}
+		});
 		
 		// 메모시스템 버튼
 		JButton MemoBtn = new JButton("Memo");
@@ -147,8 +215,12 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Memo memo = new Memo(stmt, id);
+				if(lent == false) {
+					JOptionPane.showMessageDialog(null, "도서 반납 후 이용 가능합니다.","도서 미반납 연체", JOptionPane.ERROR_MESSAGE);
+				} else {
+					Memo memo = new Memo(stmt, id);
 				setVisible(false);
+				}
 			}
 		});
 		
@@ -169,7 +241,7 @@ public class Main extends JFrame{
 		
 		// 독서실 자리예약 버튼
 		JButton SeatBtn = new JButton("Seat");
-		SeatBtn.setSize(90,35);
+		SeatBtn.setSize(90,40);
 		SeatBtn.setLocation(405,290);
 		c.add(SeatBtn);	
 		
@@ -177,11 +249,44 @@ public class Main extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				System.out.println(lent);
+				if(lent == false) {
+					JOptionPane.showMessageDialog(null, "도서 반납 후 이용 가능합니다.","도서 미반납 연체", JOptionPane.ERROR_MESSAGE);
+					System.out.println("예약버튼 연체");
+				} else {
 				Seatting seatarea = new Seatting(stmt, id);
 				setVisible(false);
+				}
 			}
 		});
 		
+		// 공지사항
+		JLabel infoEx = new JLabel("공지사항");
+		infoEx.setFont(new Font("본고딕", Font.BOLD, 13));
+		infoEx.setLocation(468,230);
+		infoEx.setSize(100,40);
+		c.add(infoEx);
+		
+		//공지사항 버튼
+		JButton infoBtn = new JButton("Info");
+		infoBtn.setSize(90,40);
+		infoBtn.setLocation(450,190);
+		c.add(infoBtn);	
+		
+		infoBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println(lent);
+				if(lent == false) {
+					JOptionPane.showMessageDialog(null, "도서 반납 후 이용 가능합니다.","도서 미반납 연체", JOptionPane.ERROR_MESSAGE);
+					System.out.println("예약버튼 연체");
+				} else {
+				Information information = new Information(stmt, id);
+				setVisible(false);
+				}
+			}
+		});
 		
 		//로그아웃
 		logout lg = new logout(this);

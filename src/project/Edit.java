@@ -132,16 +132,6 @@ public class Edit extends JFrame {
 		
 		JLabel nameget = new JLabel();
 		nameget.setSize(200,25);
-		try {
-			ResultSet namesrs = stmt.executeQuery("select name from people where id = '"+id+"';");
-			while (namesrs.next()) {
-				nameget.setText(namesrs.getString("name"));
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			System.out.println("eidt : name 파트 오류");
-		}
 		namep.add(nameget);
 		
 		// 생일 정보 
@@ -153,16 +143,6 @@ public class Edit extends JFrame {
 		
 		JLabel birthget = new JLabel();
 		birthget.setSize(200,25);
-		try {
-			ResultSet birthsrs = stmt.executeQuery("select birth from people where id = '"+id+"';");
-			while (birthsrs.next()) {
-				birthget.setText(birthsrs.getString("birth"));
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			System.out.println("eidt : birth 파트 오류");
-		}
 		birthp.add(birthget);
 		
 		// 주소 정보 수정
@@ -177,6 +157,7 @@ public class Edit extends JFrame {
 		addressfeild.setSize(200,70);
 		addressp.add(addressfeild);
 		
+		
 		//성별
 		JLabel gen = new JLabel();
 		String gender = null;
@@ -187,21 +168,6 @@ public class Edit extends JFrame {
 		c.add(genderp);
 		genderp.add(gen);
 		
-		try {
-			ResultSet gendersrs = stmt.executeQuery("select gender from people where id = '"+id+"';");
-			while (gendersrs.next()) {
-				if("여".equals(gendersrs.getString("gender"))) {
-					gender ="여성";
-				} else {
-					gender ="남성";
-				}
-				gen.setText(gender);
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			System.out.println("eidt : gender 파트 오류");
-		}
 		
 		// 유료회원 가입 여부
 		JCheckBox royal = new JCheckBox(" 유료회원으로 가입하시겠습니까?");
@@ -210,11 +176,27 @@ public class Edit extends JFrame {
 		royal.setLocation(80,420);
 		c.add(royal);
 		
-		// royal 체크 여부
-		if(royal.isSelected()) {
-			royalCheck = "O";
-		} else {
-			royalCheck = "X";
+		// 정보 불러오기
+		try {
+			ResultSet srs = stmt.executeQuery("select * from people where id = '"+id+"';");
+			while (srs.next()) {
+				if("여".equals(srs.getString("gender"))) {
+					gender ="여성";
+				} else {
+					gender ="남성";
+				}
+				gen.setText(gender);
+				addressfeild.setText(srs.getString("address"));
+				birthget.setText(srs.getString("birth"));
+				nameget.setText(srs.getString("name"));
+				if("O".equals(srs.getString("royal"))) {
+					royal.setSelected(true);
+				}
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			System.out.println("eidt : gender 파트 오류");
 		}
 		
 		// 확인 버튼
@@ -225,19 +207,31 @@ public class Edit extends JFrame {
 		edit.setBackground(new Color(0,100,0));
 		edit.setForeground(Color.white);
 		c.add(edit);
-		
+
 		edit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				String query = "update people set pw = '"+pwfeild.getText()+"' and address = '"+addressfeild.getText()+"' and royal = '"+royalCheck+"' where id = 'id';";
+				// royal 체크 여부
+				if(royal.isSelected()) {
+					royalCheck = "O";
+				} else {
+					royalCheck = "X";
+				}
+				
+				String query = "update people set pw = '"+pwfeild.getText()+"', address = '"+addressfeild.getText()+"', royal = '"+royalCheck+"' where id = '"+id+"';";
 				if(pwfeild.getText().equals("")	|| addressfeild.getText().equals("") ) {
 					JOptionPane.showMessageDialog(null, "수정 실패 \n모든정보 입력하세요.", "실패", JOptionPane.WARNING_MESSAGE);
 				} else {
 					try {
 						stmt.executeUpdate(query);
 						setVisible(false);
-						JOptionPane.showMessageDialog(null, "내 정보 수정이 완료되었습니다.", "정보수정 완료", JOptionPane.INFORMATION_MESSAGE);
+						if(royal.isSelected()) {
+							JOptionPane.showMessageDialog(null, "내 정보 수정이 완료되었습니다. \n 유료 회원은 비용이 청구되며, 도서 대여가 가능합니다.", "정보수정 완료", JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(null, "내 정보 수정이 완료되었습니다. ", "정보수정 완료", JOptionPane.INFORMATION_MESSAGE);
+						}
+						
 						Main main = new Main(stmt, id);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block

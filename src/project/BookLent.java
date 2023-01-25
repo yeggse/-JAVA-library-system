@@ -19,6 +19,7 @@ public class BookLent extends JFrame {
 	Statement stmt = null;
 	static String id;
 	int count;
+	LentDialog ldi;
 	// JTable
 	Object ob[][] = new Object[0][6]; //데이터 표시에 열만 나오게 설정
 	DefaultTableModel model;  // 데이터 저장 부분
@@ -27,7 +28,7 @@ public class BookLent extends JFrame {
 	String str[] = {"no","도 서 명", "출 판 사", "작 가", "위 치","대여가능여부"}; // 컬럼 명
 	
 	
-	BookLent(Statement stmt, String id){
+	public BookLent(Statement stmt, String id){
 		this.stmt = stmt;
 		this.id = id;
 		
@@ -92,6 +93,7 @@ public class BookLent extends JFrame {
 		js.setSize(480,180);
 		resultPanel.add(js);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		setVisible(true);
 		
 		JLabel resultintro = new JLabel("찾으시는 도서명을 입력해 주세요.");
@@ -117,7 +119,8 @@ public class BookLent extends JFrame {
 		returnBtn.setForeground(Color.white);
 		c.add(returnBtn);
 		
-		projectDialogs.RetrunDialog redia = new RetrunDialog(stmt,id);
+		projectDialogs.RetrunDialog redia = new RetrunDialog(this, stmt,id);
+		redia.setVisible(false);
 		returnBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -138,7 +141,8 @@ public class BookLent extends JFrame {
 			}
 		});
 		
-		// 검색버튼 이벤트
+		// 검색버튼 이벤트 + 대여 이벤트
+		JFrame jf = this;
 		searchBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -207,8 +211,7 @@ public class BookLent extends JFrame {
 											  if("X".equals(psrs.getString("book_pas"))) {
 												  JOptionPane.showMessageDialog(null, "다른 회원님이 대여 중입니다. \n다른 도서를 대여해 주세요.", "중복 대여", JOptionPane.WARNING_MESSAGE);
 											  }else {
-												  LentDialog ldi = new LentDialog(stmt, id, bookno);
-												  ldi.setVisible(true);
+												  ldi = new LentDialog(jf, stmt, id, bookno); ////////////////////////////////////////////////////////////
 											  }
 										  }
 									}

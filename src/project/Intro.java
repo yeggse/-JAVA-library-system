@@ -14,7 +14,8 @@ import projectDialogs.JoinDialog;
 import projectDialogs.PwSearchDialog;
 
 public class Intro extends JFrame{
-
+	JTextField id ;
+	JPasswordField pw;
 	Connection conn;
 	public Statement stmt = null;
 	
@@ -69,8 +70,8 @@ public class Intro extends JFrame{
 		pwLabel.setSize(40,40);
 		pwLabel.setLocation(50,230);
 		
-		JTextField id = new JTextField(20);
-		JPasswordField pw = new JPasswordField(20);
+		id = new JTextField(20);
+		pw = new JPasswordField(20);
 		id.setSize(200,30);
 		pw.setSize(200,30);
 		id.setLocation(100,185);
@@ -80,38 +81,29 @@ public class Intro extends JFrame{
 		c.add(id);
 		c.add(pw);
 		
-		//PW창 이벤트
+		//입력 창 이벤트
 		pw.setFocusable(true);
 		pw.requestFocus();
+		
+		id.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (KeyEvent.VK_ENTER == e.getKeyCode()) {
+			    	 System.out.println("엔터로 로그인~~");
+						even();
+				}
+			}
+		});
 		
 		pw.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-
 				if (KeyEvent.VK_ENTER == e.getKeyCode()) {
 			    	 System.out.println("엔터로 로그인~~");
-			    	 if(id.getText().equals("admin") && pw.getText().equals("admin")) {
-							Admin_Main admain = new Admin_Main(stmt, id.getText());
-							setVisible(false);
-					} else {
-						try {
-							ResultSet srs = stmt.executeQuery("select * from people where id = '"+id.getText()+"' and pw = '"+pw.getText()+"';");
-							System.out.println("ddddd");
-								if(srs.next()) {
-									Main main = new Main(stmt, id.getText());
-									setVisible(false);
-								} else {
-									JOptionPane.showMessageDialog(null, "로그인 실패", "실패", JOptionPane.WARNING_MESSAGE);
-								}
-						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-							System.out.println("login 버튼 에러");
-						}
-					}
+						even();
 				}
-			    	 
 			}
 		});
 		
@@ -157,25 +149,7 @@ public class Intro extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(id.getText().equals("admin") && pw.getText().equals("admin")) {
-					Admin_Main admain = new Admin_Main(stmt, id.getText());
-					setVisible(false);
-				} else {
-					try {
-						ResultSet srs = stmt.executeQuery("select * from people where id = '"+id.getText()+"' and pw = '"+pw.getText()+"';");
-						System.out.println("ddddd");
-							if(srs.next()) {
-								Main main = new Main(stmt, id.getText());
-								setVisible(false);
-							} else {
-								JOptionPane.showMessageDialog(null, "로그인 실패", "실패", JOptionPane.WARNING_MESSAGE);
-							}
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-						System.out.println("login 버튼 에러");
-					}
-				}
+				even();
 			}
 		});
 		
@@ -211,6 +185,7 @@ public class Intro extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				joindig.setVisible(true);
+				joindig.thenew();
 			}});
 
 		// 하단 라벨
@@ -226,6 +201,28 @@ public class Intro extends JFrame{
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new Intro();
+	}
+	
+	void even() {
+		if(id.getText().equals("admin") && pw.getText().equals("admin")) {
+			Admin_Main admain = new Admin_Main(stmt, id.getText());
+			setVisible(false);
+		} else {
+			try {
+				ResultSet srs = stmt.executeQuery("select * from people where id = '"+id.getText()+"' and pw = '"+pw.getText()+"';");
+				System.out.println("ddddd");
+					if(srs.next()) {
+						Main main = new Main(stmt, id.getText());
+						setVisible(false);
+					} else {
+						JOptionPane.showMessageDialog(null, "로그인 실패", "실패", JOptionPane.WARNING_MESSAGE);
+					}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				System.out.println("login 버튼 에러");
+			}
+		}
 	}
 
 }

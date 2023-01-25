@@ -5,36 +5,35 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import project.BookLent;
 
 public class LentDialog extends JDialog {
 	String info=null;
 	static String id;
 	String bookno;
 	Statement stmt = null;
+	JFrame jframe;
 	
-	 public LentDialog(Statement stmt, String id, String bookno){
-//		super(jframe, true);	// 모달다이얼로그
+	 public LentDialog(JFrame jframe, Statement stmt, String id, String bookno){
+//		super(jframe, true);	// 모달다이얼로그 JFrame jframe, 
 		this.id = id;
 		this.stmt = stmt;
 		this.bookno = bookno;
+		this.jframe = jframe;
 		setSize(400,250);
 		this.setResizable(false);
 		setTitle("도서 대여하기");
@@ -135,6 +134,8 @@ public class LentDialog extends JDialog {
 					System.out.println("update book set id = '"+id+"', backdate = '"+dayreturn+"', lentdate = '"+daynow+"', book_pas = 'X' where book_no = '"+bookno+"';");
 					JOptionPane.showMessageDialog(null, "대여가 완료되었습니다. \n반납일 내 도서 반납을 완료해 주세요.", "대여 완료", JOptionPane.INFORMATION_MESSAGE);
 					setVisible(false);
+					jframe.setVisible(false);////////////////////////////////////
+					BookLent lent = new BookLent(stmt, id);////////////////////////////////////////////////////////////////
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -142,12 +143,23 @@ public class LentDialog extends JDialog {
 				}
 			}
 		});
-		setVisible(false);
+		setVisible(true);
 	 }
 }
 
 class DateCal {
 	String ReturnDay(String txt) {
+//		Date now = new Date();
+//		
+//    	Calendar cal = Calendar.getInstance(); 
+//    	cal.setTime(now);
+//    		
+//    	cal.add(Calendar.DATE, 14); 
+//    	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//    	String strDate = df.format(cal.getTime());
+//    	txt = strDate;
+//    	return txt;
+		
     	Date now = new Date();
     			
     	Calendar cal = Calendar.getInstance(); 
@@ -157,7 +169,16 @@ class DateCal {
     	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     	String strDate = df.format(cal.getTime());
     	txt = strDate;
-    	return txt;
+    	
+    	String array[] = strDate.split("-");
+    	for(int i=0;i<array.length;i++) {
+    		System.out.println(array[i]);
+    	}
+    	String year = array[0];
+    	String month = array[1];
+    	String day = array[2];
+    	String enddate = year + "년 " + month + "월 " + day + "일";	
+    	return enddate;
     	}
 	
 	String TotoDay(String text) {
@@ -165,12 +186,25 @@ class DateCal {
 		
     	Calendar cal = Calendar.getInstance(); 
     	cal.setTime(now);
-    		
-    	int year = cal.get(Calendar.YEAR);
-    	int month = cal.get(Calendar.MONTH) + 1; //0부터 시작하기 때문에 1더해준다
-    	int day = cal.get(Calendar.DAY_OF_MONTH);
-    	String today = year + "년 " + month + "월 " + day + "일 ";	
-    	text=today;
-    	return text;
+    	
+    	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    	String strDate = df.format(cal.getTime());
+    	text = strDate;
+    	
+    	String array[] = strDate.split("-");
+    	for(int i=0;i<array.length;i++) {
+    		System.out.println(array[i]);
+    	}
+    	String year = array[0];
+    	String month = array[1];
+    	String day = array[2];
+    	String enddate = year + "년 " + month + "월 " + day + "일";	
+    	return enddate;
+//    	int year = cal.get(Calendar.YEAR);
+//    	int month = cal.get(Calendar.MONTH) + 1; //0부터 시작하기 때문에 1더해준다
+//    	int day = cal.get(Calendar.DAY_OF_MONTH);
+//    	String today = year + "년 " + month + "월 " + day + "일";	
+//    	text=today;
+//    	return text;
 	}
 }
