@@ -2,29 +2,29 @@
 -- Query: SELECT * FROM psersonalprojet.seat
 LIMIT 0, 1000
 
--- Date: 2023-01-18 17:58
+-- Date: 2023-01-25 18:15
 */
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (1,'O','test1','강호동');
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (2,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (3,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (4,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (5,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (6,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (7,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (8,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (9,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (10,'O','test9',NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (11,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (12,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (13,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (14,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (15,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (16,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (17,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (18,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (19,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (20,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (21,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (22,'X',NULL,NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (23,'O','test8',NULL);
-INSERT INTO `` (`seat_no`,`seat_lent`,`id`,`name`) VALUES (24,'X',NULL,NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (1,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (2,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (3,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (4,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (5,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (6,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (7,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (8,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (9,'O','test1');
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (10,'O','test9');
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (11,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (12,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (13,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (14,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (15,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (16,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (17,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (18,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (19,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (20,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (21,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (22,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (23,'X',NULL);
+INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (24,'X',NULL);

@@ -57,24 +57,30 @@ public class Admin_Main extends JFrame {
 		// 버튼 설명
 		JLabel Book = new JLabel("도서 관리 시스템");
 		JLabel Member = new JLabel("회원 관리 시스템");
+		JLabel info = new JLabel("공지사항 관리 시스템");
 		
 		Book.setFont(new Font("본고딕", Font.BOLD, 15));
 		Member.setFont(new Font("본고딕", Font.BOLD, 15));
+		info.setFont(new Font("본고딕", Font.BOLD, 15));
 		
-		Book.setLocation(110,350);
+		Book.setLocation(80,350);
 		Book.setSize(140,40);
 		Book.setForeground(new Color(255,255,240));
-		Member.setLocation(360,350);
+		Member.setLocation(230,350);
 		Member.setSize(140,40);
 		Member.setForeground(new Color(255,255,240));
+		info.setLocation(370,350);
+		info.setSize(180,40);
+		info.setForeground(new Color(255,255,240));
 		
 		c.add(Book);
 		c.add(Member);
+		c.add(info);
 		
 		// 버튼 생성
 		JButton bookBtn = new JButton();
 		bookBtn.setLocation(70,190);
-		bookBtn.setSize(190,160);
+		bookBtn.setSize(140,160);
 		bookBtn.setBackground(new Color(106,96,169));
 		c.add(bookBtn);
 		
@@ -88,8 +94,8 @@ public class Admin_Main extends JFrame {
 		});
 		
 		JButton memBtn = new JButton();
-		memBtn.setLocation(320,190);
-		memBtn.setSize(190,160);
+		memBtn.setLocation(220,190);
+		memBtn.setSize(140,160);
 		memBtn.setBackground(new Color(251,209,75));
 		c.add(memBtn);
 		
@@ -98,6 +104,21 @@ public class Admin_Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				Admin_member admem = new Admin_member(stmt, id);
+				setVisible(false);
+			}
+		});
+		
+		JButton infoBtn = new JButton();
+		infoBtn.setLocation(370,190);
+		infoBtn.setSize(140,160);
+		infoBtn.setBackground(new Color(106,96,169));
+		c.add(infoBtn);
+		
+		infoBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Admin_info adinfo = new Admin_info(stmt, id);
 				setVisible(false);
 			}
 		});
