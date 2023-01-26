@@ -95,6 +95,7 @@ public class Admin_info extends JFrame{
 			System.out.println("공지 출력 에러");
 		}
 		
+		// 더블클릭하면 이벤트 -> 다이얼로그: 크게 보기 or 수정하기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 		// 추가 버튼
 		JButton add = new JButton("추가");
@@ -103,14 +104,14 @@ public class Admin_info extends JFrame{
 		add.setSize(100,35);
 		add.setLocation(95,380);
 		c.add(add);
-		b_add aa = new b_add(stmt, id);
-//		add.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				aa.setVisible(true);
-//			}
-//		});
+		i_add aa = new i_add(stmt, id, this);
+		add.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				aa.setVisible(true);
+			}
+		});
 		
 		// 수정 버튼
 		JButton edi = new JButton("수정");
@@ -119,14 +120,14 @@ public class Admin_info extends JFrame{
 		edi.setBackground(new Color(117,137,191));
 		edi.setForeground(Color.white);
 		c.add(edi);
-		b_edi ee = new b_edi(stmt, id);
-//		edi.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				ee.setVisible(true);
-//			}
-//		});
+		i_edi ee = new i_edi(stmt, id, this);
+		edi.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ee.setVisible(true);
+			}
+		});
 		
 		// 삭제 버튼
 		JButton del = new JButton("삭제");
@@ -149,10 +150,6 @@ public class Admin_info extends JFrame{
 		c.add(back);
 		
 		setVisible(true);
-	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new Admin_info(stmt, id);
 	}
 
 }
