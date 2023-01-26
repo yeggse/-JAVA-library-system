@@ -159,6 +159,7 @@ public class Ask extends JFrame {
 class ImgThread extends Thread{
 	JPanel adv;
 	int r;
+	boolean flg = true;
 	ImgThread(JPanel adv){
 		this.adv = adv;
 	}
@@ -177,12 +178,16 @@ class ImgThread extends Thread{
 			lbe.setIcon(icon);
 			lbe.setSize(400,100);
 //			lbe.setSize(icon.getIconWidth(),icon.getIconHeight());
+			if(!flg)
+				adv.remove(0);
+			else 
+				flg = !flg;
 			adv.add(lbe);
 			adv.repaint();
 //			adv.notify();
 			System.out.println(r);
 			try {
-				sleep(200);
+				sleep(2000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
