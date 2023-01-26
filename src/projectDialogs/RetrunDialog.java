@@ -138,8 +138,8 @@ public class RetrunDialog extends JFrame{
 					System.out.println("update book set id = null, backdate = null, lentdate = null, book_pas = 'O' where id = '"+id+"';");
 					JOptionPane.showMessageDialog(null, "반납이 완료되었습니다. \n이용해 주셔서 감사합니다.", "반납 완료", JOptionPane.INFORMATION_MESSAGE);
 					setVisible(false);
-					jframe.setVisible(false);////////////////////////////////////////////////
-					BookLent lent = new BookLent(stmt, id);//////////////////////////////////////////////////////////
+					jframe.setVisible(false);
+					BookLent lent = new BookLent(stmt, id);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

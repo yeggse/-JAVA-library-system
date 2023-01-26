@@ -1,4 +1,4 @@
-package projectDialogs;
+package administrator;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -14,20 +14,18 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class infoDia extends JDialog{
+public class i_detail_table extends JDialog{
 	static String id;
 	static Statement stmt = null;
 	static JFrame jframe;
 	String text;
 	String txt;
 	String infono;
-	
-	public infoDia( Statement stmt, String id, String infono) {
+	i_detail_table(Statement stmt, String id, String infono){
 		this.id = id;
 		this.stmt = stmt;
 		this.infono = infono;
-//		this.jframe = jframe;
-//		JFrame jframe,
+		
 		setSize(400,450);
 		this.setResizable(false);
 		setTitle("공지 상세");
@@ -93,8 +91,5 @@ public class infoDia extends JDialog{
 		area.setText(txt);
 		area.setEnabled(false);
 		
-		
-		setVisible(true);
 	}
-	
 }

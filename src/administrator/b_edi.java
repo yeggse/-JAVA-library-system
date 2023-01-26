@@ -36,7 +36,7 @@ public class b_edi extends JDialog{
 		c.add(title);
 		
 		// 수정하고 싶은 도서 명
-		JLabel book = new JLabel("수정 대상 책");
+		JLabel book = new JLabel("수정할 책 이름");
 		book.setSize(150,35);
 		book.setLocation(30,70);
 		c.add(book);

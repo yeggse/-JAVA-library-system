@@ -1,12 +1,13 @@
 package administrator;
 
-import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,11 +16,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class Admin_info extends JFrame{
 	static String id;
@@ -71,14 +74,9 @@ public class Admin_info extends JFrame{
 		setVisible(true);
 		
 		try {
-//			// 검색할 때마다 출력값 초기화
-//			for (int i = 0; i < model.getRowCount();) {
-//	            model.removeRow(0);
-//	        }
-			
 			// 공지 출력
 			ResultSet srs = stmt.executeQuery("select * from info ;");
-			System.out.println("select * from ifno ;");
+			System.out.println("select * from info ;");
 			
 			while(srs.next()) {
 				String not = srs.getString("no");
@@ -95,7 +93,39 @@ public class Admin_info extends JFrame{
 			System.out.println("공지 출력 에러");
 		}
 		
-		// 더블클릭하면 이벤트 -> 다이얼로그: 크게 보기 or 수정하기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// 클릭하기 이벤트 생성
+		JFrame jframe = this;
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				int row = table.getSelectedRow(); 	// 선택한 셀 번호 계산하기
+				TableModel data = table.getModel();	// 테이블의 모델 객체 가져오기
+				
+				String infono = (String)data.getValueAt(row, 0);	//선택한 테이블 row값을 이용해서 memberDTo 객체 생성
+				System.out.println(infono);
+				try {
+					ResultSet srs = stmt.executeQuery("select * from info where no ='"+infono+"';");
+					if(srs.next()) {
+						//다이얼로그 열기
+						String option[] = {"수정하기", "상세보기"};
+						int answer = JOptionPane.showOptionDialog(null,"해당 공지에 대한 활동을 선택해 주세요.","선택하세요.", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,option, option[0]);
+						if(answer==JOptionPane.YES_OPTION){  //사용자가 yes를 눌렀을 경우, 수정 오픈
+							i_edi_table iedi = new i_edi_table(stmt, id, jframe, infono);
+							iedi.setVisible(true);
+						} else if(answer==JOptionPane.NO_OPTION){  //사용자가 no 값을 눌렀을 경우, 상세보기 오픈
+							i_detail_table idet = new i_detail_table(stmt, id, infono);
+							idet.setVisible(true);
+						}
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("info 테이블 클릭 이벤트 오류");
+				}
+			}
+		});
+		
 		
 		// 추가 버튼
 		JButton add = new JButton("추가");
@@ -136,14 +166,15 @@ public class Admin_info extends JFrame{
 		del.setSize(100,35);
 		del.setLocation(400,380);
 		c.add(del);
-		b_del dd = new b_del(stmt, id);
-//		del.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				dd.setVisible(true);
-//			}
-//		});
+		i_del dd = new i_del(stmt, id, this);
+		del.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				dd.setVisible(true);
+			}
+		});
+
 		
 		// 뒤로가기
 		BackBTN back = new BackBTN(id, stmt, this);

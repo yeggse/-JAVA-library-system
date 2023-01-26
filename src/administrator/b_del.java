@@ -36,7 +36,7 @@ public class b_del extends JDialog{
 		c.add(title);
 		
 		// 삭제하고 싶은 도서 명
-		JLabel book = new JLabel("삭제 대상 도서");
+		JLabel book = new JLabel("삭제 대상 도서명");
 		book.setSize(150,35);
 		book.setLocation(30,70);
 		c.add(book);

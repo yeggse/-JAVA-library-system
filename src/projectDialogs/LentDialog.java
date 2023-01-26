@@ -134,8 +134,8 @@ public class LentDialog extends JDialog {
 					System.out.println("update book set id = '"+id+"', backdate = '"+dayreturn+"', lentdate = '"+daynow+"', book_pas = 'X' where book_no = '"+bookno+"';");
 					JOptionPane.showMessageDialog(null, "대여가 완료되었습니다. \n반납일 내 도서 반납을 완료해 주세요.", "대여 완료", JOptionPane.INFORMATION_MESSAGE);
 					setVisible(false);
-					jframe.setVisible(false);////////////////////////////////////
-					BookLent lent = new BookLent(stmt, id);////////////////////////////////////////////////////////////////
+					jframe.setVisible(false);
+					BookLent lent = new BookLent(stmt, id);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

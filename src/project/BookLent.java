@@ -211,7 +211,7 @@ public class BookLent extends JFrame {
 											  if("X".equals(psrs.getString("book_pas"))) {
 												  JOptionPane.showMessageDialog(null, "다른 회원님이 대여 중입니다. \n다른 도서를 대여해 주세요.", "중복 대여", JOptionPane.WARNING_MESSAGE);
 											  }else {
-												  ldi = new LentDialog(jf, stmt, id, bookno); ////////////////////////////////////////////////////////////
+												  ldi = new LentDialog(jf, stmt, id, bookno); 
 											  }
 										  }
 									}
