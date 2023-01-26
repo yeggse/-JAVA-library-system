@@ -14,6 +14,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -125,17 +126,31 @@ public class Ask extends JFrame {
 		nf.setSize(70,35);
 		c.add(nf);
 		
-		// 확인 이벤트 생성하기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		JButton yes = new JButton("확인");
-		yes.setSize(70,35);
-		yes.setLocation(160,405);
-		c.add(yes);
-		yes.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-			}
-		});
+		// 체크박스 DB에도 넣기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		// 확인 이벤트 생성하기
+//		JButton yes = new JButton("확인");
+//		yes.setSize(70,35);
+//		yes.setLocation(160,405);
+//		c.add(yes);
+//		yes.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// TODO Auto-generated method stub
+//				// 번호 자동으로 생성해서 부여하기 : cnt
+//				// 체크박스 확인하기!!!!!!!!!!!!!!!!!!
+//				
+//				if(btxt.getText().equals("") || ptxt.getText().equals("") || atxt.getText().equals("") || rtxt.getText().equals("") || 
+//						(!ra.isSelected()&&!ki.isSelected()&& !mo.isSelected()&&!ch.isSelected()&&!po.isSelected())) {
+//					JOptionPane.showMessageDialog(null, "모든 항목을 입력해 주세요.","미기재 항목",JOptionPane.PLAIN_MESSAGE);
+//				} else {
+//					stmt.executeQuery("INSERT INTO ask(a_no, a_title, a_publish, a_author, a_reason, a_id) "
+//							+ "VALUES('"+cnt+"','"+btxt.getText()+"','"+ptxt.getText()+"','"+atxt.getText()+"','"+rtxt.getText()+"','"+id+"');");
+//					JOptionPane.showMessageDialog(null, "도서 신청을 완료했습니다.","신청완료",JOptionPane.PLAIN_MESSAGE);
+//				}
+//				
+//			}
+//		});
 		
 		
 		// 하단 광고 패널
@@ -147,6 +162,7 @@ public class Ask extends JFrame {
 		ImgThread it = new ImgThread(adv);
 		it.start();
 		
+		// 광고패널 이벤트 넣어주기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! : https://www.slideshare.net/starrynight1/project-java-swinghamburger180119-96655715
 		
 		setVisible(true);
 	}
@@ -159,32 +175,25 @@ public class Ask extends JFrame {
 class ImgThread extends Thread{
 	JPanel adv;
 	int r;
-	boolean flg = true;
 	ImgThread(JPanel adv){
 		this.adv = adv;
 	}
 	public void run() {
 		while(true) {
-			if(r>2) {
+			if(r>4) {
 				r=0;
 			} 
 			
 			JLabel lbe = new JLabel();
-			ImageIcon iconr = putIcon(r);// 여기에 들어가지를 않아!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			ImageIcon iconr = putIcon(r);
 			Image img = iconr.getImage();
 			Image imgfin = img.getScaledInstance(390, 100, java.awt.Image.SCALE_SMOOTH);
 			ImageIcon icon = new ImageIcon(imgfin);
 			
 			lbe.setIcon(icon);
 			lbe.setSize(400,100);
-//			lbe.setSize(icon.getIconWidth(),icon.getIconHeight());
-			if(!flg)
-				adv.remove(0);
-			else 
-				flg = !flg;
-			adv.add(lbe);
+			adv.add(lbe, 0);	// 컴포넌트의 위치를 설정할 수 있음 : 0번째 인덱스에 새롭게 넣어준다는 의미. or boolean flg = true를 선언하고 if문으로 할 수도 있음(하단)
 			adv.repaint();
-//			adv.notify();
 			System.out.println(r);
 			try {
 				sleep(2000);
@@ -205,9 +214,14 @@ class ImgThread extends Thread{
 		case 0: icon = new ImageIcon("image/ad1.jpg"); break;
 		case 1: icon = new ImageIcon("image/ad2.jpg"); break;
 		case 2: icon = new ImageIcon("image/ad3.jpg"); break;
+		case 3: icon = new ImageIcon("image/ad4.png"); break;
+		case 4: icon = new ImageIcon("image/ad5.jpg"); break;
 		}
 		return icon;
 	}
 }
 
-
+//if(!flg)
+//	adv.remove(0);	// 배너가 중첩되어서 만들어지지 않도록 하는 것.
+//else 
+//	flg = !flg;
