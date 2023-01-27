@@ -2,19 +2,20 @@ package project;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -96,10 +97,10 @@ public class Ask extends JFrame {
 		gan.setLocation(40,310);
 		c.add(gan);
 		
-		JCheckBox ra = new JCheckBox("소설");
-		ra.setLocation(100,315);
-		ra.setSize(90,35);
-		c.add(ra);
+		JCheckBox nov = new JCheckBox("소설");
+		nov.setLocation(100,315);
+		nov.setSize(90,35);
+		c.add(nov);
 		
 		JCheckBox ki = new JCheckBox("아동");
 		ki.setLocation(190,315);
@@ -128,7 +129,7 @@ public class Ask extends JFrame {
 		
 		// 체크박스 DB에도 넣기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
-		// 확인 이벤트 생성하기
+////		 확인 이벤트 생성하기
 //		JButton yes = new JButton("확인");
 //		yes.setSize(70,35);
 //		yes.setLocation(160,405);
@@ -162,8 +163,6 @@ public class Ask extends JFrame {
 		ImgThread it = new ImgThread(adv);
 		it.start();
 		
-		// 광고패널 이벤트 넣어주기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! : https://www.slideshare.net/starrynight1/project-java-swinghamburger180119-96655715
-		
 		setVisible(true);
 	}
 	public static void main(String[] args) {
@@ -175,9 +174,36 @@ public class Ask extends JFrame {
 class ImgThread extends Thread{
 	JPanel adv;
 	int r;
+	String url;
 	ImgThread(JPanel adv){
 		this.adv = adv;
+		
+		// 광고패널 이벤트
+		adv.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println(r);
+				switch(r) {
+				case 0: url = "https://www.naver.com/"; break;
+				case 1: url = "https://www.daum.net/"; break;
+				case 2: url = "https://www.nate.com/"; break;
+				case 3: url = "https://www.google.com/"; break;
+				case 4: url = "https://www.bing.com/"; break;
+				}
+				try {
+					Desktop.getDesktop().browse(new URI(url));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
+	
 	public void run() {
 		while(true) {
 			if(r>4) {
@@ -194,7 +220,8 @@ class ImgThread extends Thread{
 			lbe.setSize(400,100);
 			adv.add(lbe, 0);	// 컴포넌트의 위치를 설정할 수 있음 : 0번째 인덱스에 새롭게 넣어준다는 의미. or boolean flg = true를 선언하고 if문으로 할 수도 있음(하단)
 			adv.repaint();
-			System.out.println(r);
+
+			
 			try {
 				sleep(2000);
 			} catch (InterruptedException e) {
@@ -204,7 +231,6 @@ class ImgThread extends Thread{
 			}
 			
 			r++;
-			
 		}
 	}
 	
@@ -220,6 +246,7 @@ class ImgThread extends Thread{
 		return icon;
 	}
 }
+
 
 //if(!flg)
 //	adv.remove(0);	// 배너가 중첩되어서 만들어지지 않도록 하는 것.
