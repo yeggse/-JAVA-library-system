@@ -38,7 +38,7 @@ public class Admin_Book extends JFrame{
 		setTitle("(두면 도서관)관리자 페이지 : 도서");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
-		c.setBackground(new Color(191,213,232));
+		c.setBackground(new Color(255, 218, 185));
 		c.setLayout(null);
 		
 		// 타이틀 만들기
@@ -99,10 +99,7 @@ public class Admin_Book extends JFrame{
 		
 		
 		// 추가 버튼
-		JButton add = new JButton("추가");
-		add.setBackground(new Color(117,137,191));
-		add.setForeground(Color.white);
-		add.setSize(100,35);
+		bookButton add = new bookButton("추가");
 		add.setLocation(95,380);
 		c.add(add);
 		b_add aa = new b_add(stmt, id);
@@ -115,11 +112,8 @@ public class Admin_Book extends JFrame{
 		});
 		
 		// 수정 버튼
-		JButton edi = new JButton("수정");
-		edi.setSize(100,35);
+		bookButton edi = new bookButton("수정");
 		edi.setLocation(250,380);
-		edi.setBackground(new Color(117,137,191));
-		edi.setForeground(Color.white);
 		c.add(edi);
 		b_edi ee = new b_edi(stmt, id);
 		edi.addActionListener(new ActionListener() {
@@ -131,10 +125,7 @@ public class Admin_Book extends JFrame{
 		});
 		
 		// 삭제 버튼
-		JButton del = new JButton("삭제");
-		del.setBackground(new Color(117,137,191));
-		del.setForeground(Color.white);
-		del.setSize(100,35);
+		bookButton del = new bookButton("삭제");
 		del.setLocation(400,380);
 		c.add(del);
 		b_del dd = new b_del(stmt, id);
@@ -152,5 +143,15 @@ public class Admin_Book extends JFrame{
 		
 		
 		setVisible(true);	
+	}
+}
+
+class bookButton extends JButton{
+	bookButton(String name){
+		this.setText(name);
+		this.setSize(100,35);
+		this.setBackground(new Color(237,136,130));
+		this.setForeground(Color.white);
+		this.setFont(new Font("맑은 고딕", Font.BOLD, 19));
 	}
 }

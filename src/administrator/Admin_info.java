@@ -57,9 +57,9 @@ public class Admin_info extends JFrame{
 		
 		// 결과 도출 패널
 		JPanel resultPanel = new JPanel();
-		resultPanel.setSize(488,250);
-		resultPanel.setLocation(45,113);
-		resultPanel.setBackground(new Color(251,169,133));
+		resultPanel.setSize(488,280);
+		resultPanel.setLocation(45,108);
+		resultPanel.setBackground(new Color(94,126,155));
 		resultPanel.setLayout(null);
 		c.add(resultPanel);
 		
@@ -68,10 +68,10 @@ public class Admin_info extends JFrame{
 		table = new JTable(model);
 		js = new JScrollPane(table);
 		js.setLocation(13,10);
-		js.setSize(460,230);
+		js.setSize(460,260);
 		resultPanel.add(js);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setVisible(true);
 		
 		try {
 			// 공지 출력
@@ -128,11 +128,7 @@ public class Admin_info extends JFrame{
 		
 		
 		// 추가 버튼
-		JButton add = new JButton("추가");
-		add.setBackground(new Color(117,137,191));
-		add.setForeground(Color.white);
-		add.setSize(100,35);
-		add.setLocation(95,380);
+		btnDesign add = new btnDesign("추가", 95);
 		c.add(add);
 		i_add aa = new i_add(stmt, id, this);
 		add.addActionListener(new ActionListener() {
@@ -144,11 +140,7 @@ public class Admin_info extends JFrame{
 		});
 		
 		// 수정 버튼
-		JButton edi = new JButton("수정");
-		edi.setSize(100,35);
-		edi.setLocation(250,380);
-		edi.setBackground(new Color(117,137,191));
-		edi.setForeground(Color.white);
+		btnDesign edi = new btnDesign("수정", 250);
 		c.add(edi);
 		i_edi ee = new i_edi(stmt, id, this);
 		edi.addActionListener(new ActionListener() {
@@ -160,11 +152,7 @@ public class Admin_info extends JFrame{
 		});
 		
 		// 삭제 버튼
-		JButton del = new JButton("삭제");
-		del.setBackground(new Color(117,137,191));
-		del.setForeground(Color.white);
-		del.setSize(100,35);
-		del.setLocation(400,380);
+		btnDesign del = new btnDesign("삭제", 400);
 		c.add(del);
 		i_del dd = new i_del(stmt, id, this);
 		del.addActionListener(new ActionListener() {
@@ -183,4 +171,15 @@ public class Admin_info extends JFrame{
 		setVisible(true);
 	}
 
+}
+
+class btnDesign extends JButton{
+	btnDesign(String name, int x){
+		this.setText(name);
+		this.setBackground(new Color(117,137,191));
+		this.setForeground(Color.white);
+		this.setSize(100,35);
+		this.setLocation(x, 405);
+		this.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+	}
 }

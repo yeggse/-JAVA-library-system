@@ -47,7 +47,7 @@ public class Admin_member extends JFrame {
 		setTitle("(두면 도서관)관리자 페이지 : 회원");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
-		c.setBackground(new Color(255,255,176));
+		c.setBackground(new Color(246, 234, 140));
 		c.setLayout(null);
 		
 		// 타이틀 만들기
@@ -66,7 +66,7 @@ public class Admin_member extends JFrame {
 		JPanel resultPanel = new JPanel();
 		resultPanel.setSize(488,250);
 		resultPanel.setLocation(45,113);
-		resultPanel.setBackground(new Color(193,179,215));
+		resultPanel.setBackground(new Color(248, 202, 0));
 		resultPanel.setLayout(null);
 		c.add(resultPanel);
 				
@@ -114,7 +114,7 @@ public class Admin_member extends JFrame {
 		JButton search =new JButton("찾기");
 		search.setSize(100,38);
 		search.setLocation(420,408);
-		search.setBackground(new Color(255,237,81));
+		search.setBackground(new Color(253, 214, 146));
 		c.add(search);
 		
 		JTextField txt = new JTextField(15);
@@ -229,6 +229,7 @@ public class Admin_member extends JFrame {
 		
 		
 		// 회원 클릭시, 회원 탈퇴 다이알로그 출력
+		JFrame memframe = this;
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -243,7 +244,7 @@ public class Admin_member extends JFrame {
 				  String memno = (String)data.getValueAt(row,0);
 				  System.out.println(memno);
 				  
-				  p_del del = new p_del(stmt, id, memno);
+				  p_del del = new p_del(stmt, id, memno, memframe);
 				  del.setVisible(true);
 			}
 		});

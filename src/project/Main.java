@@ -109,32 +109,20 @@ public class Main extends JFrame{
 		
 		
 		// 버튼 라벨 설명
-		JLabel searchEx = new JLabel("도서 정보 검색");
-		JLabel recomEx = new JLabel("이 달의 도서 추천");
-		JLabel lentEx = new JLabel("도서 예약 하기");
-		JLabel memoEx = new JLabel("메   모   장");
-		JLabel myinfoEx = new JLabel("회원 정보 수정");
-		JLabel seatEx = new JLabel("독서실 자리 예약");
+		myLabel searchEx = new myLabel("도서 정보 검색");
+		myLabel recomEx = new myLabel("이 달의 도서 추천");
+		myLabel lentEx = new myLabel("도서 대여 하기");
+		myLabel memoEx = new myLabel("메   모   장");
+		myLabel myinfoEx = new myLabel("회원 정보 수정");
+		myLabel seatEx = new myLabel("독서실 자리 예약");
 		
-		searchEx.setFont(new Font("본고딕", Font.BOLD, 13));
-		recomEx.setFont(new Font("본고딕", Font.BOLD, 13));
-		lentEx.setFont(new Font("본고딕", Font.BOLD, 13));
-		memoEx.setFont(new Font("본고딕", Font.BOLD, 13));
-		myinfoEx.setFont(new Font("본고딕", Font.BOLD, 13));
-		seatEx.setFont(new Font("본고딕", Font.BOLD, 13));
 		
 		searchEx.setLocation(40,230);
-		searchEx.setSize(100,40);
 		recomEx.setLocation(172,230);
-		recomEx.setSize(140,40);
 		lentEx.setLocation(317,230);
-		lentEx.setSize(101,40);
-		memoEx.setLocation(80,325);
-		memoEx.setSize(100,40);
-		myinfoEx.setLocation(246,325);
-		myinfoEx.setSize(100,40);
-		seatEx.setLocation(399,325);
-		seatEx.setSize(120,40);
+		memoEx.setLocation(53,325);
+		myinfoEx.setLocation(180,325);
+		seatEx.setLocation(310,325);
 		
 		c.add(searchEx);
 		c.add(recomEx);
@@ -208,7 +196,7 @@ public class Main extends JFrame{
 		// 메모시스템 버튼
 		JButton MemoBtn = new JButton("Memo");
 		MemoBtn.setSize(90,40);
-		MemoBtn.setLocation(70,290);
+		MemoBtn.setLocation(40,290);
 		c.add(MemoBtn);	
 		
 		MemoBtn.addActionListener(new ActionListener() {
@@ -227,7 +215,7 @@ public class Main extends JFrame{
 		// 회원정보 수정 버튼
 		JButton InfoBtn = new JButton("My Info");
 		InfoBtn.setSize(90,40);
-		InfoBtn.setLocation(245,290);
+		InfoBtn.setLocation(180,290);
 		c.add(InfoBtn);	
 		
 		InfoBtn.addActionListener(new ActionListener() {
@@ -242,7 +230,7 @@ public class Main extends JFrame{
 		// 독서실 자리예약 버튼
 		JButton SeatBtn = new JButton("Seat");
 		SeatBtn.setSize(90,40);
-		SeatBtn.setLocation(405,290);
+		SeatBtn.setLocation(315,290);
 		c.add(SeatBtn);	
 		
 		SeatBtn.addActionListener(new ActionListener() {
@@ -261,10 +249,8 @@ public class Main extends JFrame{
 		});
 		
 		// 공지사항
-		JLabel infoEx = new JLabel("공지사항");
-		infoEx.setFont(new Font("본고딕", Font.BOLD, 13));
+		myLabel infoEx = new myLabel("공지사항");
 		infoEx.setLocation(468,230);
-		infoEx.setSize(100,40);
 		c.add(infoEx);
 		
 		//공지사항 버튼
@@ -288,6 +274,32 @@ public class Main extends JFrame{
 			}
 		});
 		
+		// 도서 신청
+		myLabel askEx = new myLabel("도서신청");
+		askEx.setLocation(468,325);
+		c.add(askEx);
+		
+		//도서신청 버튼
+		JButton askBtn = new JButton("Ask");
+		askBtn.setSize(90,40);
+		askBtn.setLocation(450,290);
+		c.add(askBtn);	
+		
+		askBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println(lent);
+				if(lent == false) {
+					JOptionPane.showMessageDialog(null, "도서 반납 후 이용 가능합니다.","도서 미반납 연체", JOptionPane.ERROR_MESSAGE);
+					System.out.println("예약버튼 연체");
+				} else {
+				Ask ask = new Ask(stmt, id);
+				setVisible(false);
+				}
+			}
+		});
+		
 		//로그아웃
 		logout lg = new logout(this);
 		c.add(lg);
@@ -298,5 +310,14 @@ public class Main extends JFrame{
 		c.add(outline);
 		
 		setVisible(true);
+	}
+}
+
+class myLabel extends JLabel{
+	myLabel(String name){
+		super(name);
+//		this.setText(name);
+		this.setSize(140,40);
+		this.setFont(new Font("본고딕", Font.BOLD, 13));
 	}
 }

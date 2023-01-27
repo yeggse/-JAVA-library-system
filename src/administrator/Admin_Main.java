@@ -55,33 +55,24 @@ public class Admin_Main extends JFrame {
 		c.add(explain);	
 		
 		// 버튼 설명
-		JLabel Book = new JLabel("도서 관리 시스템");
-		JLabel Member = new JLabel("회원 관리 시스템");
-		JLabel info = new JLabel("공지사항 관리 시스템");
+		mylabel Book = new mylabel("도서 관리 시스템");
+		mylabel Member = new mylabel("회원 관리 시스템");
+		mylabel info = new mylabel("공지사항 시스템");
+		mylabel ask = new mylabel("도서신청 시스템");
 		
-		Book.setFont(new Font("본고딕", Font.BOLD, 15));
-		Member.setFont(new Font("본고딕", Font.BOLD, 15));
-		info.setFont(new Font("본고딕", Font.BOLD, 15));
 		
-		Book.setLocation(80,350);
-		Book.setSize(140,40);
-		Book.setForeground(new Color(255,255,240));
-		Member.setLocation(230,350);
-		Member.setSize(140,40);
-		Member.setForeground(new Color(255,255,240));
-		info.setLocation(370,350);
-		info.setSize(180,40);
-		info.setForeground(new Color(255,255,240));
+		Book.setLocation(25,350);
+		Member.setLocation(165,350);
+		info.setLocation(310,350);
+		ask.setLocation(450,350);
 		
 		c.add(Book);
 		c.add(Member);
 		c.add(info);
+		c.add(ask);
 		
 		// 버튼 생성
-		JButton bookBtn = new JButton();
-		bookBtn.setLocation(70,190);
-		bookBtn.setSize(140,160);
-		bookBtn.setBackground(new Color(106,96,169));
+		mybutton bookBtn = new mybutton(20,253,153,154);
 		c.add(bookBtn);
 		
 		bookBtn.addActionListener(new ActionListener() {
@@ -93,10 +84,7 @@ public class Admin_Main extends JFrame {
 			}
 		});
 		
-		JButton memBtn = new JButton();
-		memBtn.setLocation(220,190);
-		memBtn.setSize(140,160);
-		memBtn.setBackground(new Color(251,209,75));
+		mybutton memBtn = new mybutton(160,251,209,75);
 		c.add(memBtn);
 		
 		memBtn.addActionListener(new ActionListener() {
@@ -108,10 +96,7 @@ public class Admin_Main extends JFrame {
 			}
 		});
 		
-		JButton infoBtn = new JButton();
-		infoBtn.setLocation(370,190);
-		infoBtn.setSize(140,160);
-		infoBtn.setBackground(new Color(106,96,169));
+		mybutton infoBtn = new mybutton(300,106,96,169);
 		c.add(infoBtn);
 		
 		infoBtn.addActionListener(new ActionListener() {
@@ -119,6 +104,17 @@ public class Admin_Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				Admin_info adinfo = new Admin_info(stmt, id);
+				setVisible(false);
+			}
+		});
+		
+		mybutton askBtn = new mybutton(440, 0,128,128);
+		c.add(askBtn);
+		askBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Admin_ask adask = new Admin_ask(stmt, id);
 				setVisible(false);
 			}
 		});
@@ -135,6 +131,28 @@ public class Admin_Main extends JFrame {
 		setVisible(true);
 	}
 	
+}
+
+class mybutton extends JButton{
+	int x, r, b, g;
+	mybutton(int x, int r, int b, int g){
+		this.x = x;
+		this.r = r;
+		this.b = b;
+		this.g = g;
+		this.setSize(130,160);
+		this.setBackground(new Color(r,b,g));
+		this.setLocation(x,190);
+	}
+}
+
+class mylabel extends JLabel{
+	mylabel(String name){
+		super(name);
+		this.setSize(180,40);
+		this.setFont(new Font("본고딕", Font.BOLD, 15));
+		this.setForeground(new Color(255,255,240));
+	}
 }
 
 class logout extends JButton{

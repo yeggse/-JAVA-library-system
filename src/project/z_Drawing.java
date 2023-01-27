@@ -19,7 +19,7 @@ public class z_Drawing {}
 // 가운데 정렬 하느방법..? (joinguide.setHorizontalAlignment(SwingConstants.CENTER); 아닌가)
 class outtroLabel extends JLabel{
 	outtroLabel(int x, int y){
-		setText("<html><h4 style='text-align : center;'>인천광역시 계양구 부평구"
+		setText("<html><h4 style='text-align : center;'>인천광역시 부평구 부평1동"
 				+ " <br>tel. 82+032-123-4567        fax. 32-123-4568 <h4></html>");
 		setFont(new Font("본고딕 KR", Font.BOLD, 11));
 		setOpaque(true);

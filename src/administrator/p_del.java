@@ -11,6 +11,7 @@ import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -18,12 +19,15 @@ public class p_del extends JDialog{
 	Statement stmt;
 	String id;
 	String pono;
-	p_del(Statement stmt, String id, String pono){
+	JFrame jframe;
+	p_del(Statement stmt, String id, String pono, JFrame jframe){
+		super(jframe, true);	// 모달
 		this.stmt = stmt;
 		this.id = id;
 		this.pono = pono;
+		this.jframe = jframe;
 		
-		setSize(300,300);
+		setSize(250,250);
 		this.setResizable(false);
 		setTitle("(관리자) 회원 삭제 시스템");
 		Container c = getContentPane();
@@ -31,15 +35,15 @@ public class p_del extends JDialog{
 		c.setBackground(new Color(224,224,224));
 		
 		JLabel title = new JLabel("회원 삭제 시스템");
-		title.setSize(200,30);
-		title.setLocation(50,20);
-		title.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 23));
+		title.setSize(200,40);
+		title.setLocation(18,30);
+		title.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 24));
 		c.add(title);
 		
 		// 중간 안내
 		JLabel mid = new JLabel();
 		mid.setSize(250,100);
-		mid.setLocation(70,70);
+		mid.setLocation(35,40);
 		mid.setFont(new Font("굴림체", Font.BOLD, 16));
 		c.add(mid);
 		String mm = "";
@@ -58,15 +62,14 @@ public class p_del extends JDialog{
 		
 		JLabel mid2 = new JLabel();
 		mid2.setSize(250,100);
-		mid2.setLocation(80,90);
+		mid2.setLocation(50,60);
 		mid2.setText("탈퇴시키겠습니까?");
 		mid2.setFont(new Font("굴림체", Font.BOLD, 16));
 		c.add(mid2);
 
 		//확인 버튼
-		JButton yes = new JButton("확인");
-		yes.setSize(70,35);
-		yes.setLocation(165,215);
+		memButton yes = new memButton("확인");
+		yes.setLocation(125,155);
 		c.add(yes);
 		yes.addActionListener(new ActionListener() {
 			@Override
@@ -86,9 +89,8 @@ public class p_del extends JDialog{
 		});
 		
 		// 취소 버튼
-		JButton no = new JButton("취소");
-		no.setSize(70,35);
-		no.setLocation(65,215);
+		memButton no = new memButton("취소");
+		no.setLocation(25,155);
 		c.add(no);
 		no.addActionListener(new ActionListener() {
 			@Override
@@ -98,5 +100,15 @@ public class p_del extends JDialog{
 			}
 		});
 		
+	}
+}
+
+class memButton extends JButton{
+	memButton(String name){
+		this.setText(name);
+		this.setSize(90,35);
+		this.setBackground(new Color(139,134,135));
+		this.setForeground(Color.white);
+		this.setFont(new Font("맑은 고딕", Font.BOLD, 19));
 	}
 }

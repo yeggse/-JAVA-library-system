@@ -2,7 +2,7 @@
 -- Query: SELECT * FROM psersonalprojet.seat
 LIMIT 0, 1000
 
--- Date: 2023-01-25 18:15
+-- Date: 2023-01-27 18:13
 */
 INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (1,'X',NULL);
 INSERT INTO `` (`seat_no`,`seat_lent`,`id`) VALUES (2,'X',NULL);

@@ -90,25 +90,24 @@ public class i_add extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				
-				String cnt = null;
+				int cnt = 0;
 				
 				try {
 					// 공지 갯수 찾기
-					ResultSet csrs = stmt.executeQuery("select count(*) from info");
+					ResultSet csrs = stmt.executeQuery("select max(no) from info");
 					while(csrs.next()) {
-						cnt = csrs.getString(1);
+						cnt = Integer.parseInt(csrs.getString(1))+1;
 					}
 					
-					int num = Integer.parseInt(cnt);
 					//입력하기
 					if(ttxt.getText().equals("") || mtxt.getText().equals("") || wtxt.getText().equals("")) {
 						JOptionPane.showMessageDialog(null, "모든 정보를 기재해 주세요", "정보 누락", JOptionPane.WARNING_MESSAGE);
 						System.out.println(cnt+"2");
 					} else {
 						stmt.executeUpdate("insert into info(no, title, main, writer) "
-								+ "values('"+(num+1)+"','"+ttxt.getText()+"','"+mtxt.getText()+"','"+wtxt.getText()+"');");
+								+ "values('"+cnt+"','"+ttxt.getText()+"','"+mtxt.getText()+"','"+wtxt.getText()+"');");
 						System.out.println("insert into info(no, title, main, writer) "
-								+ "values('"+(num+1)+"','"+ttxt.getText()+"','"+mtxt.getText()+"','"+wtxt.getText()+"');");
+								+ "values('"+cnt+"','"+ttxt.getText()+"','"+mtxt.getText()+"','"+wtxt.getText()+"');");
 						JOptionPane.showMessageDialog(null, "공지사항 추가가 완료되었습니다.", "공지 추가", JOptionPane.PLAIN_MESSAGE);
 						setVisible(false);
 						jframe.setVisible(false);
