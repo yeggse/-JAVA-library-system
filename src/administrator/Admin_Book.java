@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,9 +16,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -56,12 +60,12 @@ public class Admin_Book extends JFrame{
 		// 결과 도출 패널
 		JPanel resultPanel = new JPanel();
 		resultPanel.setSize(488,250);
-		resultPanel.setLocation(45,113);
+		resultPanel.setLocation(45,97);
 		resultPanel.setBackground(new Color(251,169,133));
 		resultPanel.setLayout(null);
 		c.add(resultPanel);
 		
-		// 결과 도출 그래프
+		// 기본 결과 도출 그래프
 		model = new DefaultTableModel(ob,str);	// 데이터 저장[][], 컬럼 명
 		table = new JTable(model);
 		js = new JScrollPane(table);
@@ -97,10 +101,132 @@ public class Admin_Book extends JFrame{
 			System.out.println("도서 출력 에러");
 		}
 		
+		// 도서 검색
+		JLabel sname =new JLabel("검색하고자 하는 도서명을 기입하세요");
+		sname.setSize(300,40);
+		sname.setLocation(105,344);
+		sname.setForeground(Color.gray);
+		sname.setBackground(new Color(255,255,176));
+		c.add(sname);
+		
+		JButton search =new JButton("찾기");
+		search.setSize(85,38);
+		search.setLocation(420,375);
+		search.setForeground(Color.white);
+		search.setFont(new Font("맑은 고딕", Font.BOLD, 17));
+		search.setBackground(new Color(237,146,126));
+		c.add(search);
+		
+		JTextField txt = new JTextField(15);
+		txt.setSize(330,38);
+		txt.setLocation(85,375);
+		c.add(txt);
+		
+		// 도서 검색 버튼 이벤트
+		search.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String cnt = null;
+				try {
+					// 검색할 때마다 출력값 초기화
+					for (int i = 0; i < model.getRowCount();) {
+			            model.removeRow(0);
+			        }
+					
+					// 출력 도서 수 도출
+					ResultSet csrs = stmt.executeQuery("select count(*) from book where book_title like '%"+txt.getText()+"%';");
+					while(csrs.next()) {
+						cnt = csrs.getString(1);
+					}
+					
+					// 기능 시작
+					ResultSet srsr = stmt.executeQuery("select * from book where book_title like '%"+txt.getText()+"%';");
+					System.out.println("select * from book where book_title like '%"+txt.getText()+"%';");
+					
+					if(txt.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "찾고자 하는 도서명을 입력해 주세요.", "미입력 오류", JOptionPane.WARNING_MESSAGE);
+					} else {
+						if(cnt.equals("0")) {
+							JOptionPane.showMessageDialog(null, "존재하지 않는 도서입니다.", "미존재 도서", JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							while(srsr.next()) {	
+								System.out.println("dd");
+								String not = srsr.getString("book_no");
+								String titt = srsr.getString("book_title");
+								String publt = srsr.getString("book_publisher");
+								String autht = srsr.getString("book_author");
+								String locat = srsr.getString("book_location");
+								
+								Object datat[] = {not, titt, publt, autht, locat};
+								model.addRow(datat);
+							}
+						}
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("도서 검색 버튼 오류");
+				}
+				
+			}
+		});
+		
+		
+		// 엔터로 검색했을 때!
+		txt.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					String cnt = null;
+					try {
+						// 검색할 때마다 출력값 초기화
+						for (int i = 0; i < model.getRowCount();) {
+				            model.removeRow(0);
+				        }
+						
+						// 출력 도서 수 도출
+						ResultSet csrs = stmt.executeQuery("select count(*) from book where book_title like '%"+txt.getText()+"%';");
+						while(csrs.next()) {
+							cnt = csrs.getString(1);
+						}
+						
+						// 기능 시작
+						ResultSet srsr = stmt.executeQuery("select * from book where book_title like '%"+txt.getText()+"%';");
+						System.out.println("select * from book where book_title like '%"+txt.getText()+"%';");
+						
+						if(txt.getText().equals("")) {
+							JOptionPane.showMessageDialog(null, "찾고자 하는 도서명을 입력해 주세요.", "미입력 오류", JOptionPane.WARNING_MESSAGE);
+						} else {
+							if(cnt.equals("0")) {
+								JOptionPane.showMessageDialog(null, "존재하지 않는 도서입니다.", "미존재 도서", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								while(srsr.next()) {	
+									System.out.println("dd");
+									String not = srsr.getString("book_no");
+									String titt = srsr.getString("book_title");
+									String publt = srsr.getString("book_publisher");
+									String autht = srsr.getString("book_author");
+									String locat = srsr.getString("book_location");
+									
+									Object datat[] = {not, titt, publt, autht, locat};
+									model.addRow(datat);
+								}
+							}
+						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+						System.out.println("도서 검색 엔터 오류");
+					}
+				}
+			}
+		});
+		
 		
 		// 추가 버튼
-		bookButton add = new bookButton("추가");
-		add.setLocation(95,380);
+		bookButton add = new bookButton("추가", 95);
 		c.add(add);
 		b_add aa = new b_add(stmt, id);
 		add.addActionListener(new ActionListener() {
@@ -112,8 +238,7 @@ public class Admin_Book extends JFrame{
 		});
 		
 		// 수정 버튼
-		bookButton edi = new bookButton("수정");
-		edi.setLocation(250,380);
+		bookButton edi = new bookButton("수정", 250);
 		c.add(edi);
 		b_edi ee = new b_edi(stmt, id);
 		edi.addActionListener(new ActionListener() {
@@ -125,8 +250,7 @@ public class Admin_Book extends JFrame{
 		});
 		
 		// 삭제 버튼
-		bookButton del = new bookButton("삭제");
-		del.setLocation(400,380);
+		bookButton del = new bookButton("삭제", 400);
 		c.add(del);
 		b_del dd = new b_del(stmt, id);
 		del.addActionListener(new ActionListener() {
@@ -147,11 +271,12 @@ public class Admin_Book extends JFrame{
 }
 
 class bookButton extends JButton{
-	bookButton(String name){
+	bookButton(String name, int x){
+		this.setLocation(x,420);
 		this.setText(name);
 		this.setSize(100,35);
 		this.setBackground(new Color(237,136,130));
 		this.setForeground(Color.white);
-		this.setFont(new Font("맑은 고딕", Font.BOLD, 19));
+		this.setFont(new Font("맑은 고딕", Font.BOLD, 17));
 	}
 }

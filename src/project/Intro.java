@@ -204,7 +204,7 @@ public class Intro extends JFrame{
 	}
 	
 	void even() {
-		if(id.getText().equals("admin") && pw.getText().equals("admin")) {
+		if(id.getText().equals("admin") && pw.getText().equals("admin")) {	// 관리자 페이지 id, pw = admin
 			Admin_Main admain = new Admin_Main(stmt, id.getText());
 			setVisible(false);
 		} else {

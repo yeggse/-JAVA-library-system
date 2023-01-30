@@ -123,8 +123,8 @@ public class Admin_ask extends JFrame{
 							
 						} else if(answer==JOptionPane.CANCEL_OPTION) {	//삭제하기
 							// 팝업띄워서 이유 받기. 
-							String reasons[] = {"보유도서 존재", "해당 장르 수량 초과", "단종 도서", "공공성 저하 우려", "공공성 없음", "예산 초과", "신청 이유 불명확", "기타"};
-							String deldi = (String)JOptionPane.showInputDialog(null,"삭제 이유를 선택하세요.","삭제 이유", JOptionPane.QUESTION_MESSAGE,null,reasons, reasons[0]);
+							String reasons[] = {"보유도서 존재", "해당 장르 수량 초과", "내용 기재 불충분", "단종 도서", "부적합 도서", "공공성 없음", "예산 초과", "신청 이유 불명확", "기타"};
+							String deldi = (String)JOptionPane.showInputDialog(null,"삭제 이유를 선택하세요.","삭제 이유", JOptionPane.QUESTION_MESSAGE,null,reasons, reasons[2]);
 							
 							
 							System.out.println(count);

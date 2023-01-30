@@ -53,7 +53,7 @@ public class Admin_member extends JFrame {
 		// 타이틀 만들기
 		ImageIcon logoIcon = new ImageIcon("image/mm.png");
 		Image img = logoIcon.getImage();	// 아이콘 크기 수정을 위해 필요한 과정
-		Image imgfin = img.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+		Image imgfin = img.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
 		ImageIcon liIconfin = new ImageIcon(imgfin);
 		JLabel title = new JLabel("회원 관리 페이지", liIconfin, SwingConstants.CENTER);
 		title.setLocation(65,20);
