@@ -10,6 +10,7 @@ import java.util.*;
 import javax.swing.*;
 
 import administrator.Admin_Main;
+import administrator.sub_Admin_Main;
 import projectDialogs.JoinDialog;
 import projectDialogs.PwSearchDialog;
 
@@ -205,7 +206,8 @@ public class Intro extends JFrame{
 	
 	void even() {
 		if(id.getText().equals("admin") && pw.getText().equals("admin")) {	// 관리자 페이지 id, pw = admin
-			Admin_Main admain = new Admin_Main(stmt, id.getText());
+			Admin_Main admain = new Admin_Main(stmt, id.getText());	// 기존에 했던 파트로 넘어감!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			sub_Admin_Main admain = new sub_Admin_Main(stmt, id.getText()); // : sub 파트로 넘어감!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!오류 파악 전임!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			setVisible(false);
 		} else {
 			try {

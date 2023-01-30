@@ -27,8 +27,8 @@ import javax.swing.table.DefaultTableModel;
 public class sub_Admin_Main extends JFrame {
 	static String id;
 	static Statement stmt = null;
-//	sub_Admin_Main(Statement stmt, String id){
-	sub_Admin_Main(){
+//	JPanel mai;
+	public sub_Admin_Main(Statement stmt, String id){
 		this.stmt = stmt;
 		this.id = id;
 		setSize(900,750);
@@ -83,43 +83,182 @@ public class sub_Admin_Main extends JFrame {
 		mb.add(book);
 		mb.add(ask);
 		
-		JMenuItem add = new JMenuItem("Mem_add");
-		mem.add(add);
-		mem.addSeparator();
 		main.add(mb);
 		
 		JPanel mai = new JPanel();
 		mai.setSize(850,460);
 		mai.setLocation(15,230);
 		mai.setLayout(null);
-		mai.setBackground(Color.cyan);
 		c.add(mai);
 		
-		add.addActionListener(new ActionListener() {
+		JMenuItem mc = new JMenuItem("Mem_check");
+		mem.add(mc);
+		mc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-//				String cmd = e.getActionCommand();
-				sub sub = new sub();
-				
-				sub.setLocation(10,10);
-//				sub.setSize(850,460);
+				mai.removeAll();
+				sub_Mem_check sub = new sub_Mem_check(stmt, id);
+				mai.setBackground(new Color(246, 234, 140));
+				sub.setLocation(0,0);
+				mai.add(sub);
+			}
+		});
+		
+		JMenuItem bc = new JMenuItem("Book_check");
+		book.add(bc);
+		bc.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mai.removeAll();
+				sub_Book_check sub = new sub_Book_check(stmt, id);
+				mai.setBackground(new Color(255, 218, 185));
+				sub.setLocation(0,0);
+				mai.add(sub);
+			}
+		});
+		
+		JMenuItem ba = new JMenuItem("Book_add");
+		book.add(ba);
+		ba.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mai.removeAll();
+				sub_Book_check sub = new sub_Book_check(stmt, id);
+				mai.setBackground(new Color(255, 218, 185));
+				sub.setLocation(0,0);
 				mai.add(sub);
 				
+				s_b_add aa = new s_b_add(stmt, id);
+				aa.setVisible(true);
+			}
+		});
+		
+		JMenuItem be = new JMenuItem("Book_edit");
+		book.add(be);
+		be.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mai.removeAll();
+				sub_Book_check sub = new sub_Book_check(stmt, id);
+				mai.setBackground(new Color(255, 218, 185));
+				sub.setLocation(0,0);
+				mai.add(sub);
+				
+				s_b_edi ee = new s_b_edi(stmt, id);
+				ee.setVisible(true);
+			}
+		});
+		
+		JMenuItem bd = new JMenuItem("Book_delete");
+		book.add(bd);
+		bd.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mai.removeAll();
+				sub_Book_check sub = new sub_Book_check(stmt, id);
+				mai.setBackground(new Color(255, 218, 185));
+				sub.setLocation(0,0);
+				mai.add(sub);
+				
+				s_b_del dd = new s_b_del(stmt, id);
+				dd.setVisible(true);
 			}
 		});
 		
 		
+		JMenuItem ic = new JMenuItem("Info__check");
+		info.add(ic);
+		ic.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mai.removeAll();
+				sub_Admin_info sub = new sub_Admin_info(stmt, id);
+				mai.setBackground(new Color(255, 218, 185));
+				sub.setLocation(0,0);
+				mai.add(sub);
+			}
+		});
+		
+		
+		JMenuItem ia = new JMenuItem("Info_add");
+		info.add(ia);
+		ia.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mai.removeAll();
+				sub_Admin_info sub = new sub_Admin_info(stmt, id);
+				mai.setBackground(new Color(255, 218, 185));
+				sub.setLocation(0,0);
+				mai.add(sub);
+				
+				s_i_add aa = new s_i_add(stmt, id);
+				aa.setVisible(true);
+			}
+		});
+		
+		JMenuItem ie = new JMenuItem("Info_edit");
+		info.add(ie);
+		ie.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mai.removeAll();
+				sub_Admin_info sub = new sub_Admin_info(stmt, id);
+				mai.setBackground(new Color(255, 218, 185));
+				sub.setLocation(0,0);
+				mai.add(sub);
+				
+				s_i_edi ee = new s_i_edi(stmt, id);
+				ee.setVisible(true);
+			}
+		});
+		
+		JMenuItem ide = new JMenuItem("Info_delete");
+		info.add(ide);
+		ide.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mai.removeAll();
+				sub_Admin_info sub = new sub_Admin_info(stmt, id);
+				mai.setBackground(new Color(255, 218, 185));
+				sub.setLocation(0,0);
+				mai.add(sub);
+				
+				s_i_del dd = new s_i_del(stmt, id);
+				dd.setVisible(true);
+			}
+		});
+		
+		JMenuItem ac = new JMenuItem("Ask_check");
+		ask.add(ac);
+		ac.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				mai.removeAll();
+				sub_Admin_ask sub = new sub_Admin_ask(stmt, id);
+				mai.setBackground(new Color(255, 218, 185));
+				sub.setLocation(0,0);
+				mai.add(sub);
+			}
+		});
+		
+		
+		//로그아웃
+		logout lg = new logout(this);
+		c.add(lg);
 		
 		setVisible(true);
+		
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-//		new sub_Admin_Main(stmt, id);
-		new sub_Admin_Main();
-	}
-
 }
 
 
