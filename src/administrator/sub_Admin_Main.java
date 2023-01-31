@@ -31,6 +31,8 @@ public class sub_Admin_Main extends JFrame {
 	public sub_Admin_Main(Statement stmt, String id){
 		this.stmt = stmt;
 		this.id = id;
+		JFrame jframe = this;
+		
 		setSize(900,750);
 		this.setResizable(false);
 		setTitle("(두면 도서관)관리자 페이지 입니다.");
@@ -112,7 +114,7 @@ public class sub_Admin_Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				mai.removeAll();
-				sub_Book_check sub = new sub_Book_check(stmt, id);
+				sub_Book_check sub = new sub_Book_check(stmt, id, jframe);
 				mai.setBackground(new Color(255, 218, 185));
 				sub.setLocation(0,0);
 				mai.add(sub);
@@ -126,12 +128,12 @@ public class sub_Admin_Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				mai.removeAll();
-				sub_Book_check sub = new sub_Book_check(stmt, id);
+				sub_Book_check sub = new sub_Book_check(stmt, id, jframe);
 				mai.setBackground(new Color(255, 218, 185));
 				sub.setLocation(0,0);
 				mai.add(sub);
 				
-				s_b_add aa = new s_b_add(stmt, id);
+				s_b_add aa = new s_b_add(stmt, id, jframe);
 				aa.setVisible(true);
 			}
 		});
@@ -143,12 +145,12 @@ public class sub_Admin_Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				mai.removeAll();
-				sub_Book_check sub = new sub_Book_check(stmt, id);
+				sub_Book_check sub = new sub_Book_check(stmt, id, jframe);
 				mai.setBackground(new Color(255, 218, 185));
 				sub.setLocation(0,0);
 				mai.add(sub);
 				
-				s_b_edi ee = new s_b_edi(stmt, id);
+				s_b_edi ee = new s_b_edi(stmt, id, jframe);
 				ee.setVisible(true);
 			}
 		});
@@ -160,12 +162,12 @@ public class sub_Admin_Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				mai.removeAll();
-				sub_Book_check sub = new sub_Book_check(stmt, id);
+				sub_Book_check sub = new sub_Book_check(stmt, id, jframe);
 				mai.setBackground(new Color(255, 218, 185));
 				sub.setLocation(0,0);
 				mai.add(sub);
 				
-				s_b_del dd = new s_b_del(stmt, id);
+				s_b_del dd = new s_b_del(stmt, id, jframe);
 				dd.setVisible(true);
 			}
 		});
@@ -179,7 +181,7 @@ public class sub_Admin_Main extends JFrame {
 				// TODO Auto-generated method stub
 				mai.removeAll();
 				sub_Admin_info sub = new sub_Admin_info(stmt, id);
-				mai.setBackground(new Color(255, 218, 185));
+				mai.setBackground(new Color(191,213,232));
 				sub.setLocation(0,0);
 				mai.add(sub);
 			}
@@ -194,7 +196,7 @@ public class sub_Admin_Main extends JFrame {
 				// TODO Auto-generated method stub
 				mai.removeAll();
 				sub_Admin_info sub = new sub_Admin_info(stmt, id);
-				mai.setBackground(new Color(255, 218, 185));
+				mai.setBackground(new Color(191,213,232));
 				sub.setLocation(0,0);
 				mai.add(sub);
 				
@@ -211,7 +213,7 @@ public class sub_Admin_Main extends JFrame {
 				// TODO Auto-generated method stub
 				mai.removeAll();
 				sub_Admin_info sub = new sub_Admin_info(stmt, id);
-				mai.setBackground(new Color(255, 218, 185));
+				mai.setBackground(new Color(191,213,232));
 				sub.setLocation(0,0);
 				mai.add(sub);
 				
@@ -228,7 +230,7 @@ public class sub_Admin_Main extends JFrame {
 				// TODO Auto-generated method stub
 				mai.removeAll();
 				sub_Admin_info sub = new sub_Admin_info(stmt, id);
-				mai.setBackground(new Color(255, 218, 185));
+				mai.setBackground(new Color(191,213,232));
 				sub.setLocation(0,0);
 				mai.add(sub);
 				
@@ -244,8 +246,8 @@ public class sub_Admin_Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				mai.removeAll();
-				sub_Admin_ask sub = new sub_Admin_ask(stmt, id);
-				mai.setBackground(new Color(255, 218, 185));
+				sub_Admin_ask sub = new sub_Admin_ask(stmt, id, jframe);
+				mai.setBackground(new Color(163,201,199));
 				sub.setLocation(0,0);
 				mai.add(sub);
 			}

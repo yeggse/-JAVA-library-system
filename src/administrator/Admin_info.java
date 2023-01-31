@@ -70,8 +70,6 @@ public class Admin_info extends JFrame{
 		js.setLocation(13,10);
 		js.setSize(460,260);
 		resultPanel.add(js);
-//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setVisible(true);
 		
 		try {
 			// 공지 출력

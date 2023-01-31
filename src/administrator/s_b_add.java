@@ -11,6 +11,7 @@ import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -18,11 +19,13 @@ import javax.swing.JTextField;
 public class s_b_add extends JDialog{
 	Statement stmt;
 	String id;
+	JFrame jframe;
 	
-	
-	s_b_add(Statement stmt, String id){
+	s_b_add(Statement stmt, String id, JFrame jframe){
 		this.stmt = stmt;
-		this.id = id;
+		this.id = id;		
+		this.jframe = jframe;
+
 		setSize(300,400);
 		this.setResizable(false);
 		setTitle("(관리자) 도서 추가 시스템");
@@ -105,18 +108,16 @@ public class s_b_add extends JDialog{
 					//입력하기
 					if(btxt.getText().equals("") || atxt.getText().equals("") || ltxt.getText().equals("") || ptxt.getText().equals("") ) {
 						JOptionPane.showMessageDialog(null, "모든 정보를 기재해 주세요", "정보 누락", JOptionPane.WARNING_MESSAGE);
+						System.out.println(cnt+"2");
 					} else {
 						stmt.executeUpdate("insert into book(book_no, book_title, book_publisher, book_author, book_location, book_pas) "
 								+ "values('"+(num+1)+"','"+btxt.getText()+"','"+ptxt.getText()+"','"+atxt.getText()+"','"+ltxt.getText()+"','O');");
 						System.out.println("insert into book(book_no, book_title, book_publisher, book_author, book_location, book_pas) "
 								+ "values('"+(num+1)+"','"+btxt.getText()+"','"+ptxt.getText()+"','"+atxt.getText()+"','"+ltxt.getText()+"','O');");
 						JOptionPane.showMessageDialog(null, "책 추가가 완료되었습니다.", "정보 입력", JOptionPane.PLAIN_MESSAGE);
-						btxt.setText("");
-						atxt.setText("");
-						ltxt.setText("");
-						ptxt.setText("");
 						setVisible(false);
-						
+						jframe.dispose();
+						Admin_Book adbook = new Admin_Book(stmt, id);
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block

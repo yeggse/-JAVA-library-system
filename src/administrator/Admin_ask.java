@@ -24,6 +24,7 @@ import javax.swing.table.TableModel;
 public class Admin_ask extends JFrame{
 	static String id;
 	static Statement stmt = null;
+	int cnt = 0;
 	
 	//테이블
 	JTable table;
@@ -91,8 +92,23 @@ public class Admin_ask extends JFrame{
 			System.out.println("도서신청 테이블 출력 오류");
 		} 
 		
-		JFrame thisf = this;
+		
+		//cnt 정의
+		ResultSet wsrs;
+		try {
+			wsrs = stmt.executeQuery("select max(book_no) from book");
+			if(wsrs.next()) {
+				cnt = Integer.parseInt(wsrs.getString(1))+1;
+			}
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			System.out.println("count 오류");
+		}
+		
+		
 		// 클릭하기 이벤트
+		JFrame thisf = this;
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -116,18 +132,28 @@ public class Admin_ask extends JFrame{
 							a_detail ade = new a_detail(stmt, id, asknum, thisf);
 							
 						} else if(answer==JOptionPane.NO_OPTION) {	//구매완료
-							stmt.executeUpdate("delete from ask where a_no ='"+asknum+"';");
-							JOptionPane.showMessageDialog(null, "구매한 책으로 설정되어, 리스트에서 삭제되었습니다.","삭제 완료", JOptionPane.INFORMATION_MESSAGE);
-							setVisible(false);
-							Admin_ask adask = new Admin_ask(stmt, id);
+							String input = JOptionPane.showInputDialog(null, "책의 위치를 설정해 주세요.","위치 입력", JOptionPane.INFORMATION_MESSAGE);
+							if(input != null) {
+								String txt = "insert into book(book_no, book_title, book_publisher, book_author, book_location, book_pas) "
+										+ "values('"+cnt+"','"+ssrs.getString("a_title")+"','"+ssrs.getString("a_publish")+"','"+ssrs.getString("a_author")+"','"+input+"','O');";
+								System.out.println(txt);
+								acting act = new acting(stmt, id, txt);	//book DB에 추가
+								act.burn();
+								
+								stmt.executeUpdate("delete from ask where a_no ='"+asknum+"';");
+								JOptionPane.showMessageDialog(null, "구매한 책으로 설정되어, 리스트에서 삭제되었습니다.","삭제 완료", JOptionPane.INFORMATION_MESSAGE);
+								System.out.println(cnt+" ok~~");
+								setVisible(false);
+								Admin_ask adask = new Admin_ask(stmt, id);
+							} else {
+								setVisible(false);
+							}
 							
 						} else if(answer==JOptionPane.CANCEL_OPTION) {	//삭제하기
 							// 팝업띄워서 이유 받기. 
 							String reasons[] = {"보유도서 존재", "해당 장르 수량 초과", "내용 기재 불충분", "단종 도서", "부적합 도서", "공공성 없음", "예산 초과", "신청 이유 불명확", "기타"};
 							String deldi = (String)JOptionPane.showInputDialog(null,"삭제 이유를 선택하세요.","삭제 이유", JOptionPane.QUESTION_MESSAGE,null,reasons, reasons[2]);
 							
-							
-							System.out.println(count);
 							if(deldi != null) {
 								System.out.println("ok");
 								String text = "insert into result(no, a_no, a_id, a_reason, a_title, a_publish, a_author, deli_reason) "

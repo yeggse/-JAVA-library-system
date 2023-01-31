@@ -61,48 +61,48 @@ public class s_a_detail extends JDialog {
 		c.add(title);
 		
 		//제목 라벨
-		myla sub = new myla("도서명 :");
+		mylab sub = new mylab("도서명 :");
 		sub.setLocation(55,80);
 		c.add(sub);
 		
-		myla pu = new myla("출판사 :");
+		mylab pu = new mylab("출판사 :");
 		pu.setLocation(55,125);
 		c.add(pu);
 		
-		myla au = new myla("작 가 :");
+		mylab au = new mylab("작 가 :");
 		au.setLocation(55,170);
 		c.add(au);
 		
-		myla re = new myla("이 유 :");
+		mylab re = new mylab("이 유 :");
 		re.setLocation(55,215);
 		c.add(re);
 		
-		myla man = new myla("신청자 :");
+		mylab man = new mylab("신청자 :");
 		man.setLocation(55,260);
 		c.add(man);
 		
-		myla ga = new myla("장 르 :");
+		mylab ga = new mylab("장 르 :");
 		ga.setLocation(55,305);
 		c.add(ga);
 		
 		// 내용 라벨
-		prin book = new prin(80);
+		print book = new print(80);
 		book.setText(btxt);
 		c.add(book);
 		
-		prin pus = new prin(125);
+		print pus = new print(125);
 		pus.setText(ptxt);
 		c.add(pus);
 		
-		prin aus = new prin(170);
+		print aus = new print(170);
 		aus.setText(atxt);
 		c.add(aus);
 		
-		prin res = new prin(215);
+		print res = new print(215);
 		res.setText(rtxt);
 		c.add(res);
 		
-		prin mans = new prin(260);
+		print mans = new print(260);
 		mans.setText(mtxt);
 		c.add(mans);
 				
@@ -140,7 +140,7 @@ public class s_a_detail extends JDialog {
 			System.out.println("배열오류");
 		}
 	
-		prin gans = new prin(305);
+		print gans = new print(305);
 		gans.setText(gtext);
 		c.add(gans);
 		
@@ -165,21 +165,21 @@ public class s_a_detail extends JDialog {
 	}
 }
 
-class myla extends JLabel{
-	myla(String name){
-		this.setText(name);
-		this.setSize(300,40);
-		this.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 17));
-		this.setOpaque(false);
-		this.setForeground(Color.black);
-		this.setBackground(Color.cyan);
-	}
-}
-
-class prin extends JLabel{
-	prin(int y){
-		this.setSize(300,40);
-		this.setFont(new Font("굴림", Font.BOLD, 16));
-		this.setLocation(150,y);
-	}
-}
+//class mylab extends JLabel{
+//	mylab(String name){
+//		this.setText(name);
+//		this.setSize(300,40);
+//		this.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 17));
+//		this.setOpaque(false);
+//		this.setForeground(Color.black);
+//		this.setBackground(Color.cyan);
+//	}
+//}
+//
+//class print extends JLabel{
+//	print(int y){
+//		this.setSize(300,40);
+//		this.setFont(new Font("굴림", Font.BOLD, 16));
+//		this.setLocation(150,y);
+//	}
+//}

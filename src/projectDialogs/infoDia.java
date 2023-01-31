@@ -26,8 +26,6 @@ public class infoDia extends JDialog{
 		this.id = id;
 		this.stmt = stmt;
 		this.infono = infono;
-//		this.jframe = jframe;
-//		JFrame jframe,
 		setSize(400,450);
 		this.setResizable(false);
 		setTitle("공지 상세");
@@ -91,7 +89,7 @@ public class infoDia extends JDialog{
 		js.setSize(350,260);
 		panel.add(js);
 		area.setText(txt);
-		area.setEnabled(false);
+		area.setEditable(false);
 		
 		
 		setVisible(true);

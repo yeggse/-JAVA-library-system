@@ -59,7 +59,6 @@ public class Admin_member extends JFrame {
 		title.setLocation(65,20);
 		title.setSize(450,80);
 		title.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 30));
-//		title.setForeground(new Color(255,255,240));
 		c.add(title);
 		
 		// 결과 도출 패널
@@ -144,9 +143,6 @@ public class Admin_member extends JFrame {
 					ResultSet srsr = stmt.executeQuery("select * from people where name  like '%"+txt.getText()+"%';");
 					System.out.println("select * from people where name = '%"+txt.getText()+"%';");
 					
-					if(txt.getText().equals("")) {
-						JOptionPane.showMessageDialog(null, "찾고자 하는 회원 이름을 입력해 주세요.", "미입력 오류", JOptionPane.WARNING_MESSAGE);
-					} else {
 						if(cnt.equals("0")) {
 							JOptionPane.showMessageDialog(null, "존재하지 않는 이름입니다.", "미존재 회원", JOptionPane.INFORMATION_MESSAGE);
 						} else {
@@ -163,7 +159,6 @@ public class Admin_member extends JFrame {
 								model.addRow(datad);
 							}
 						}
-					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -197,9 +192,6 @@ public class Admin_member extends JFrame {
 						ResultSet srsr = stmt.executeQuery("select * from people where name  like '%"+txt.getText()+"%';");
 						System.out.println("select * from people where name = '%"+txt.getText()+"%';");
 						
-						if(txt.getText().equals("")) {
-							JOptionPane.showMessageDialog(null, "찾고자 하는 회원 이름을 입력해 주세요.", "미입력 오류", JOptionPane.WARNING_MESSAGE);
-						} else {
 							if(cnt.equals("0")) {
 								JOptionPane.showMessageDialog(null, "존재하지 않는 이름입니다.", "미존재 회원", JOptionPane.INFORMATION_MESSAGE);
 							} else {
@@ -216,7 +208,6 @@ public class Admin_member extends JFrame {
 									model.addRow(datad);
 								}
 							}
-						}
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

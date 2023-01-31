@@ -36,7 +36,7 @@ public class sub_Admin_info extends JPanel{
 	sub_Admin_info(Statement stmt, String id){
 		this.stmt = stmt;
 		this.id = id;
-		setSize(600,500);
+		setSize(850,500);
 		setBackground(new Color(191,213,232));
 		setLayout(null);
 		
@@ -46,15 +46,15 @@ public class sub_Admin_info extends JPanel{
 		Image imgfin = img.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
 		ImageIcon liIconfin = new ImageIcon(imgfin);
 		JLabel title = new JLabel("공지사항 관리 페이지", liIconfin, SwingConstants.CENTER);
-		title.setLocation(65,20);
+		title.setLocation(200,20);
 		title.setSize(450,80);
 		title.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 30));
 		add(title);
 		
 		// 결과 도출 패널
 		JPanel resultPanel = new JPanel();
-		resultPanel.setSize(488,280);
-		resultPanel.setLocation(45,108);
+		resultPanel.setSize(688,280);
+		resultPanel.setLocation(90,108);
 		resultPanel.setBackground(new Color(94,126,155));
 		resultPanel.setLayout(null);
 		add(resultPanel);
@@ -64,7 +64,7 @@ public class sub_Admin_info extends JPanel{
 		table = new JTable(model);
 		js = new JScrollPane(table);
 		js.setLocation(13,10);
-		js.setSize(460,260);
+		js.setSize(660,260);
 		resultPanel.add(js);
 		
 		try {
@@ -121,7 +121,7 @@ public class sub_Admin_info extends JPanel{
 		
 		
 		// 추가 버튼
-		btnDesig add = new btnDesig("추가", 95);
+		btnDesig add = new btnDesig("추가", 200);
 		add(add);
 		s_i_add aa = new s_i_add(stmt, id);
 		add.addActionListener(new ActionListener() {
@@ -133,7 +133,7 @@ public class sub_Admin_info extends JPanel{
 		});
 		
 		// 수정 버튼
-		btnDesig edi = new btnDesig("수정", 250);
+		btnDesig edi = new btnDesig("수정", 380);
 		add(edi);
 		s_i_edi ee = new s_i_edi(stmt, id);
 		edi.addActionListener(new ActionListener() {
@@ -145,7 +145,7 @@ public class sub_Admin_info extends JPanel{
 		});
 		
 		// 삭제 버튼
-		btnDesig del = new btnDesig("삭제", 400);
+		btnDesig del = new btnDesig("삭제", 560);
 		add(del);
 		s_i_del dd = new s_i_del(stmt, id);
 		del.addActionListener(new ActionListener() {

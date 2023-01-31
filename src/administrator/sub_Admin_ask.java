@@ -24,6 +24,7 @@ import javax.swing.table.TableModel;
 public class sub_Admin_ask extends JPanel{
 	static String id;
 	static Statement stmt = null;
+	JFrame jframe;
 	
 	//테이블
 	JTable table;
@@ -32,10 +33,11 @@ public class sub_Admin_ask extends JPanel{
 	String str[] = {"번호","작성자","도서명","작가","출판사","이유"};	
 	DefaultTableModel model;	// 데이터 저장할 수 있는 부분
 	
-	sub_Admin_ask(Statement stmt, String id){
+	sub_Admin_ask(Statement stmt, String id, JFrame jframe){
 		this.stmt = stmt;
 		this.id = id;
-		setSize(600,500);
+		this.jframe = jframe;
+		setSize(850,500);
 		setBackground(new Color(163,201,199));
 		setLayout(null);		
 		
@@ -45,15 +47,15 @@ public class sub_Admin_ask extends JPanel{
 		Image imgfin = img.getScaledInstance(65, 65, java.awt.Image.SCALE_SMOOTH);
 		ImageIcon liIconfin = new ImageIcon(imgfin);
 		JLabel title = new JLabel("도서신청 관리 페이지", liIconfin, SwingConstants.CENTER);
-		title.setLocation(65,20);
+		title.setLocation(200,20);
 		title.setSize(450,80);
 		title.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 30));
 		add(title);
 		
 		// 결과 도출 패널
 		JPanel resultPanel = new JPanel();
-		resultPanel.setSize(488,330);
-		resultPanel.setLocation(45,113);
+		resultPanel.setSize(688,330);
+		resultPanel.setLocation(90,113);
 		resultPanel.setBackground(new Color(121,189,154));
 		resultPanel.setLayout(null);
 		add(resultPanel);
@@ -63,7 +65,7 @@ public class sub_Admin_ask extends JPanel{
 		table = new JTable(model);
 		js = new JScrollPane(table);
 		js.setLocation(10,10);
-		js.setSize(468,310);
+		js.setSize(660,310);
 		resultPanel.add(js);
 		
 		// 내용 출력 기본 테이블
@@ -114,8 +116,8 @@ public class sub_Admin_ask extends JPanel{
 							stmt.executeUpdate("delete from ask where a_no ='"+asknum+"';");
 							JOptionPane.showMessageDialog(null, "구매한 책으로 설정되어, 리스트에서 삭제되었습니다.","삭제 완료", JOptionPane.INFORMATION_MESSAGE);
 							setVisible(false);
-							Admin_ask adask = new Admin_ask(stmt, id);
-							
+							sub_Admin_Main admain = new sub_Admin_Main(stmt, id);
+							jframe.dispose();
 						} else if(answer==JOptionPane.CANCEL_OPTION) {	//삭제하기
 							// 팝업띄워서 이유 받기. 
 							String reasons[] = {"보유도서 존재", "해당 장르 수량 초과", "내용 기재 불충분", "단종 도서", "부적합 도서", "공공성 없음", "예산 초과", "신청 이유 불명확", "기타"};
@@ -135,7 +137,8 @@ public class sub_Admin_ask extends JPanel{
 								stmt.executeUpdate("delete from ask where a_no ='"+asknum+"';");	//ask DB에서 삭제하기
 								JOptionPane.showMessageDialog(null, "삭제 이유 설정되어, 리스트에서 삭제되었습니다.","삭제 완료", JOptionPane.INFORMATION_MESSAGE);
 								setVisible(false);
-								Admin_ask adask = new Admin_ask(stmt, id);
+								jframe.dispose();
+								sub_Admin_Main admain = new sub_Admin_Main(stmt, id);
 							} 
 						}
 						

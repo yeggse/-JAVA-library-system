@@ -124,8 +124,6 @@ public class Information extends JFrame {
 		});
 		
 		
-		
-		
 		setVisible(true);
 		// 뒤로 가기
 		c.add(new BackBTN(id, stmt, this));

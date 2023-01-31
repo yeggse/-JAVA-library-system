@@ -192,6 +192,7 @@ public class BookSearch extends JFrame{
 			}
 		});
 		
+		table.setEnabled(false);
 
 		// 뒤로 가기
 		BackBTN back = new BackBTN(id, stmt, this);

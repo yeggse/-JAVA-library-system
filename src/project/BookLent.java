@@ -142,6 +142,7 @@ public class BookLent extends JFrame {
 		});
 		
 		// 검색버튼 이벤트 + 대여 이벤트
+		
 		JFrame jf = this;
 		searchBtn.addActionListener(new ActionListener() {
 			@Override
@@ -210,7 +211,7 @@ public class BookLent extends JFrame {
 										  if(psrs.next()) {
 											  if("X".equals(psrs.getString("book_pas"))) {
 												  JOptionPane.showMessageDialog(null, "다른 회원님이 대여 중입니다. \n다른 도서를 대여해 주세요.", "중복 대여", JOptionPane.WARNING_MESSAGE);
-											  }else {
+											  } else {
 												  ldi = new LentDialog(jf, stmt, id, bookno); 
 											  }
 										  }
@@ -277,6 +278,8 @@ public class BookLent extends JFrame {
 				}
 			}
 		});
+		
+		
 		
 		// 뒤로 가기
 		c.add(new BackBTN(id, stmt, this));

@@ -28,15 +28,18 @@ import javax.swing.table.DefaultTableModel;
 public class sub_Book_check extends JPanel{
 	static String id;
 	static Statement stmt = null;
+	JFrame jframe;
 	// JTable
 	Object ob[][] = new Object[0][5]; //데이터 표시에 열만 나오게 설정
 	DefaultTableModel model;  // 데이터 저장 부분
 	JTable table;
 	JScrollPane js;
 	String str[] = {"번호", "도 서 명", "출 판 사", "작 가", "위 치"}; // 컬럼 명
-	sub_Book_check(Statement stmt, String id){
+	sub_Book_check(Statement stmt, String id, JFrame jframe){
 		this.stmt = stmt;
 		this.id = id;
+		this.jframe = jframe;
+		
 		setSize(850,500);
 		setBackground(new Color(255, 218, 185));
 		setLayout(null);
@@ -139,9 +142,6 @@ public class sub_Book_check extends JPanel{
 					ResultSet srsr = stmt.executeQuery("select * from book where book_title like '%"+txt.getText()+"%';");
 					System.out.println("select * from book where book_title like '%"+txt.getText()+"%';");
 					
-					if(txt.getText().equals("")) {
-						JOptionPane.showMessageDialog(null, "찾고자 하는 도서명을 입력해 주세요.", "미입력 오류", JOptionPane.WARNING_MESSAGE);
-					} else {
 						if(cnt.equals("0")) {
 							JOptionPane.showMessageDialog(null, "존재하지 않는 도서입니다.", "미존재 도서", JOptionPane.INFORMATION_MESSAGE);
 						} else {
@@ -157,7 +157,6 @@ public class sub_Book_check extends JPanel{
 								model.addRow(datat);
 							}
 						}
-					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -191,9 +190,6 @@ public class sub_Book_check extends JPanel{
 						ResultSet srsr = stmt.executeQuery("select * from book where book_title like '%"+txt.getText()+"%';");
 						System.out.println("select * from book where book_title like '%"+txt.getText()+"%';");
 						
-						if(txt.getText().equals("")) {
-							JOptionPane.showMessageDialog(null, "찾고자 하는 도서명을 입력해 주세요.", "미입력 오류", JOptionPane.WARNING_MESSAGE);
-						} else {
 							if(cnt.equals("0")) {
 								JOptionPane.showMessageDialog(null, "존재하지 않는 도서입니다.", "미존재 도서", JOptionPane.INFORMATION_MESSAGE);
 							} else {
@@ -209,7 +205,6 @@ public class sub_Book_check extends JPanel{
 									model.addRow(datat);
 								}
 							}
-						}
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -223,7 +218,7 @@ public class sub_Book_check extends JPanel{
 		// 추가 버튼
 		booButton add = new booButton("추가", 200);
 		add(add);
-		s_b_add aa = new s_b_add(stmt, id);
+		s_b_add aa = new s_b_add(stmt, id, jframe);
 		add.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -235,7 +230,7 @@ public class sub_Book_check extends JPanel{
 		// 수정 버튼
 		booButton edi = new booButton("수정", 380);
 		add(edi);
-		s_b_edi ee = new s_b_edi(stmt, id);
+		s_b_edi ee = new s_b_edi(stmt, id, jframe);
 		edi.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -247,7 +242,7 @@ public class sub_Book_check extends JPanel{
 		// 삭제 버튼
 		booButton del = new booButton("삭제", 560);
 		add(del);
-		s_b_del dd = new s_b_del(stmt, id);
+		s_b_del dd = new s_b_del(stmt, id, jframe);
 		del.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -256,7 +251,7 @@ public class sub_Book_check extends JPanel{
 			}
 		});
 		
-		
+		table.setEnabled(false);
 		setVisible(true);	
 	}
 }

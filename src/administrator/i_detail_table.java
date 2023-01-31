@@ -89,7 +89,7 @@ public class i_detail_table extends JDialog{
 		js.setSize(350,260);
 		panel.add(js);
 		area.setText(txt);
-		area.setEnabled(false);
+		area.setEditable(false);
 		
 	}
 }

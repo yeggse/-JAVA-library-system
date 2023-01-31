@@ -144,9 +144,6 @@ public class Admin_Book extends JFrame{
 					ResultSet srsr = stmt.executeQuery("select * from book where book_title like '%"+txt.getText()+"%';");
 					System.out.println("select * from book where book_title like '%"+txt.getText()+"%';");
 					
-					if(txt.getText().equals("")) {
-						JOptionPane.showMessageDialog(null, "찾고자 하는 도서명을 입력해 주세요.", "미입력 오류", JOptionPane.WARNING_MESSAGE);
-					} else {
 						if(cnt.equals("0")) {
 							JOptionPane.showMessageDialog(null, "존재하지 않는 도서입니다.", "미존재 도서", JOptionPane.INFORMATION_MESSAGE);
 						} else {
@@ -162,7 +159,6 @@ public class Admin_Book extends JFrame{
 								model.addRow(datat);
 							}
 						}
-					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -196,9 +192,6 @@ public class Admin_Book extends JFrame{
 						ResultSet srsr = stmt.executeQuery("select * from book where book_title like '%"+txt.getText()+"%';");
 						System.out.println("select * from book where book_title like '%"+txt.getText()+"%';");
 						
-						if(txt.getText().equals("")) {
-							JOptionPane.showMessageDialog(null, "찾고자 하는 도서명을 입력해 주세요.", "미입력 오류", JOptionPane.WARNING_MESSAGE);
-						} else {
 							if(cnt.equals("0")) {
 								JOptionPane.showMessageDialog(null, "존재하지 않는 도서입니다.", "미존재 도서", JOptionPane.INFORMATION_MESSAGE);
 							} else {
@@ -213,7 +206,6 @@ public class Admin_Book extends JFrame{
 									Object datat[] = {not, titt, publt, autht, locat};
 									model.addRow(datat);
 								}
-							}
 						}
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
@@ -228,7 +220,7 @@ public class Admin_Book extends JFrame{
 		// 추가 버튼
 		bookButton add = new bookButton("추가", 95);
 		c.add(add);
-		b_add aa = new b_add(stmt, id);
+		b_add aa = new b_add(stmt, id, this);
 		add.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -240,7 +232,7 @@ public class Admin_Book extends JFrame{
 		// 수정 버튼
 		bookButton edi = new bookButton("수정", 250);
 		c.add(edi);
-		b_edi ee = new b_edi(stmt, id);
+		b_edi ee = new b_edi(stmt, id, this);
 		edi.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -252,7 +244,7 @@ public class Admin_Book extends JFrame{
 		// 삭제 버튼
 		bookButton del = new bookButton("삭제", 400);
 		c.add(del);
-		b_del dd = new b_del(stmt, id);
+		b_del dd = new b_del(stmt, id, this);
 		del.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -265,7 +257,7 @@ public class Admin_Book extends JFrame{
 		BackBTN back = new BackBTN(id, stmt, this);
 		c.add(back);
 		
-		
+		table.setEnabled(false);
 		setVisible(true);	
 	}
 }

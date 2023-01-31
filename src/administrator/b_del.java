@@ -11,6 +11,7 @@ import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -18,9 +19,11 @@ import javax.swing.JTextField;
 public class b_del extends JDialog{
 	Statement stmt;
 	String id;
-	b_del(Statement stmt, String id){
+	JFrame jframe;
+	b_del(Statement stmt, String id, JFrame jframe){
 		this.stmt = stmt;
 		this.id = id;
+		this.jframe = jframe;
 		
 		setSize(300,300);
 		this.setResizable(false);
@@ -79,6 +82,8 @@ public class b_del extends JDialog{
 							System.out.println("update book set book_location='"+ntxt.getText()+"' where book_title='"+btxt.getText()+"';");
 							JOptionPane.showMessageDialog(null, "책 정보 삭제가 완료되었습니다.", "삭제 완료", JOptionPane.INFORMATION_MESSAGE);
 							setVisible(false);
+							jframe.dispose();
+							Admin_Book adbook = new Admin_Book(stmt, id);
 						}
 					}
 				} catch (SQLException e1) {

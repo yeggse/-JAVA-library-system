@@ -23,11 +23,12 @@ import javax.swing.table.DefaultTableModel;
 public class b_add extends JDialog{
 	Statement stmt;
 	String id;
+	JFrame jframe;
 	
-	
-	b_add(Statement stmt, String id){
+	b_add(Statement stmt, String id, JFrame jframe){
 		this.stmt = stmt;
 		this.id = id;
+		this.jframe = jframe;
 		setSize(300,400);
 		this.setResizable(false);
 		setTitle("(관리자) 도서 추가 시스템");
@@ -118,6 +119,8 @@ public class b_add extends JDialog{
 								+ "values('"+(num+1)+"','"+btxt.getText()+"','"+ptxt.getText()+"','"+atxt.getText()+"','"+ltxt.getText()+"','O');");
 						JOptionPane.showMessageDialog(null, "책 추가가 완료되었습니다.", "정보 입력", JOptionPane.PLAIN_MESSAGE);
 						setVisible(false);
+						jframe.dispose();
+						Admin_Book adbook = new Admin_Book(stmt, id);
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block

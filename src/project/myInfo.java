@@ -1,12 +1,25 @@
 package project;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
+import java.util.Vector;
 
-import project.Recommand.myPanel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import projectDialogs.OutDia;
 
 public class myInfo extends JFrame{
@@ -36,13 +49,15 @@ public class myInfo extends JFrame{
 		
 		// 레이블
 		JLabel idla = new JLabel("ID");
-		JLabel pwla = new JLabel("PW");
+		JLabel pwla = new JLabel("유료 회원");
 		JLabel namela = new JLabel("이름");
 		JLabel birthla = new JLabel("생년월일");
 		JLabel genderla = new JLabel("성별");
 		JLabel addressla = new JLabel("주소");
 		JLabel bookla = new JLabel("대여 중인 도서");
 		JLabel rebookla = new JLabel("도서 반납 일자");
+		JLabel askla = new JLabel("구매 신청 도서");
+
 		
 		idla.setSize(100,30);
 		idla.setLocation(80,105);
@@ -84,6 +99,11 @@ public class myInfo extends JFrame{
 		rebookla.setFont(new Font("함초롱돋움",Font.BOLD, 17));
 		c.add(rebookla);
 		
+		askla.setSize(150,30);
+		askla.setLocation(80,460);
+		askla.setFont(new Font("함초롱돋움",Font.BOLD, 20));
+		c.add(askla);
+		
 		//패널
 		JPanel idp = new JPanel();
 		JPanel pwp = new JPanel();
@@ -107,26 +127,31 @@ public class myInfo extends JFrame{
 		idp.add(idget);
 		
 		
-		// pw 정보 출력
+		// 유료회원 정보 출력
 		pwp.setLocation(200,145);
 		pwp.setSize(250,30);
 		pwp.setLayout(new FlowLayout());
 		pwp.setBackground(new Color(245,245,245));
 		c.add(pwp);
 		
-		JLabel pwget = new JLabel();
-		pwget.setSize(200,25);
+		String ro = "";
+		JLabel royalck = new JLabel();
+		royalck.setSize(300,30);
+		pwp.add(royalck);
 		try {
-			ResultSet pwsrs = stmt.executeQuery("select pw from people where id = '"+id+"';");
-			while (pwsrs.next()) {
-				pwget.setText(pwsrs.getString("pw"));
+			ResultSet royalsrs = stmt.executeQuery("select royal from people where id = '"+id+"';");
+			while (royalsrs.next()) {
+				if("O".equals(royalsrs.getString("royal"))) {
+					royalck.setText("유료회원 가입 중");
+				} else {
+					royalck.setText("유료회원 미가입");
+				}
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			System.out.println("my info : pw 파트 오류");
+			System.out.println("my info : royal 파트 오류");
 		}
-		pwp.add(pwget);
 		
 		
 		// 이름 정보 출력
@@ -265,33 +290,33 @@ public class myInfo extends JFrame{
 		}
 		
 		
-		// 유료회원 가입 여부
-		String ro = "";
+		// 도서 신청 내용 출력
+		JPanel rp = new JPanel();
+		rp.setLocation(200,460);
+		rp.setSize(250,30);
+		rp.setLayout(new FlowLayout());
+		rp.setBackground(new Color(245,245,245));
+		c.add(rp);
 		
+		Vector<String> arr = new Vector<String>();
+		String ar[] = null;
+		String gtext = null;
 		try {
-			ResultSet royalsrs = stmt.executeQuery("select royal from people where id = '"+id+"';");
-			while (royalsrs.next()) {
-				if("O".equals(royalsrs.getString("royal"))) {
-					ro ="image/royalok.PNG";
-				} else {
-					ro ="image/noroyal.PNG";
-				}
-				ImageIcon royalIcon = new ImageIcon(ro);
-				Image royalimg = royalIcon.getImage();	// 아이콘 크기 수정을 위해 필요한 과정
-				Image royalimgfin = royalimg.getScaledInstance(250, 30, java.awt.Image.SCALE_SMOOTH);
-				ImageIcon royalIconfin = new ImageIcon(royalimgfin);
-				
-				JLabel royal = new JLabel(royalIconfin);
-				royal.setSize(300,30);
-				royal.setLocation(80,460);
-				c.add(royal);
+			ResultSet srs = stmt.executeQuery("select * from ask where a_id = '"+id+"';");
+			while(srs.next()) {
+				arr.add(srs.getString("a_title"));
 			}
+			ar = arr.toArray(new String[arr.size()]);
+			gtext = Arrays.toString(ar);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-			System.out.println("my info : royal 파트 오류");
+			System.out.println("도서신청 오류");
 		}
-				
+		
+		JLabel ask = new JLabel(gtext);
+		ask.setSize(200,25);
+		rp.add(ask);
 		
 		// 수정 버튼
 		JButton edit = new JButton("정보수정");
@@ -334,5 +359,9 @@ public class myInfo extends JFrame{
 		c.add(back);
 				
 		setVisible(true);
+	}
+	private JCheckBox JCheckBox(String string) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

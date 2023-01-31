@@ -8,20 +8,27 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 public class b_edi extends JDialog{
 	Statement stmt;
 	String id;
+	JFrame jframe;
 	
-	b_edi(Statement stmt, String id){
+	b_edi(Statement stmt, String id, JFrame jframe){
 		this.stmt = stmt;
 		this.id = id;
+		this.jframe = jframe;
+		
 		setSize(300,300);
 		this.setResizable(false);
 		setTitle("(관리자) 도서 수정 시스템");
@@ -41,10 +48,28 @@ public class b_edi extends JDialog{
 		book.setLocation(30,70);
 		c.add(book);
 		
-		JTextField btxt = new JTextField(10);
-		btxt.setSize(155,35);
-		btxt.setLocation(100,95);
-		c.add(btxt);
+		Vector<String> arr = new Vector<String>();
+		String arrlist[] = null;
+		try {
+			ResultSet srs = stmt.executeQuery("select * from book;");
+			
+			while(srs.next()) {
+				arr.add(srs.getString("book_title"));
+			}
+			arrlist = arr.toArray(new String[arr.size()]);
+			
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			System.out.println("list 오류");
+		}
+		
+		JList<String> list = new JList<String>(arrlist);
+		JScrollPane sp = new JScrollPane(list);
+		sp.setSize(250,40);
+		sp.setLocation(20,100);
+		c.add(sp);
+		
 		
 		// 위치 - 수정
 		JLabel loca = new JLabel("변경될 위치");
@@ -53,8 +78,8 @@ public class b_edi extends JDialog{
 		c.add(loca);
 		
 		JTextField ltxt = new JTextField(10);
-		ltxt.setSize(155,35);
-		ltxt.setLocation(100,160);
+		ltxt.setSize(250,35);
+		ltxt.setLocation(20,175);
 		c.add(ltxt);
 		
 		//확인 버튼
@@ -66,19 +91,23 @@ public class b_edi extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				System.out.println(list.getSelectedValue());
 				try {
-					if(ltxt.getText().equals("")||btxt.getText().equals("")) {
-						JOptionPane.showMessageDialog(null, "모든 값을 입력하세요.", "입력값 누락", JOptionPane.ERROR_MESSAGE);
+					if(ltxt.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "변경될 위치를을 입력하세요.", "입력값 누락", JOptionPane.ERROR_MESSAGE);
 					}else {
-						ResultSet srs = stmt.executeQuery("select * from book where book_title='"+btxt.getText()+"';");
-						System.out.println("select * from book where book_title='"+btxt.getText()+"';");
+						System.out.println(list.getSelectedValue());
+						ResultSet srs = stmt.executeQuery("select * from book where book_title='"+list.getSelectedValue()+"';");
+						System.out.println("select * from book where book_title='"+list.getSelectedValue()+"';");
 						if(!srs.next()) {
 							JOptionPane.showMessageDialog(null, "책 이름을 확인하세요.", "입력값 오류", JOptionPane.ERROR_MESSAGE);
 						} else {
-							stmt.executeUpdate("update book set book_location='"+ltxt.getText()+"' where book_title='"+btxt.getText()+"';");
-							System.out.println("update book set book_location='"+ltxt.getText()+"' where book_title='"+btxt.getText()+"';");
+							stmt.executeUpdate("update book set book_location='"+ltxt.getText()+"' where book_title='"+list.getSelectedValue()+"';");
+							System.out.println("update book set book_location='"+ltxt.getText()+"' where book_title='"+list.getSelectedValue()+"';");
 							JOptionPane.showMessageDialog(null, "책 정보 수정이 완료되었습니다.", "수정 완료", JOptionPane.INFORMATION_MESSAGE);
 							setVisible(false);
+							jframe.dispose();
+							Admin_Book adbook = new Admin_Book(stmt, id);
 						}
 					}
 				} catch (SQLException e1) {
@@ -101,7 +130,6 @@ public class b_edi extends JDialog{
 				setVisible(false);
 			}
 		});
-		
 		
 		setVisible(false);
 	}
