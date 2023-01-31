@@ -1,4 +1,4 @@
-package administrator;
+package sub_administrator;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -14,11 +14,13 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-public class sub_p_del extends JDialog {
+
+public class s_p_del extends JDialog{
 	Statement stmt;
 	String id;
 	String pono;
-	sub_p_del(Statement stmt, String id, String pono){
+	
+	s_p_del(Statement stmt, String id, String pono){
 		this.stmt = stmt;
 		this.id = id;
 		this.pono = pono;
@@ -64,7 +66,7 @@ public class sub_p_del extends JDialog {
 		c.add(mid2);
 
 		//확인 버튼
-		meButton yes = new meButton("확인");
+		memButton yes = new memButton("확인");
 		yes.setLocation(125,155);
 		c.add(yes);
 		yes.addActionListener(new ActionListener() {
@@ -85,7 +87,7 @@ public class sub_p_del extends JDialog {
 		});
 		
 		// 취소 버튼
-		meButton no = new meButton("취소");
+		memButton no = new memButton("취소");
 		no.setLocation(25,155);
 		c.add(no);
 		no.addActionListener(new ActionListener() {
@@ -98,8 +100,8 @@ public class sub_p_del extends JDialog {
 	}
 }
 
-class meButton extends JButton{
-	meButton(String name){
+class memButton extends JButton{
+	memButton(String name){
 		this.setText(name);
 		this.setSize(90,35);
 		this.setBackground(new Color(139,134,135));
@@ -107,5 +109,4 @@ class meButton extends JButton{
 		this.setFont(new Font("맑은 고딕", Font.BOLD, 19));
 	}
 }
-
 

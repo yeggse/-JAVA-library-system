@@ -1,4 +1,4 @@
-package administrator;
+package sub_administrator;
 
 import java.awt.Color;
 import java.awt.Container;

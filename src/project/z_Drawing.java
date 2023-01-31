@@ -13,7 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-public class z_Drawing {}
+public class z_Drawing {
+
+	}
 
 // Main, intro 에서 사용
 // 가운데 정렬 하느방법..? (joinguide.setHorizontalAlignment(SwingConstants.CENTER); 아닌가)

@@ -1,4 +1,4 @@
-package administrator;
+package sub_administrator;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -18,13 +18,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import administrator.Admin_info;
+
 public class s_i_add extends JDialog{
 	static Statement stmt;
 	static String id;
-	
-	s_i_add(Statement stmt, String id){
+	JFrame jframe;
+	s_i_add(Statement stmt, String id, JFrame jframe){
 		this.stmt = stmt;
 		this.id = id;
+		this.jframe = jframe;
 		setSize(400,500);
 		this.setResizable(false);
 		
@@ -108,9 +111,8 @@ public class s_i_add extends JDialog{
 								+ "values('"+cnt+"','"+ttxt.getText()+"','"+mtxt.getText()+"','"+wtxt.getText()+"');");
 						JOptionPane.showMessageDialog(null, "공지사항 추가가 완료되었습니다.", "공지 추가", JOptionPane.PLAIN_MESSAGE);
 						setVisible(false);
-//						jframe.setVisible(false);
-						Admin_info adinfo = new Admin_info(stmt, id);
-						
+						jframe.dispose();
+						sub_Admin_Main admain = new sub_Admin_Main(stmt, id);						
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block

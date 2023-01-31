@@ -1,4 +1,4 @@
-package administrator;
+package sub_administrator;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -15,6 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import administrator.Admin_Book;
 
 public class s_b_del extends JDialog{
 	Statement stmt;
@@ -84,7 +86,7 @@ public class s_b_del extends JDialog{
 							JOptionPane.showMessageDialog(null, "책 정보 삭제가 완료되었습니다.", "삭제 완료", JOptionPane.INFORMATION_MESSAGE);
 							setVisible(false);
 							jframe.dispose();
-							Admin_Book adbook = new Admin_Book(stmt, id);
+							sub_Admin_Main admain = new sub_Admin_Main(stmt, id);
 						}
 					}
 				} catch (SQLException e1) {

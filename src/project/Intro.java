@@ -10,9 +10,9 @@ import java.util.*;
 import javax.swing.*;
 
 import administrator.Admin_Main;
-import administrator.sub_Admin_Main;
 import projectDialogs.JoinDialog;
 import projectDialogs.PwSearchDialog;
+import sub_administrator.sub_Admin_Main;
 
 public class Intro extends JFrame{
 	JTextField id ;
@@ -206,7 +206,8 @@ public class Intro extends JFrame{
 	
 	void even() {
 		if(id.getText().equals("admin") && pw.getText().equals("admin")) {	// 관리자 페이지 id, pw = admin
-			Admin_Main admain = new Admin_Main(stmt, id.getText());	// 기존에 했던 파트로 넘어감!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			Admin_Main admain = new Admin_Main(stmt, id.getText());	// 기본admin으로 넘어감
+//			sub_Admin_Main admain = new sub_Admin_Main(stmt, id.getText());  // 서브 admin으로 넘어감.
 			setVisible(false);
 		} else {
 			try {

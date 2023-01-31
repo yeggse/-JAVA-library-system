@@ -1,4 +1,4 @@
-package administrator;
+package sub_administrator;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -27,15 +27,17 @@ import javax.swing.table.TableModel;
 public class sub_Admin_info extends JPanel{
 	static String id;
 	static Statement stmt = null;
+	JFrame jframe;
 	// JTable
 	Object ob[][] = new Object[0][4]; //데이터 표시에 열만 나오게 설정
 	DefaultTableModel model;  // 데이터 저장 부분
 	JTable table;
 	JScrollPane js;
 	String str[] = {"번호", "제목", "내용", "작성자"}; // 컬럼 명
-	sub_Admin_info(Statement stmt, String id){
+	sub_Admin_info(Statement stmt, String id, JFrame jframe){
 		this.stmt = stmt;
 		this.id = id;
+		this.jframe = jframe;
 		setSize(850,500);
 		setBackground(new Color(191,213,232));
 		setLayout(null);
@@ -104,7 +106,7 @@ public class sub_Admin_info extends JPanel{
 						String option[] = {"수정하기", "상세보기"};
 						int answer = JOptionPane.showOptionDialog(null,"해당 공지에 대한 활동을 선택해 주세요.","선택하세요.", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,option, option[0]);
 						if(answer==JOptionPane.YES_OPTION){  //사용자가 yes를 눌렀을 경우, 수정 오픈
-							s_i_edi_table iedi = new s_i_edi_table(stmt, id, infono);
+							s_i_edi_table iedi = new s_i_edi_table(stmt, id, infono, jframe);
 							iedi.setVisible(true);
 						} else if(answer==JOptionPane.NO_OPTION){  //사용자가 no 값을 눌렀을 경우, 상세보기 오픈
 							s_i_detail_table idet = new s_i_detail_table(stmt, id, infono);
@@ -123,7 +125,7 @@ public class sub_Admin_info extends JPanel{
 		// 추가 버튼
 		btnDesig add = new btnDesig("추가", 200);
 		add(add);
-		s_i_add aa = new s_i_add(stmt, id);
+		s_i_add aa = new s_i_add(stmt, id, jframe);
 		add.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -135,7 +137,7 @@ public class sub_Admin_info extends JPanel{
 		// 수정 버튼
 		btnDesig edi = new btnDesig("수정", 380);
 		add(edi);
-		s_i_edi ee = new s_i_edi(stmt, id);
+		s_i_edi ee = new s_i_edi(stmt, id, jframe);
 		edi.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -147,7 +149,7 @@ public class sub_Admin_info extends JPanel{
 		// 삭제 버튼
 		btnDesig del = new btnDesig("삭제", 560);
 		add(del);
-		s_i_del dd = new s_i_del(stmt, id);
+		s_i_del dd = new s_i_del(stmt, id, jframe);
 		del.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

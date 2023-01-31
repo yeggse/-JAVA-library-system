@@ -1,4 +1,4 @@
-package administrator;
+package sub_administrator;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -16,13 +16,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import administrator.Admin_info;
+
 public class s_i_del extends JDialog{
 	static Statement stmt;
 	static String id;
-	
-	s_i_del(Statement stmt, String id){
+	JFrame jframe;
+	s_i_del(Statement stmt, String id, JFrame jframe){
 		this.stmt = stmt;
 		this.id = id;
+		this.jframe = jframe;
 		setSize(300,300);
 		this.setResizable(false);
 		setTitle("(관리자) 공지 삭제 시스템");
@@ -70,8 +73,8 @@ public class s_i_del extends JDialog{
 							System.out.println("delete from info where no = '"+ntxt.getText()+"';");
 							JOptionPane.showMessageDialog(null, "공지사항 삭제가 완료되었습니다.", "공지 삭제", JOptionPane.PLAIN_MESSAGE);
 							setVisible(false);
-//							jframe.setVisible(false);
-							Admin_info adinfo = new Admin_info(stmt, id);
+							jframe.dispose();
+							sub_Admin_Main admain = new sub_Admin_Main(stmt, id);
 						} else {
 							JOptionPane.showMessageDialog(null, "존재하지 않는 번호입니다. \n 번호를 확인해 주세요.", "번호 입력 오류", JOptionPane.ERROR_MESSAGE);
 						}

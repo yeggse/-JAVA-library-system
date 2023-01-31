@@ -1,4 +1,4 @@
-package administrator;
+package sub_administrator;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -18,13 +18,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import administrator.Admin_info;
+
 public class s_i_edi_table extends JDialog{
 	static Statement stmt;
 	static String id;
 	static String infono;
-	s_i_edi_table(Statement stmt, String id, String infono){
+	JFrame jframe;
+	s_i_edi_table(Statement stmt, String id, String infono, JFrame jframe){
 		this.stmt = stmt;
 		this.id = id;
+		this.jframe = jframe;
 		this.infono = infono;
 		setSize(400,500);
 		this.setResizable(false);
@@ -126,8 +130,8 @@ public class s_i_edi_table extends JDialog{
 						System.out.println("update info set title = '"+ttxt.getText()+"', main = '"+mtxt.getText()+"', writer = '"+wtxt.getText()+"' where no = '"+ntxt.getText()+"';");
 						JOptionPane.showMessageDialog(null, "공지사항 수정이 완료되었습니다.", "공지 수정", JOptionPane.PLAIN_MESSAGE);
 						setVisible(false);
-//						jframe.setVisible(false);
-						Admin_info adinfo = new Admin_info(stmt, id);
+						jframe.dispose();
+						sub_Admin_Main admain = new sub_Admin_Main(stmt, id);
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block

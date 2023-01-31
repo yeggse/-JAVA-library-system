@@ -1,4 +1,4 @@
-package administrator;
+package sub_administrator;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -23,6 +23,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+
+import project.Intro;
 
 public class sub_Admin_Main extends JFrame {
 	static String id;
@@ -180,7 +182,7 @@ public class sub_Admin_Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				mai.removeAll();
-				sub_Admin_info sub = new sub_Admin_info(stmt, id);
+				sub_Admin_info sub = new sub_Admin_info(stmt, id, jframe);
 				mai.setBackground(new Color(191,213,232));
 				sub.setLocation(0,0);
 				mai.add(sub);
@@ -195,12 +197,12 @@ public class sub_Admin_Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				mai.removeAll();
-				sub_Admin_info sub = new sub_Admin_info(stmt, id);
+				sub_Admin_info sub = new sub_Admin_info(stmt, id, jframe);
 				mai.setBackground(new Color(191,213,232));
 				sub.setLocation(0,0);
 				mai.add(sub);
 				
-				s_i_add aa = new s_i_add(stmt, id);
+				s_i_add aa = new s_i_add(stmt, id, jframe);
 				aa.setVisible(true);
 			}
 		});
@@ -212,12 +214,12 @@ public class sub_Admin_Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				mai.removeAll();
-				sub_Admin_info sub = new sub_Admin_info(stmt, id);
+				sub_Admin_info sub = new sub_Admin_info(stmt, id, jframe);
 				mai.setBackground(new Color(191,213,232));
 				sub.setLocation(0,0);
 				mai.add(sub);
 				
-				s_i_edi ee = new s_i_edi(stmt, id);
+				s_i_edi ee = new s_i_edi(stmt, id, jframe);
 				ee.setVisible(true);
 			}
 		});
@@ -229,12 +231,12 @@ public class sub_Admin_Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				mai.removeAll();
-				sub_Admin_info sub = new sub_Admin_info(stmt, id);
+				sub_Admin_info sub = new sub_Admin_info(stmt, id, jframe);
 				mai.setBackground(new Color(191,213,232));
 				sub.setLocation(0,0);
 				mai.add(sub);
 				
-				s_i_del dd = new s_i_del(stmt, id);
+				s_i_del dd = new s_i_del(stmt, id, jframe);
 				dd.setVisible(true);
 			}
 		});
@@ -263,4 +265,22 @@ public class sub_Admin_Main extends JFrame {
 	}
 }
 
-
+class logout extends JButton{
+	logout(JFrame jframe){
+		setText("로그아웃");
+		setSize(80,25);
+		setLocation(480,10);
+		setBackground(Color.DARK_GRAY);
+		setForeground(new Color(135,88,255));
+		setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 11));
+				
+		addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Intro intro = new Intro();
+				jframe.setVisible(false);
+			}
+		});
+	}
+}

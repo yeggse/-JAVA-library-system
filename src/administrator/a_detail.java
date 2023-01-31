@@ -26,7 +26,7 @@ public class a_detail extends JDialog {
 	String atxt;
 	String rtxt;
 	String mtxt;
-	
+
 	a_detail(Statement stmt, String id, String asknum, JFrame jframe){
 		super(jframe, true);
 		this.stmt = stmt;
@@ -39,7 +39,7 @@ public class a_detail extends JDialog {
 		Container c = getContentPane();
 		c.setLayout(null);
 		c.setBackground(new Color(245,239,230));
-		
+
 		// 출력 내용 확정
 		try {
 			ResultSet srs = stmt.executeQuery("select * from ask where a_no = '"+asknum+"';");
@@ -55,60 +55,60 @@ public class a_detail extends JDialog {
 			e.printStackTrace();
 			System.out.println("도서신청 내용 출력 오류");
 		}
-		
+
 		//타이틀 
 		JLabel title = new JLabel("신청 도서 상세 확인");
 		title.setSize(350,30);
 		title.setLocation(90,30);
 		title.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 23));
 		c.add(title);
-		
+
 		//제목 라벨
 		mylab sub = new mylab("도서명 :");
 		sub.setLocation(55,80);
 		c.add(sub);
-		
+
 		mylab pu = new mylab("출판사 :");
 		pu.setLocation(55,125);
 		c.add(pu);
-		
+
 		mylab au = new mylab("작 가 :");
 		au.setLocation(55,170);
 		c.add(au);
-		
+
 		mylab re = new mylab("이 유 :");
 		re.setLocation(55,215);
 		c.add(re);
-		
+
 		mylab man = new mylab("신청자 :");
 		man.setLocation(55,260);
 		c.add(man);
-		
+
 		mylab ga = new mylab("장 르 :");
 		ga.setLocation(55,305);
 		c.add(ga);
-		
+
 		// 내용 라벨
 		print book = new print(80);
 		book.setText(btxt);
 		c.add(book);
-		
+
 		print pus = new print(125);
 		pus.setText(ptxt);
 		c.add(pus);
-		
+
 		print aus = new print(170);
 		aus.setText(atxt);
 		c.add(aus);
-		
+
 		print res = new print(215);
 		res.setText(rtxt);
 		c.add(res);
-		
+
 		print mans = new print(260);
 		mans.setText(mtxt);
 		c.add(mans);
-				
+
 		// 장르 출력
 		Vector<String> arr = new Vector<String>();
 		String ar[] = null;
@@ -142,12 +142,12 @@ public class a_detail extends JDialog {
 			e1.printStackTrace();
 			System.out.println("배열오류");
 		}
-	
+
 		print gans = new print(305);
 		gans.setText(gtext);
 		c.add(gans);
-		
-		
+
+
 		JButton okBtn = new JButton("확인");
 		okBtn.setLocation(140,350);
 		okBtn.setSize(100,40);
@@ -162,8 +162,8 @@ public class a_detail extends JDialog {
 				setVisible(false);
 			}
 		});
-		
-		
+
+
 		setVisible(true);
 	}
 }

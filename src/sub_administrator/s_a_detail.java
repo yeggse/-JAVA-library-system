@@ -1,4 +1,4 @@
-package administrator;
+package sub_administrator;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -165,21 +165,21 @@ public class s_a_detail extends JDialog {
 	}
 }
 
-//class mylab extends JLabel{
-//	mylab(String name){
-//		this.setText(name);
-//		this.setSize(300,40);
-//		this.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 17));
-//		this.setOpaque(false);
-//		this.setForeground(Color.black);
-//		this.setBackground(Color.cyan);
-//	}
-//}
-//
-//class print extends JLabel{
-//	print(int y){
-//		this.setSize(300,40);
-//		this.setFont(new Font("굴림", Font.BOLD, 16));
-//		this.setLocation(150,y);
-//	}
-//}
+class mylab extends JLabel{
+	mylab(String name){
+		this.setText(name);
+		this.setSize(300,40);
+		this.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 17));
+		this.setOpaque(false);
+		this.setForeground(Color.black);
+		this.setBackground(Color.cyan);
+	}
+}
+
+class print extends JLabel{
+	print(int y){
+		this.setSize(300,40);
+		this.setFont(new Font("굴림", Font.BOLD, 16));
+		this.setLocation(150,y);
+	}
+}

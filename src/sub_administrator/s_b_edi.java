@@ -1,4 +1,4 @@
-package administrator;
+package sub_administrator;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -18,6 +18,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import administrator.Admin_Book;
 
 public class s_b_edi extends JDialog{
 	Statement stmt;
@@ -107,7 +109,7 @@ public class s_b_edi extends JDialog{
 							JOptionPane.showMessageDialog(null, "책 정보 수정이 완료되었습니다.", "수정 완료", JOptionPane.INFORMATION_MESSAGE);
 							setVisible(false);
 							jframe.dispose();
-							Admin_Book adbook = new Admin_Book(stmt, id);
+							sub_Admin_Main admain = new sub_Admin_Main(stmt, id);
 						}
 					}
 				} catch (SQLException e1) {
